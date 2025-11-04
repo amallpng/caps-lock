@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3e%3crect x='5' y='2' width='14' height='12' rx='1' fill='%23F1EFE9' stroke='%23282828' stroke-width='1'/%3e%3cpath d='M2 13 Q4 11, 12 11 Q20 11, 22 13 L23 20 L1 20 Z' fill='%234A6B69' stroke='%23282828' stroke-width='1'/%3e%3cpath d='M4 19 C8 17, 16 17, 20 19 L19 22 L5 22 Z' fill='%23D3CFC2' stroke='%23282828' stroke-width='1'/%3e%3c/svg%3e" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAPS LOCK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Special Elite', monospace;
+      }
+      .caret {
+        animation: blink 1s infinite;
+        display: inline-block;
+        background-color: #282828;
+        width: 1ch;
+        margin-left: 2px;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+      .badge-animation {
+        animation: badge-intro 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      }
+      @keyframes badge-intro {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .btn-vintage {
+        background-color: #4A6B69;
+        color: #F1EFE9;
+        border: 2px solid #282828;
+        box-shadow: 2px 2px 0px #282828;
+        transition: all 0.1s ease-in-out;
+      }
+      .btn-vintage:hover {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0px #282828;
+      }
+      .btn-vintage:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body class="bg-[#F1EFE9] text-[#282828]">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
