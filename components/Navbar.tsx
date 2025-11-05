@@ -15,6 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
     const navLinks: { page: Page, label: string }[] = [
         { page: 'practice', label: 'Practice' },
         { page: 'challenge', label: 'Challenges' },
+        { page: 'leaderboard', label: 'Leaderboard' },
         ...(user.isChallengeParticipant ? [{ page: 'learnPython' as Page, label: 'Learn Python' }] : []),
         { page: 'about', label: 'About' },
     ];
