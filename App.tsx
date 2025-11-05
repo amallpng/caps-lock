@@ -32,10 +32,11 @@ const App: React.FC = () => {
   }, []);
 
   const handleLogin = (user: User) => {
-    // The user object passed here should not have a password.
     setCurrentUser(user);
-    // Persist session by storing only the user's ID.
-    localStorage.setItem('loggedInUserId', user.id);
+    // Do not persist guest sessions.
+    if (!user.isGuest) {
+      localStorage.setItem('loggedInUserId', user.id);
+    }
     setCurrentPage('practice');
   };
 
@@ -47,6 +48,11 @@ const App: React.FC = () => {
 
   const handleUserUpdate = (updatedUser: User) => {
     setCurrentUser(updatedUser);
+
+    // Prevent guest data from being saved to localStorage.
+    if (updatedUser.isGuest) {
+      return;
+    }
     
     const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const userIndex = allUsers.findIndex(u => u.id === updatedUser.id);

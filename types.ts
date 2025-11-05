@@ -7,6 +7,7 @@ export interface User {
   password?: string | null;
   email?: string;
   provider?: 'local' | 'google';
+  isGuest?: boolean;
   profilePic: string; // Key for a predefined avatar component
   completedTasks: number[]; // Array of task IDs
   bestWpm: number;

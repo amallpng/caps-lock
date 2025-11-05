@@ -72,6 +72,23 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
     onLogin(userToLogin as User);
   };
 
+  const handleGuestLogin = () => {
+    const randomAvatar = avatarOptions[Math.floor(Math.random() * avatarOptions.length)];
+    const guestUser: User = {
+        id: `guest-${Date.now()}`,
+        username: 'Guest',
+        isGuest: true,
+        profilePic: randomAvatar,
+        completedTasks: [],
+        bestWpm: 0,
+        streak: 0,
+        lastTestDate: '',
+        testHistory: [],
+    };
+    onLogin(guestUser);
+  };
+
+
   return (
     <div className="w-full max-w-md bg-[var(--color-secondary)] p-8 rounded-sm border-2 border-[var(--color-text)] shadow-lg">
       <h1 className="text-3xl font-bold text-center text-[var(--color-primary)] mb-6">CAPS LOCK</h1>
@@ -145,14 +162,23 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
             <div className="flex-grow border-t border-[var(--color-border)]"></div>
           </div>
           
-          <button
-            type="button"
-            onClick={() => { setIsGoogleLogin(true); setError(''); }}
-            className="w-full flex items-center justify-center gap-3 bg-[var(--color-bg)] text-[var(--color-text)] font-semibold py-2 px-4 rounded-sm border-2 border-[var(--color-text)] hover:bg-[var(--color-secondary)] transition-colors"
-          >
-            <GoogleIcon />
-            Login with Google
-          </button>
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={() => { setIsGoogleLogin(true); setError(''); }}
+              className="w-full flex items-center justify-center gap-3 bg-[var(--color-bg)] text-[var(--color-text)] font-semibold py-2 px-4 rounded-sm border-2 border-[var(--color-text)] hover:bg-[var(--color-secondary)] transition-colors"
+            >
+              <GoogleIcon />
+              Login with Google
+            </button>
+            <button
+                type="button"
+                onClick={handleGuestLogin}
+                className="w-full flex items-center justify-center gap-3 bg-transparent text-[var(--color-text-muted)] font-semibold py-2 px-4 rounded-sm border-2 border-dashed border-[var(--color-border)] hover:bg-[var(--color-secondary)]/50 hover:text-[var(--color-text)] transition-colors"
+            >
+                Login as Guest
+            </button>
+          </div>
 
           <p className="mt-6 text-center text-[var(--color-text-muted)]">
             Don't have an account?{' '}

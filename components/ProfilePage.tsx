@@ -18,6 +18,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onUserUpdate }) => {
   const completedBadges = TASKS.filter(task => user.completedTasks.includes(task.id));
 
   const handleUsernameChange = () => {
+    if (user.isGuest) return;
     if (newUsername.trim() && newUsername.trim() !== user.username) {
       onUserUpdate({ ...user, username: newUsername.trim() });
     }
@@ -25,6 +26,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onUserUpdate }) => {
   };
 
   const handleAvatarChange = (avatarKey: string) => {
+    if (user.isGuest) return;
     onUserUpdate({ ...user, profilePic: avatarKey });
   };
   
@@ -33,20 +35,23 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onUserUpdate }) => {
       <div className="w-full flex flex-col md:flex-row items-center justify-center gap-8 p-6 bg-[var(--color-secondary)]/50 rounded-sm border-2 border-[var(--color-border)]">
         <div className="relative group">
           <Avatar avatarKey={user.profilePic} className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[var(--color-primary)]" />
-           <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-              <span className="text-white font-bold text-lg">Change</span>
-           </div>
-           {/* Simple avatar picker on hover */}
-           <div className="absolute top-0 left-0 w-full h-full rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-wrap justify-center items-center gap-2 p-4 bg-black/70">
-              {avatarOptions.map(key => {
-                  const IconComponent = avatarComponents[key];
-                  return (
-                      <button key={key} onClick={() => handleAvatarChange(key)} className="w-12 h-12 bg-white rounded-full p-1 hover:scale-110 transition-transform">
-                          <IconComponent />
-                      </button>
-                  )
-              })}
-           </div>
+          {!user.isGuest && (
+            <>
+              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                  <span className="text-white font-bold text-lg">Change</span>
+              </div>
+              <div className="absolute top-0 left-0 w-full h-full rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-wrap justify-center items-center gap-2 p-4 bg-black/70">
+                  {avatarOptions.map(key => {
+                      const IconComponent = avatarComponents[key];
+                      return (
+                          <button key={key} onClick={() => handleAvatarChange(key)} className="w-12 h-12 bg-white rounded-full p-1 hover:scale-110 transition-transform">
+                              <IconComponent />
+                          </button>
+                      )
+                  })}
+              </div>
+            </>
+          )}
         </div>
         <div className="text-center md:text-left">
           {isEditing ? (
@@ -63,12 +68,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onUserUpdate }) => {
           ) : (
             <div className="flex items-center gap-4">
               <h1 className="text-4xl font-bold text-[var(--color-text)]">{user.username}</h1>
-              <button onClick={() => setIsEditing(true)} aria-label="Edit username" className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" /></svg>
-              </button>
+              {!user.isGuest && (
+                <button onClick={() => setIsEditing(true)} aria-label="Edit username" className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" /></svg>
+                </button>
+              )}
             </div>
           )}
           <p className="text-lg text-[var(--color-text-muted)] mt-2">Best WPM: <span className="font-bold text-[var(--color-primary)]">{user.bestWpm}</span></p>
+          {user.isGuest && <p className="text-sm text-[var(--color-text-muted)] mt-2">Login to customize your profile.</p>}
         </div>
       </div>
       
