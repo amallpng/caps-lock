@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { TASKS } from '../services/challengeService';
 import { User, Task } from '../types';
 import useTypingGame from '../hooks/useTypingGame';
 import Results from './Results';
 import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
+import { playSound } from '../services/soundService';
+import { SettingsContext } from '../contexts/SettingsContext';
 
 
 const TypeAreaChallenge = ({ textToType, typedText }: { textToType: string, typedText: string }) => {
@@ -31,7 +33,15 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
 
-    const { status, typedText, textToType, wpm, handleKeyDown, stats, reset } = useTypingGame(activeTask?.text || '', 999);
+    // FIX: Get sound settings and create a memoized sound player function.
+    const { settings } = useContext(SettingsContext);
+    const soundPlayer = useCallback((sound: 'keyPress' | 'error' | 'complete' | 'challenge') => {
+        if (settings.soundEnabled) {
+            playSound(sound);
+        }
+    }, [settings.soundEnabled]);
+
+    const { status, typedText, textToType, wpm, handleKeyDown, stats, reset } = useTypingGame(activeTask?.text || '', 999, soundPlayer);
 
     const handleSelectTask = (task: Task) => {
         const isUnlocked = task.id === 1 || user.completedTasks.includes(task.id - 1);
@@ -53,8 +63,10 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
              };
             onUserUpdate(updatedUser);
             setShowBadge(activeTask);
+            // FIX: Play a special sound for passing a challenge.
+            soundPlayer('challenge');
         }
-    }, [activeTask, stats, user, onUserUpdate]);
+    }, [activeTask, stats, user, onUserUpdate, soundPlayer]);
 
 
     useEffect(() => {
@@ -75,7 +87,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         };
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-    }, [handleKeyDown, activeTask, status]);
+    }, [handleKeyDown, activeTask, status, typedText, textToType]);
 
     const handleRestart = () => {
         setShowBadge(null);

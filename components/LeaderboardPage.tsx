@@ -1,62 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { User } from '../types';
-import { AvatarIcons, avatarOptions } from './icons/AvatarIcons';
+import Avatar from './Avatar';
 
 interface LeaderboardPageProps {
-  currentUser: User;
+    currentUser: User;
 }
 
 const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser }) => {
-  const [users, setUsers] = useState<User[]>([]);
+    const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+    const sortedUsers = [...allUsers].sort((a, b) => (b.bestWpm || 0) - (a.bestWpm || 0));
 
-  useEffect(() => {
-    const allUsersData: User[] = JSON.parse(localStorage.getItem('users') || '[]');
-    const sortedUsers = allUsersData
-      .filter(u => u.bestWpm && u.bestWpm > 0)
-      .sort((a, b) => (b.bestWpm || 0) - (a.bestWpm || 0))
-      .map(({ password, ...user }) => user); // Strip password for safety
-    setUsers(sortedUsers);
-  }, []);
+    return (
+        <div className="w-full max-w-4xl flex flex-col items-center gap-8">
+            <h1 className="text-4xl font-bold text-[#4A6B69]">Leaderboard</h1>
+            <div className="w-full bg-[#D3CFC2]/50 p-6 rounded-sm border-2 border-[#A9A391] space-y-4">
+                {sortedUsers.length > 0 ? sortedUsers.map((user, index) => {
+                    const isCurrentUser = user.id === currentUser.id;
+                    const rank = index + 1;
+                    let rankColor = '';
+                    if (rank === 1) rankColor = 'text-yellow-500';
+                    else if (rank === 2) rankColor = 'text-gray-500';
+                    else if (rank === 3) rankColor = 'text-yellow-700';
 
-  return (
-    <div className="w-full max-w-4xl flex flex-col items-center gap-8">
-      <h1 className="text-4xl font-bold text-[#4A6B69]">Leaderboard</h1>
-      <div className="w-full bg-[#D3CFC2]/50 p-4 rounded-sm border-2 border-[#A9A391]">
-        <div className="space-y-2">
-          {/* Header */}
-          <div className="flex items-center text-left font-bold text-gray-600 px-4 py-2 border-b-2 border-dashed border-[#A9A391]">
-            <div className="w-16 text-center">Rank</div>
-            <div className="flex-grow">Player</div>
-            <div className="w-24 text-right">Best WPM</div>
-          </div>
-          {/* Body */}
-          {users.length > 0 ? (
-            users.map((user, index) => {
-              const AvatarComponent = AvatarIcons[user.profilePic] || AvatarIcons[avatarOptions[0]];
-              const isCurrentUser = user.id === currentUser.id;
-              return (
-                <div
-                  key={user.id}
-                  className={`flex items-center text-left rounded-sm p-3 transition-colors ${isCurrentUser ? 'bg-[#4A6B69]/20 border-l-4 border-[#4A6B69]' : 'bg-[#F1EFE9]/50'}`}
-                >
-                  <div className="w-16 text-center font-bold text-2xl text-[#282828]">{index + 1}</div>
-                  <div className="flex-grow flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#A9A391] bg-white flex-shrink-0">
-                        <AvatarComponent className="w-full h-full object-cover" />
-                    </div>
-                    <span className="font-semibold truncate">{user.username}</span>
-                  </div>
-                  <div className="w-24 text-right font-bold text-2xl text-[#4A6B69]">{user.bestWpm}</div>
-                </div>
-              );
-            })
-          ) : (
-            <p className="text-center text-gray-600 p-8">No one has set a score yet. Be the first!</p>
-          )}
+                    return (
+                        <div key={user.id} className={`flex items-center justify-between p-4 rounded-sm transition-colors ${isCurrentUser ? 'bg-[#4A6B69]/30 border-2 border-[#4A6B69]' : 'bg-[#F1EFE9] border border-transparent'}`}>
+                            <div className="flex items-center gap-4">
+                                <span className={`text-2xl font-bold w-10 text-center ${rankColor}`}>{rank}</span>
+                                <Avatar avatarKey={user.profilePic} className="w-12 h-12 rounded-full" />
+                                <span className="text-lg font-semibold text-[#282828]">{user.username}</span>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-2xl font-bold text-[#282828]">{user.bestWpm || 0}</p>
+                                <p className="text-sm text-gray-500">WPM</p>
+                            </div>
+                        </div>
+                    );
+                }) : <p className="text-center text-gray-500">No users on the leaderboard yet.</p>}
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default LeaderboardPage;

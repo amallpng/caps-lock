@@ -17,7 +17,7 @@ export interface User {
   }[];
 }
 
-export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard';
+export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about';
 
 export enum Difficulty {
   Easy = 'easy',

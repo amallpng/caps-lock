@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { User, Page } from './types';
 import LeaderboardPage from './components/LeaderboardPage';
+import AboutPage from './components/AboutPage';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -67,6 +68,8 @@ const App: React.FC = () => {
         return <ProfilePage user={currentUser} onUserUpdate={handleUserUpdate} />;
       case 'leaderboard':
         return <LeaderboardPage currentUser={currentUser} />;
+      case 'about':
+        return <AboutPage />;
       default:
         return <TypingTest user={currentUser} onUserUpdate={handleUserUpdate} />;
     }

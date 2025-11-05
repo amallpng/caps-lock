@@ -85,7 +85,9 @@ const PerformanceAnalysis: React.FC<{ user: User }> = ({ user }) => {
                 <div className="flex flex-col items-center text-center p-4 bg-[#F1EFE9] rounded-sm border border-[#A9A391]">
                     <p className="text-lg text-gray-600">Daily Streak</p>
                     <div className="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-orange-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0zm8 8a1 1 0 01-1.414 0l-3-3a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414z" clipRule="evenodd" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                           <path d="M10 17.92C10 17.92 15 15.42 15 10.42C15 5.42 10 2.08 10 2.08C10 2.08 5 5.42 5 10.42C5 15.42 10 17.92 10 17.92Z" />
+                        </svg>
                         <p className="text-5xl font-bold text-[#282828]">{user.streak || 0}</p>
                     </div>
                 </div>

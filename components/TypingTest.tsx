@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, useContext } from 'react';
 import useTypingGame from '../hooks/useTypingGame';
 import { getText } from '../services/textService';
 import { Difficulty, User } from '../types';
 import Results from './Results';
 import { updateUserAfterTest } from '../utils/statsUpdater';
+import { SettingsContext } from '../contexts/SettingsContext';
+import { playSound } from '../services/soundService';
 
 
 const TypeArea = ({ textToType, typedText }: { textToType: string, typedText: string }) => {
@@ -34,14 +36,24 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
     const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Medium);
     const [timeOption, setTimeOption] = useState(60);
     const [text, setText] = useState(() => getText(difficulty));
+    
+    // FIX: Get sound settings from context to provide audio feedback.
+    const { settings } = useContext(SettingsContext);
+    const soundPlayer = useCallback((sound: 'keyPress' | 'error' | 'complete') => {
+        if (settings.soundEnabled) {
+            playSound(sound);
+        }
+    }, [settings.soundEnabled]);
 
-    const { status, typedText, textToType, timeLeft, wpm, handleKeyDown, stats, reset } = useTypingGame(text, timeOption);
+    const { status, typedText, textToType, timeLeft, wpm, handleKeyDown, stats, reset } = useTypingGame(text, timeOption, soundPlayer);
     const prevStatusRef = useRef(status);
 
     useEffect(() => {
-        if (status === 'finished' && prevStatusRef.current !== 'finished' && stats.wpm > 0) {
-            const updatedStats = updateUserAfterTest(user, stats);
-            onUserUpdate({ ...user, ...updatedStats });
+        if (status === 'finished' && prevStatusRef.current !== 'finished') {
+             if (stats.wpm > 0) {
+                const updatedStats = updateUserAfterTest(user, stats);
+                onUserUpdate({ ...user, ...updatedStats });
+            }
         }
         prevStatusRef.current = status;
     }, [status, stats, user, onUserUpdate]);
@@ -59,7 +71,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
         };
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-    }, [handleKeyDown]);
+    }, [handleKeyDown, status, typedText, textToType]);
 
     const generateNewText = useCallback(() => {
         setText(getText(difficulty));
