@@ -29,6 +29,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const user = users.find(u => u.username === username && u.password === password && (u.provider === 'local' || !u.provider));
     if (user) {
+      if (user.isBlocked) {
+        setError('Your account has been blocked by an administrator.');
+        return;
+      }
       setError('');
       const { password, ...userToLogin } = user;
       onLogin(userToLogin as User);
@@ -49,6 +53,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     let googleUser = users.find(u => u.provider === 'google' && u.email === email);
 
+    if (googleUser && googleUser.isBlocked) {
+        setError('Your account has been blocked by an administrator.');
+        return;
+    }
+
     if (!googleUser) {
       const randomAvatar = avatarOptions[Math.floor(Math.random() * avatarOptions.length)];
       const newGoogleUser: User = {
@@ -65,6 +74,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         testHistory: [],
         isFirstLogin: true,
         isChallengeParticipant: false,
+        isBlocked: false,
       };
       users.push(newGoogleUser);
       localStorage.setItem('users', JSON.stringify(users));

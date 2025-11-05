@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { TASKS } from '../services/challengeService';
 import { User, Task } from '../types';
 import useTypingGame from '../hooks/useTypingGame';
@@ -6,6 +6,8 @@ import Results from './Results';
 import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
 import Certificate from './Certificate';
+import { SettingsContext } from '../contexts/SettingsContext';
+import { playSound } from '../services/soundService';
 
 type CharStyle = {
   transform: string;
@@ -53,6 +55,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
     const [showCompletionCertificate, setShowCompletionCertificate] = useState(false);
+    const { settings } = useContext(SettingsContext);
 
 
     const { status, typedText, textToType, wpm, handleKeyDown, stats, reset } = useTypingGame(activeTask?.text || '', 999);
@@ -84,8 +87,11 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
              };
             onUserUpdate(updatedUser);
             setShowBadge(activeTask);
+            if (settings.soundEnabled) {
+                playSound('challenge');
+            }
         }
-    }, [activeTask, stats, user, onUserUpdate]);
+    }, [activeTask, stats, user, onUserUpdate, settings.soundEnabled]);
 
 
     useEffect(() => {
@@ -101,12 +107,26 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
             if (e.key === 'Tab' || e.key === 'Enter') return;
             if (e.key.match(/^[a-zA-Z0-9 `~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]$/) || e.key === ' ' || e.key === 'Backspace') {
                  e.preventDefault();
+                 if (settings.soundEnabled) {
+                    if (e.key === 'Backspace') {
+                        if (typedText.length > 0) {
+                            playSound('keyPress');
+                        }
+                    } else if (e.key.length === 1) {
+                        const isError = typedText.length >= textToType.length || e.key !== textToType[typedText.length];
+                        if (isError) {
+                            playSound('error');
+                        } else {
+                            playSound('keyPress');
+                        }
+                    }
+                 }
                  handleKeyDown(e.key);
             }
         };
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-    }, [handleKeyDown, activeTask, status, typedText, textToType]);
+    }, [handleKeyDown, activeTask, status, typedText, textToType, settings.soundEnabled]);
 
     const handleRestart = () => {
         setShowBadge(null);

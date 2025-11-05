@@ -20,6 +20,7 @@ export interface User {
   }[];
   isFirstLogin?: boolean;
   isChallengeParticipant?: boolean;
+  isBlocked?: boolean;
 }
 
 export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython';
