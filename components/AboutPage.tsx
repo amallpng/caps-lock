@@ -1,10 +1,11 @@
 import React from 'react';
+import Logo from './icons/Logo';
 
 const AboutPage: React.FC = () => {
   return (
     <div className="w-full max-w-4xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-[var(--color-border)] flex flex-col gap-8 leading-relaxed">
-      <div>
-        <h1 className="text-4xl font-bold text-[var(--color-primary)] text-center mb-4">About CAPS LOCK</h1>
+      <div className="flex flex-col items-center gap-4">
+        <Logo className="h-20 w-auto" />
         <p className="text-lg text-center text-[var(--color-text-muted)]">
           Welcome to CAPS LOCK, a typing application designed with a vintage typewriter aesthetic to make practicing your typing skills a uniquely enjoyable experience. Our goal is to help you improve your typing speed and accuracy through various engaging modes, all while tracking your progress and celebrating your achievements.
         </p>
