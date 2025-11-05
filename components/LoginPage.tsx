@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User } from '../types';
 import { avatarOptions } from './icons/AvatarIcons';
+import { LogoIcon } from './icons/Logo';
 
 interface LoginPageProps {
   onLogin: (user: User) => void;
@@ -62,6 +63,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         streak: 0,
         lastTestDate: '',
         testHistory: [],
+        isFirstLogin: true,
+        isChallengeParticipant: false,
       };
       users.push(newGoogleUser);
       localStorage.setItem('users', JSON.stringify(users));
@@ -91,7 +94,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
 
   return (
     <div className="w-full max-w-md bg-[var(--color-secondary)] p-8 rounded-sm border-2 border-[var(--color-text)] shadow-lg">
-      <h1 className="text-3xl font-bold text-center text-[var(--color-primary)] mb-6">CAPS LOCK</h1>
+      <div className="flex flex-col items-center mb-6 text-center">
+        <LogoIcon className="h-16 w-auto" />
+        <h1 className="text-3xl font-bold text-[var(--color-text)] mt-1 tracking-wider">
+          CAPS LOCK
+        </h1>
+      </div>
       <h2 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">Login</h2>
       {error && <p className="bg-red-500/20 text-red-800 p-3 rounded-sm mb-4 text-center border border-red-800/50">{error}</p>}
 

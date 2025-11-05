@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User } from '../types';
 import { avatarOptions } from './icons/AvatarIcons';
+import { LogoIcon } from './icons/Logo';
 
 interface RegisterPageProps {
   onRegisterSuccess: () => void;
@@ -38,6 +39,8 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
       streak: 0,
       lastTestDate: '',
       testHistory: [],
+      isFirstLogin: true,
+      isChallengeParticipant: false,
     };
 
     users.push(newUser);
@@ -48,7 +51,12 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
 
   return (
     <div className="w-full max-w-md bg-[var(--color-secondary)] p-8 rounded-sm border-2 border-[var(--color-text)] shadow-lg">
-      <h1 className="text-3xl font-bold text-center text-[var(--color-primary)] mb-6">CAPS LOCK</h1>
+      <div className="flex flex-col items-center mb-6 text-center">
+        <LogoIcon className="h-16 w-auto" />
+        <h1 className="text-3xl font-bold text-[var(--color-text)] mt-1 tracking-wider">
+          CAPS LOCK
+        </h1>
+      </div>
       <h2 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">Register</h2>
       {error && <p className="bg-red-500/20 text-red-800 p-3 rounded-sm mb-4 text-center border border-red-800/50">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-6">

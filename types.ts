@@ -18,9 +18,11 @@ export interface User {
     wpm: number;
     accuracy: number;
   }[];
+  isFirstLogin?: boolean;
+  isChallengeParticipant?: boolean;
 }
 
-export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about';
+export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython';
 
 export enum Difficulty {
   Easy = 'easy',

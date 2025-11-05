@@ -5,23 +5,44 @@ import useTypingGame from '../hooks/useTypingGame';
 import Results from './Results';
 import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
+import Certificate from './Certificate';
 
+type CharStyle = {
+  transform: string;
+  opacity: number;
+};
 
-const TypeAreaChallenge = ({ textToType, typedText }: { textToType: string, typedText: string }) => {
+const TypeAreaChallenge = ({ textToType, typedText, charStyles }: { textToType: string, typedText: string, charStyles: CharStyle[] }) => {
+    const fullTextChars = textToType.split('').map((char, index) => {
+        const style = charStyles[index] || {};
+        let className = '';
+
+        if (index < typedText.length) {
+            // This character has been typed
+            const isCorrect = typedText[index] === char;
+            className = isCorrect 
+                ? 'text-[var(--color-text)]' 
+                : 'text-[var(--color-error)] underline bg-[var(--color-error)]/20';
+        } else if (index === typedText.length) {
+            // This is the current character to be typed (the caret position)
+            className = 'caret-char';
+        } else {
+            // This is upcoming text
+            className = 'text-[var(--color-text-muted)] opacity-80';
+        }
+        
+        return (
+            <span key={index} style={style} className={`inline-block ${className}`}>
+                {char}
+            </span>
+        );
+    });
+
     return (
-        <div className="relative text-xl md:text-2xl tracking-wider p-4 bg-[var(--color-bg)] border-2 border-[var(--color-border)] rounded-sm select-none leading-loose break-all shadow-inner">
-            <p className="text-[var(--color-text-muted)] opacity-80">
-                {textToType}
+        <div className="relative text-xl md:text-2xl tracking-wider p-4 bg-[var(--color-bg)] border-2 border-[var(--color-border)] rounded-sm select-none leading-loose break-words shadow-inner">
+            <p style={{ whiteSpace: 'pre-wrap' }}>
+                {fullTextChars}
             </p>
-            <div className="absolute top-0 left-0 p-4">
-                <p>
-                     {typedText.split('').map((char, index) => {
-                        const isCorrect = char === textToType[index];
-                        return <span key={index} className={isCorrect ? 'text-[var(--color-text)]' : 'text-[var(--color-error)] line-through bg-[var(--color-error)]/10'}>{textToType[index]}</span>;
-                    })}
-                    <span className="caret h-6"></span>
-                </p>
-            </div>
         </div>
     );
 };
@@ -29,7 +50,10 @@ const TypeAreaChallenge = ({ textToType, typedText }: { textToType: string, type
 
 const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; }> = ({ user, onUserUpdate }) => {
     const [activeTask, setActiveTask] = useState<Task | null>(null);
+    const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
+    const [showCompletionCertificate, setShowCompletionCertificate] = useState(false);
+
 
     const { status, typedText, textToType, wpm, handleKeyDown, stats, reset } = useTypingGame(activeTask?.text || '', 999);
 
@@ -37,6 +61,13 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         const isUnlocked = task.id === 1 || user.completedTasks.includes(task.id - 1);
         if (isUnlocked && !user.completedTasks.includes(task.id)) {
             setActiveTask(task);
+            
+            const styles = task.text.split('').map(() => ({
+                transform: `rotate(${(Math.random() - 0.5) * 2.5}deg) translateY(${(Math.random() - 0.5) * 2}px)`,
+                opacity: Math.random() * 0.15 + 0.85,
+            }));
+            setCharStyles(styles);
+            
             reset();
         }
     };
@@ -82,6 +113,10 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         if (activeTask) {
             const passed = stats.wpm >= activeTask.wpmGoal && stats.accuracy >= activeTask.accuracyGoal;
             if (passed) {
+                if (activeTask.id === TASKS.length) {
+                    setShowCompletionCertificate(true);
+                    return;
+                }
                 const nextTask = TASKS.find(t => t.id === activeTask.id + 1);
                 if (nextTask) {
                     handleSelectTask(nextTask);
@@ -95,12 +130,33 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
              setActiveTask(null);
         }
     };
-    
+
+    if (showCompletionCertificate) {
+        return (
+            <div className="w-full max-w-4xl flex flex-col items-center gap-6 text-center animate-fade-in">
+                <h1 className="text-4xl font-bold text-yellow-600">CHALLENGE COMPLETE!</h1>
+                <p className="text-xl text-[var(--color-text-muted)]">
+                    You have conquered all 100 challenges. As a testament to your dedication and skill, you have been awarded the Certificate of Achievement.
+                </p>
+                <Certificate />
+                <button
+                    onClick={() => {
+                        setShowCompletionCertificate(false);
+                        setActiveTask(null);
+                    }}
+                    className="mt-4 btn-vintage font-bold py-3 px-6 rounded-sm text-xl"
+                >
+                    Return to Challenge Map
+                </button>
+            </div>
+        );
+    }
+
     if (showBadge) {
         return (
             <div className="w-full max-w-2xl flex flex-col items-center gap-6 text-center">
                 <h2 className="text-4xl font-bold text-yellow-600">Badge Unlocked!</h2>
-                <div className="bg-[var(--color-text)]/50 rounded-lg p-4">
+                <div className="bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-lg p-4">
                   <Badge task={showBadge} />
                 </div>
                  <Results
@@ -123,6 +179,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                  <h2 className="text-3xl font-bold">Level {activeTask.level}: {activeTask.badge.name}</h2>
                 {status !== 'finished' ? (
                      <>
+                        <TypeAreaChallenge textToType={textToType} typedText={typedText} charStyles={charStyles} />
                         <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 text-lg w-full bg-[var(--color-secondary)]/50 p-4 rounded-sm border-y border-dashed border-[var(--color-border)]">
                            <p>WPM Goal: <span className="font-bold text-[var(--color-primary)]">{activeTask.wpmGoal}</span></p>
                            <div className="border-l border-[var(--color-border)] h-6 hidden sm:block"></div>
@@ -130,7 +187,6 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                            <div className="border-l border-[var(--color-border)] h-6 hidden sm:block"></div>
                            <p>Current WPM: <span className="font-bold text-[var(--color-text)]">{wpm}</span></p>
                         </div>
-                        <TypeAreaChallenge textToType={textToType} typedText={typedText} />
                         <p className="text-[var(--color-text-muted)]">Start typing to begin...</p>
                     </>
                 ) : (

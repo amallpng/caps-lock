@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
     const navLinks: { page: Page, label: string }[] = [
         { page: 'practice', label: 'Practice' },
         { page: 'challenge', label: 'Challenges' },
-        { page: 'leaderboard', label: 'Leaderboard' },
+        ...(user.isChallengeParticipant ? [{ page: 'learnPython' as Page, label: 'Learn Python' }] : []),
         { page: 'about', label: 'About' },
     ];
 
@@ -41,6 +41,22 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
                     </div>
 
                     <div className="flex items-center gap-4">
+                         <div className="flex items-center gap-6 md:hidden">
+                            {user.isChallengeParticipant && (
+                                <button
+                                    onClick={() => onNavigate('learnPython')}
+                                    className={`text-lg font-semibold transition-colors ${currentPage === 'learnPython' ? 'text-[var(--color-primary)] underline' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                >
+                                    Python
+                                </button>
+                            )}
+                             <button
+                                onClick={() => onNavigate('about')}
+                                className={`text-lg font-semibold transition-colors ${currentPage === 'about' ? 'text-[var(--color-primary)] underline' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                            >
+                                About
+                            </button>
+                        </div>
                         <button 
                             onClick={onLogout}
                             className="bg-[var(--color-primary)] text-[var(--color-bg)] px-3 py-1 font-bold rounded-sm transition hover:brightness-90 active:brightness-75"
@@ -53,6 +69,14 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
                                 <span className="hidden lg:block font-semibold text-[var(--color-text)]">{user.username}</span>
                             </button>
                             <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--color-bg)] rounded-sm border border-[var(--color-border)] shadow-lg hidden group-hover:block" style={{zIndex: 50}}>
+                                <button onClick={() => onNavigate('practice')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Practice</button>
+                                <button onClick={() => onNavigate('challenge')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Challenges</button>
+                                {user.isChallengeParticipant && (
+                                    <button onClick={() => onNavigate('learnPython')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Learn Python</button>
+                                )}
+                                <button onClick={() => onNavigate('leaderboard')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Leaderboard</button>
+                                <button onClick={() => onNavigate('about')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">About</button>
+                                <div className="border-t border-[var(--color-border)] my-1"></div>
                                 <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Profile</button>
                             </div>
                         </div>

@@ -9,10 +9,13 @@ import Footer from './components/Footer';
 import { User, Page } from './types';
 import LeaderboardPage from './components/LeaderboardPage';
 import AboutPage from './components/AboutPage';
+import ChallengeSignupModal from './components/ChallengeSignupModal';
+import LearnPythonPage from './components/LearnPythonPage';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState<Page>('login');
+  const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false);
 
   useEffect(() => {
     const loggedInUserId = localStorage.getItem('loggedInUserId');
@@ -24,6 +27,9 @@ const App: React.FC = () => {
         const { password, ...userToLogin } = loggedInUser;
         setCurrentUser(userToLogin as User);
         setCurrentPage('practice');
+        if (loggedInUser.isFirstLogin === true && !loggedInUser.isGuest) {
+          setIsChallengeModalOpen(true);
+        }
       } else {
         // If the user ID from localStorage is invalid, clear it
         localStorage.removeItem('loggedInUserId');
@@ -36,6 +42,9 @@ const App: React.FC = () => {
     // Do not persist guest sessions.
     if (!user.isGuest) {
       localStorage.setItem('loggedInUserId', user.id);
+    }
+    if (user.isFirstLogin === true && !user.isGuest) {
+        setIsChallengeModalOpen(true);
     }
     setCurrentPage('practice');
   };
@@ -64,6 +73,29 @@ const App: React.FC = () => {
     }
   };
 
+  const handleChallengeSignup = (name: string, email: string) => {
+    if (!currentUser) return;
+    const updatedUser = {
+        ...currentUser,
+        username: name,
+        email: email,
+        isFirstLogin: false,
+        isChallengeParticipant: true,
+    };
+    handleUserUpdate(updatedUser);
+    setIsChallengeModalOpen(false);
+  };
+
+  const handleChallengeSkip = () => {
+    if (!currentUser) return;
+    const updatedUser = {
+        ...currentUser,
+        isFirstLogin: false,
+    };
+    handleUserUpdate(updatedUser);
+    setIsChallengeModalOpen(false);
+  };
+
 
   const renderPage = () => {
     if (!currentUser) {
@@ -86,6 +118,8 @@ const App: React.FC = () => {
         return <LeaderboardPage currentUser={currentUser} />;
       case 'about':
         return <AboutPage />;
+      case 'learnPython':
+        return <LearnPythonPage />;
       default:
         return <TypingTest user={currentUser} onUserUpdate={handleUserUpdate} />;
     }
@@ -95,6 +129,13 @@ const App: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} />}
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
+        {isChallengeModalOpen && currentUser && (
+            <ChallengeSignupModal
+                user={currentUser}
+                onSignup={handleChallengeSignup}
+                onClose={handleChallengeSkip}
+            />
+        )}
         {renderPage()}
       </main>
       <Footer />
