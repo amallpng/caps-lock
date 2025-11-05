@@ -78,49 +78,46 @@ const PerformanceAnalysis: React.FC<{ user: User }> = ({ user }) => {
     };
 
     return (
-        <div className="w-full border-y-2 border-dashed border-[#A9A391] py-6">
-            <h2 className="text-2xl font-bold text-[#4A6B69] mb-4 text-center">Performance Analysis</h2>
+        <div className="w-full border-y-2 border-dashed border-[var(--color-border)] py-6">
+            <h2 className="text-2xl font-bold text-[var(--color-primary)] mb-4 text-center">Performance Analysis</h2>
             <div className="flex flex-col md:flex-row items-center justify-around gap-6">
                  {/* Daily Streak */}
-                <div className="flex flex-col items-center text-center p-4 bg-[#F1EFE9] rounded-sm border border-[#A9A391]">
-                    <p className="text-lg text-gray-600">Daily Streak</p>
-                    <div className="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
-                           <path d="M10 17.92C10 17.92 15 15.42 15 10.42C15 5.42 10 2.08 10 2.08C10 2.08 5 5.42 5 10.42C5 15.42 10 17.92 10 17.92Z" />
-                        </svg>
-                        <p className="text-5xl font-bold text-[#282828]">{user.streak || 0}</p>
+                <div className="flex flex-col items-center text-center p-4 bg-[var(--color-bg)] rounded-sm border border-[var(--color-border)]">
+                    <p className="text-lg text-[var(--color-text-muted)]">Daily Streak</p>
+                    <div className="flex items-center justify-center">
+                        <p className="text-5xl font-bold text-[var(--color-text)]">{user.streak || 0}</p>
                     </div>
                 </div>
 
                 {/* Progress Chart */}
-                <div className="flex-grow w-full max-w-lg bg-[#F1EFE9] p-4 rounded-sm border border-[#A9A391]">
+                <div className="flex-grow w-full max-w-lg bg-[var(--color-bg)] p-4 rounded-sm border border-[var(--color-border)]">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="font-semibold text-lg">Typing Progress</h3>
                         <div className="flex items-center text-sm">
                             {(['daily', 'weekly', 'monthly'] as ViewType[]).map(v => (
-                                <button key={v} onClick={() => setView(v)} className={`px-2 py-1 capitalize transition-colors ${view === v ? 'bg-[#4A6B69] text-white rounded-sm' : 'hover:underline'}`}>
+                                <button key={v} onClick={() => setView(v)} className={`px-2 py-1 capitalize transition-colors ${view === v ? 'bg-[var(--color-primary)] text-[var(--color-bg)] rounded-sm' : 'hover:underline'}`}>
                                     {v}
                                 </button>
                             ))}
                         </div>
                     </div>
                     {chartData.length > 0 ? (
-                        <div className="flex justify-around items-end h-48 gap-2 border-b-2 border-l-2 border-[#A9A391] p-2">
+                        <div className="flex justify-around items-end h-48 gap-2 border-b-2 border-l-2 border-[var(--color-border)] p-2">
                             {chartData.map(data => (
                                 <div key={data.label} className="flex-1 flex flex-col items-center justify-end group relative">
-                                    <div className="absolute -top-10 hidden group-hover:block bg-[#282828] text-white text-xs rounded py-1 px-2 pointer-events-none">
+                                    <div className="absolute -top-10 hidden group-hover:block bg-[var(--color-text)] text-[var(--color-bg)] text-xs rounded py-1 px-2 pointer-events-none">
                                         Avg WPM: {data.value}
                                     </div>
                                     <div 
-                                        className="w-full bg-[#4A6B69] hover:bg-[#385250] transition-colors rounded-t-sm"
+                                        className="w-full bg-[var(--color-primary)] hover:brightness-110 transition-all rounded-t-sm"
                                         style={{ height: `${(data.value / maxWpm) * 100}%`}}
                                     ></div>
-                                    <span className="text-xs text-gray-500 mt-1">{getFormattedLabel(data.label)}</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] mt-1">{getFormattedLabel(data.label)}</span>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <div className="h-48 flex items-center justify-center text-gray-500">
+                        <div className="h-48 flex items-center justify-center text-[var(--color-text-muted)]">
                            <p>Complete some tests to see your progress!</p>
                         </div>
                     )}

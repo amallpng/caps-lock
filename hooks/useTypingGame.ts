@@ -8,8 +8,7 @@ export interface TypingStats {
   time: number;
 }
 
-// FIX: Added optional playSound parameter to provide audio feedback during the game.
-const useTypingGame = (textToType: string, timeLimit: number, playSound?: (sound: 'keyPress' | 'error' | 'complete') => void) => {
+const useTypingGame = (textToType: string, timeLimit: number) => {
   const [status, setStatus] = useState<GameStatus>('waiting');
   const [typedText, setTypedText] = useState('');
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -35,8 +34,6 @@ const useTypingGame = (textToType: string, timeLimit: number, playSound?: (sound
       setStatus('finished');
       setEndTime(Date.now());
       setWpm(0);
-      // FIX: Play sound on completion.
-      playSound?.('complete');
       return;
     }
 
@@ -57,8 +54,7 @@ const useTypingGame = (textToType: string, timeLimit: number, playSound?: (sound
     }, 1000);
 
     return () => clearInterval(timer);
-  // FIX: Added playSound to dependency array.
-  }, [status, timeLeft, startTime, typedText, textToType, playSound]);
+  }, [status, timeLeft, startTime, typedText, textToType]);
 
   const handleKeyDown = (key: string) => {
     if (status === 'finished' || (key.length > 1 && key !== 'Backspace')) return;
@@ -76,11 +72,6 @@ const useTypingGame = (textToType: string, timeLimit: number, playSound?: (sound
         setTypedText(newTypedText);
         if (key !== textToType[typedText.length]) { // Check against current character
           setErrors(prev => prev + 1);
-          // FIX: Play error sound on mistake.
-          playSound?.('error');
-        } else {
-          // FIX: Play key press sound on correct key.
-          playSound?.('keyPress');
         }
       }
     }
@@ -92,11 +83,8 @@ const useTypingGame = (textToType: string, timeLimit: number, playSound?: (sound
       setStatus('finished');
       setEndTime(Date.now());
       setWpm(0); // Clear live WPM
-      // FIX: Play sound on completion.
-      playSound?.('complete');
     }
-  // FIX: Added playSound to dependency array.
-  }, [typedText, textToType, status, playSound]);
+  }, [typedText, textToType, status]);
 
 
   const getStats = useCallback((): TypingStats => {

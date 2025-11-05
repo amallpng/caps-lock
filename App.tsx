@@ -15,35 +15,45 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('login');
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-      setCurrentPage('practice');
+    const loggedInUserId = localStorage.getItem('loggedInUserId');
+    if (loggedInUserId) {
+      const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+      const loggedInUser = users.find(u => u.id === loggedInUserId);
+      if (loggedInUser) {
+        // Exclude password from the user object in the app's state
+        const { password, ...userToLogin } = loggedInUser;
+        setCurrentUser(userToLogin as User);
+        setCurrentPage('practice');
+      } else {
+        // If the user ID from localStorage is invalid, clear it
+        localStorage.removeItem('loggedInUserId');
+      }
     }
   }, []);
 
   const handleLogin = (user: User) => {
+    // The user object passed here should not have a password.
     setCurrentUser(user);
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    // Persist session by storing only the user's ID.
+    localStorage.setItem('loggedInUserId', user.id);
     setCurrentPage('practice');
   };
 
   const handleLogout = useCallback(() => {
     setCurrentUser(null);
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('loggedInUserId');
     setCurrentPage('login');
   }, []);
 
   const handleUserUpdate = (updatedUser: User) => {
     setCurrentUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
     
     const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const userIndex = allUsers.findIndex(u => u.id === updatedUser.id);
     if (userIndex !== -1) {
-      // Preserve password when updating
-      const originalPassword = allUsers[userIndex].password;
-      allUsers[userIndex] = { ...updatedUser, password: originalPassword };
+      const existingUser = allUsers[userIndex];
+      // Merge updates into the full user object to preserve all original fields like password, provider, etc.
+      allUsers[userIndex] = { ...existingUser, ...updatedUser };
       localStorage.setItem('users', JSON.stringify(allUsers));
     }
   };
@@ -76,7 +86,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F1EFE9] text-[#282828]">
+    <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} />}
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
         {renderPage()}

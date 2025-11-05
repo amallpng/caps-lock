@@ -4,7 +4,9 @@ import { BadgeIcons } from './components/icons/BadgeIcons';
 export interface User {
   id: string;
   username: string;
-  password?: string; 
+  password?: string | null;
+  email?: string;
+  provider?: 'local' | 'google';
   profilePic: string; // Key for a predefined avatar component
   completedTasks: number[]; // Array of task IDs
   bestWpm: number;
@@ -34,5 +36,19 @@ export interface Task {
   badge: {
     name: string;
     icon: keyof typeof BadgeIcons;
+  };
+}
+
+export interface Theme {
+  id: string;
+  name: string;
+  colors: {
+    bg: string;
+    text: string;
+    primary: string;
+    secondary: string;
+    border: string;
+    error: string;
+    'text-muted': string;
   };
 }

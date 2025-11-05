@@ -11,7 +11,7 @@ const Badge: React.FC<{ task: Task }> = ({ task }) => {
       <div className="w-32 h-32">
         <BadgeIcon className="w-full h-full" />
       </div>
-      <p className="text-xl font-semibold text-white">{task.badge.name}</p>
+      <p className="text-xl font-semibold text-[var(--color-bg)]">{task.badge.name}</p>
     </div>
   );
 };
