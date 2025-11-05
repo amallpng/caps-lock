@@ -158,7 +158,8 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                 <p className="text-xl text-[var(--color-text-muted)]">
                     You have conquered all 100 challenges. As a testament to your dedication and skill, you have been awarded the Certificate of Achievement.
                 </p>
-                <Certificate />
+                {/* FIX: Add required 'isUnlocked' prop to Certificate component. */}
+                <Certificate isUnlocked={true} />
                 <button
                     onClick={() => {
                         setShowCompletionCertificate(false);
