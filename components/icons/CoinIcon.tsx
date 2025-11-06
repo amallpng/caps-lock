@@ -1,15 +1,15 @@
 import React from 'react';
 
 const CoinIcon = ({ className }: { className?: string }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* 3D Edge/Shadow layer */}
-      <circle cx="12" cy="13.5" r="10" fill="#B8860B"/>
-      {/* Main coin face */}
-      <circle cx="12" cy="12" r="10" fill="#FFD700" stroke="#DAA520" strokeWidth="1.5"/>
-      {/* Inner ring for detail */}
-      <circle cx="12" cy="12" r="7.5" fill="none" stroke="#B8860B" strokeOpacity="0.5" strokeWidth="1"/>
-      {/* Shine/Glare */}
-      <path d="M8 8.5 A 5 5 0 0 1 11.5 6.5" stroke="white" strokeOpacity="0.9" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+    <svg className={className} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
+        {/* Outline */}
+        <path fill="#282828" d="M5,1h6v1h2v2h1v6h-1v2h-2v1H5v-1H3v-2H2V4h1V2h2V1z"/>
+        {/* Shadow */}
+        <path fill="#a26a45" d="M5,2h6v1h2v2h1v5h-1v1h-1v1H5v-1H4V4h1V2z"/>
+        {/* Main fill */}
+        <path fill="#f4d47c" d="M5,2h6v1h1v6h-1v1H5V2z"/>
+        {/* Glint */}
+        <path fill="#fef2d1" d="M6,3h2v2h-1v-1h-1z"/>
     </svg>
 );
 
