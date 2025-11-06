@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import Logo from './icons/Logo';
 import SettingsModal from './SettingsModal';
 
-const AboutPage: React.FC = () => {
+interface AboutPageProps {
+  onOpenPrivacyModal: () => void;
+}
+
+const AboutPage: React.FC<AboutPageProps> = ({ onOpenPrivacyModal }) => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   return (
@@ -37,7 +41,7 @@ const AboutPage: React.FC = () => {
          <p className="text-lg text-[var(--color-text-muted)]">
             This application was designed and developed by amall.png. If you have any questions, feedback, or just want to connect, feel free to reach out!
          </p>
-         <div className="flex justify-center items-center gap-6 mt-4">
+         <div className="flex justify-center items-center gap-6 mt-4 flex-wrap">
             <a href="mailto:amalazeesa@gmail.com" className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
                 Email
@@ -49,6 +53,10 @@ const AboutPage: React.FC = () => {
             <button onClick={() => setIsSettingsModalOpen(true)} className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 Settings
+            </button>
+            <button onClick={onOpenPrivacyModal} className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
+              Privacy & Policy
             </button>
          </div>
       </div>

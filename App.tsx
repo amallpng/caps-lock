@@ -11,11 +11,13 @@ import LeaderboardPage from './components/LeaderboardPage';
 import AboutPage from './components/AboutPage';
 import ChallengeSignupModal from './components/ChallengeSignupModal';
 import LearnPythonPage from './components/LearnPythonPage';
+import PrivacyPolicyModal from './components/PrivacyPolicyModal';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState<Page>('login');
   const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
   useEffect(() => {
     const loggedInUserId = localStorage.getItem('loggedInUserId');
@@ -117,7 +119,7 @@ const App: React.FC = () => {
       case 'leaderboard':
         return <LeaderboardPage currentUser={currentUser} />;
       case 'about':
-        return <AboutPage />;
+        return <AboutPage onOpenPrivacyModal={() => setIsPrivacyModalOpen(true)} />;
       case 'learnPython':
         return <LearnPythonPage />;
       default:
@@ -136,6 +138,7 @@ const App: React.FC = () => {
                 onClose={handleChallengeSkip}
             />
         )}
+        {isPrivacyModalOpen && <PrivacyPolicyModal onClose={() => setIsPrivacyModalOpen(false)} />}
         {renderPage()}
       </main>
       <Footer />
