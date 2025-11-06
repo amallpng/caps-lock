@@ -77,6 +77,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         isChallengeParticipant: false,
         isBlocked: false,
         hasClaimedShareReward: false,
+        hasRevealedGrandReward: false,
       };
       users.push(newGoogleUser);
       localStorage.setItem('users', JSON.stringify(users));

@@ -23,6 +23,7 @@ export interface User {
   isBlocked?: boolean;
   coins: number;
   hasClaimedShareReward?: boolean;
+  hasRevealedGrandReward?: boolean;
 }
 
 export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython';

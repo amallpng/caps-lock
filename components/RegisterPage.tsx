@@ -43,6 +43,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
       isFirstLogin: true,
       isChallengeParticipant: false,
       hasClaimedShareReward: false,
+      hasRevealedGrandReward: false,
     };
 
     users.push(newUser);

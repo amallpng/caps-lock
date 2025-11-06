@@ -9,11 +9,14 @@ interface ResultsProps {
         wpmGoal: number;
         accuracyGoal: number;
         passed: boolean;
+        isLastChallenge?: boolean;
     };
     coinsEarned?: number;
 }
 
 const Results: React.FC<ResultsProps> = ({ stats, onRestart, challengeInfo, coinsEarned }) => {
+    const nextButtonText = challengeInfo?.isLastChallenge ? 'Finish' : 'Next Challenge';
+    
     return (
         <div className="w-full max-w-2xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-dashed border-[var(--color-border)] flex flex-col items-center gap-6 text-center animate-fade-in">
             <h2 className="text-3xl font-bold text-[var(--color-primary)]">
@@ -41,7 +44,7 @@ const Results: React.FC<ResultsProps> = ({ stats, onRestart, challengeInfo, coin
                 onClick={onRestart}
                 className="w-full btn-vintage font-bold py-3 px-4 rounded-sm text-xl"
             >
-                {challengeInfo ? (challengeInfo.passed ? 'Next Challenge' : 'Retry Challenge') : 'Try Again'}
+                {challengeInfo ? (challengeInfo.passed ? nextButtonText : 'Retry Challenge') : 'Try Again'}
             </button>
         </div>
     );

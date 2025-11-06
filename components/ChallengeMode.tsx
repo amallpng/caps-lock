@@ -5,7 +5,6 @@ import useTypingGame from '../hooks/useTypingGame';
 import Results from './Results';
 import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
-import Certificate from './Certificate';
 
 type CharStyle = {
   transform: string;
@@ -52,7 +51,6 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
-    const [showCompletionCertificate, setShowCompletionCertificate] = useState(false);
     const [lastEarnedCoins, setLastEarnedCoins] = useState(0);
 
     if (user.isGuest) {
@@ -137,10 +135,6 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         if (activeTask) {
             const passed = stats.wpm >= activeTask.wpmGoal && stats.accuracy >= activeTask.accuracyGoal;
             if (passed) {
-                if (activeTask.id === TASKS.length) {
-                    setShowCompletionCertificate(true);
-                    return;
-                }
                 const nextTask = TASKS.find(t => t.id === activeTask.id + 1);
                 if (nextTask) {
                     handleSelectTask(nextTask);
@@ -154,27 +148,6 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
              setActiveTask(null);
         }
     };
-
-    if (showCompletionCertificate) {
-        return (
-            <div className="w-full max-w-4xl flex flex-col items-center gap-6 text-center animate-fade-in">
-                <h1 className="text-4xl font-bold text-yellow-600">CHALLENGE COMPLETE!</h1>
-                <p className="text-xl text-[var(--color-text-muted)]">
-                    You have conquered all 100 challenges. As a testament to your dedication and skill, you have been awarded the Certificate of Achievement.
-                </p>
-                <Certificate isUnlocked={true} />
-                <button
-                    onClick={() => {
-                        setShowCompletionCertificate(false);
-                        setActiveTask(null);
-                    }}
-                    className="mt-4 btn-vintage font-bold py-3 px-6 rounded-sm text-xl"
-                >
-                    Return to Challenge Map
-                </button>
-            </div>
-        );
-    }
 
     if (showBadge) {
         return (
@@ -191,6 +164,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                         wpmGoal: showBadge.wpmGoal,
                         accuracyGoal: showBadge.accuracyGoal,
                         passed: true,
+                        isLastChallenge: showBadge.id === TASKS.length,
                     }}
                 />
             </div>
@@ -243,6 +217,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                             wpmGoal: activeTask.wpmGoal,
                             accuracyGoal: activeTask.accuracyGoal,
                             passed: stats.wpm >= activeTask.wpmGoal && stats.accuracy >= activeTask.accuracyGoal,
+                            isLastChallenge: activeTask.id === TASKS.length,
                         }}
                     />
                 )}
