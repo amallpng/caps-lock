@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { User } from '../types';
+import { User, PrizeClaim } from '../types';
+import { TASKS } from '../services/challengeService';
 
 interface CreatorModalProps {
     onClose: () => void;
@@ -7,7 +8,7 @@ interface CreatorModalProps {
 
 const CORRECT_PIN = '9495163518';
 
-type ActiveTab = 'registrations' | 'manageUsers';
+type ActiveTab = 'registrations' | 'manageUsers' | 'prizeClaims';
 
 const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
     const [pin, setPin] = useState('');
@@ -17,21 +18,26 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
     const [activeTab, setActiveTab] = useState<ActiveTab>('registrations');
     const [registeredUsers, setRegisteredUsers] = useState<User[]>([]);
     const [allUsers, setAllUsers] = useState<User[]>([]);
+    const [prizeClaims, setPrizeClaims] = useState<PrizeClaim[]>([]);
+    const [expandedClaimId, setExpandedClaimId] = useState<string | null>(null);
 
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [editingUsername, setEditingUsername] = useState('');
 
-    const fetchUsers = () => {
+    const fetchData = () => {
         const usersFromStorage: User[] = JSON.parse(localStorage.getItem('users') || '[]');
         const pythonUsers = usersFromStorage.filter(user => user.isChallengeParticipant && !user.isGuest);
         const manageableUsers = usersFromStorage.filter(user => !user.isGuest);
         setRegisteredUsers(pythonUsers);
         setAllUsers(manageableUsers);
+
+        const claimsFromStorage: PrizeClaim[] = JSON.parse(localStorage.getItem('prizeClaims') || '[]');
+        setPrizeClaims(claimsFromStorage.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     };
 
     useEffect(() => {
         if (isAuthenticated) {
-            fetchUsers();
+            fetchData();
         }
     }, [isAuthenticated]);
 
@@ -56,7 +62,7 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
             const usersFromStorage: User[] = JSON.parse(localStorage.getItem('users') || '[]');
             const updatedStorageUsers = usersFromStorage.filter(user => user.id !== userIdToDelete);
             localStorage.setItem('users', JSON.stringify(updatedStorageUsers));
-            fetchUsers(); // Re-read from storage to update UI
+            fetchData();
         }
     };
 
@@ -70,7 +76,7 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
                 user.id === userIdToToggle ? { ...user, isBlocked: !user.isBlocked } : user
             );
             localStorage.setItem('users', JSON.stringify(updatedStorageUsers));
-            fetchUsers(); // Re-read from storage to update UI
+            fetchData();
         }
     };
     
@@ -92,7 +98,7 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
         );
         localStorage.setItem('users', JSON.stringify(updatedStorageUsers));
         
-        fetchUsers(); // Re-read from storage to update UI
+        fetchData();
 
         setEditingUserId(null);
         setEditingUsername('');
@@ -181,6 +187,99 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
             </div>
         </div>
     );
+    
+    const renderPrizeClaims = () => (
+        <div>
+            <h2 className="text-2xl font-bold text-[var(--color-primary)] mb-6">Prize Claims ({prizeClaims.length})</h2>
+            {prizeClaims.length > 0 ? (
+                <div className="max-h-96 overflow-y-auto pr-2 border-y-2 border-dashed border-[var(--color-border)] py-2">
+                    <table className="w-full text-left">
+                        <thead className="sticky top-0 bg-[var(--color-bg)] z-10">
+                            <tr className="border-b-2 border-[var(--color-border)]">
+                                <th className="p-2 font-semibold text-[var(--color-text)]">Date</th>
+                                <th className="p-2 font-semibold text-[var(--color-text)]">Username</th>
+                                <th className="p-2 font-semibold text-[var(--color-text)]">Prize</th>
+                                <th className="p-2 font-semibold text-[var(--color-text)]">Contact</th>
+                                <th className="p-2 font-semibold text-[var(--color-text)]">Amount</th>
+                                <th className="p-2 font-semibold text-[var(--color-text)]">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {prizeClaims.map(claim => {
+                                const user = allUsers.find(u => u.id === claim.userId);
+                                const isExpanded = expandedClaimId === claim.id;
+
+                                return (
+                                <React.Fragment key={claim.id}>
+                                    <tr className="border-b border-dashed border-[var(--color-border)] last:border-b-0">
+                                        <td className="p-2 text-sm text-[var(--color-text-muted)]">{new Date(claim.date).toLocaleString()}</td>
+                                        <td className="p-2 text-[var(--color-text-muted)]">{claim.username}</td>
+                                        <td className="p-2 text-[var(--color-text-muted)]">{claim.prizeName}</td>
+                                        <td className="p-2 text-[var(--color-text-muted)]">{claim.upiId}</td>
+                                        <td className="p-2 text-[var(--color-text-muted)]">
+                                            {claim.prizeName === 'Shopping Coupon' ? 'N/A' : `₹${claim.prizeAmount}`}
+                                        </td>
+                                        <td className="p-2">
+                                            <button 
+                                                onClick={() => setExpandedClaimId(isExpanded ? null : claim.id)}
+                                                className="font-semibold text-[var(--color-primary)] hover:underline text-sm flex items-center gap-1"
+                                                aria-expanded={isExpanded}
+                                            >
+                                                {isExpanded ? 'Hide' : 'View'}
+                                                <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {isExpanded && (
+                                        <tr className="bg-[var(--color-secondary)]/30">
+                                            <td colSpan={6} className="p-4">
+                                                {user ? (
+                                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                                                        <div>
+                                                            <p className="font-semibold text-[var(--color-text)]">Email</p>
+                                                            <p className="text-[var(--color-text-muted)]">{user.email || 'N/A'}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-[var(--color-text)]">Best WPM</p>
+                                                            <p className="text-[var(--color-text-muted)]">{user.bestWpm || 0}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-[var(--color-text)]">Current Coins</p>
+                                                            <p className="text-[var(--color-text-muted)]">{user.coins || 0}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-[var(--color-text)]">Challenges Done</p>
+                                                            <p className="text-[var(--color-text-muted)]">{user.completedTasks.length} / {TASKS.length}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-[var(--color-text)]">Daily Streak</p>
+                                                            <p className="text-[var(--color-text-muted)]">{user.streak || 0}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-[var(--color-text)]">Last Test Date</p>
+                                                            <p className="text-[var(--color-text-muted)]">{user.lastTestDate || 'N/A'}</p>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <p className="text-[var(--color-text-muted)]">User data not found (user may have been deleted).</p>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    )}
+                                </React.Fragment>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <p className="text-center text-[var(--color-text-muted)] py-8">No prize claims have been submitted yet.</p>
+            )}
+        </div>
+    );
+
 
     return (
         <div 
@@ -190,7 +289,7 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
             role="dialog"
         >
             <div 
-                className="bg-[var(--color-bg)] p-8 rounded-sm border-2 border-[var(--color-text)] w-full max-w-3xl shadow-2xl relative"
+                className="bg-[var(--color-bg)] p-8 rounded-sm border-2 border-[var(--color-text)] w-full max-w-4xl shadow-2xl relative"
                 onClick={e => e.stopPropagation()}
             >
                 <button 
@@ -236,11 +335,19 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
                                 >
                                     Manage Users
                                 </button>
+                                 <button
+                                    onClick={() => setActiveTab('prizeClaims')}
+                                    className={`py-2 px-4 font-bold text-lg ${activeTab === 'prizeClaims' ? 'text-[var(--color-primary)] border-b-4 border-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                >
+                                    Prize Claims
+                                </button>
                             </nav>
                         </div>
                         
-                        {activeTab === 'registrations' ? renderRegistrations() : renderUserManagement()}
-                        
+                        {activeTab === 'registrations' && renderRegistrations()}
+                        {activeTab === 'manageUsers' && renderUserManagement()}
+                        {activeTab === 'prizeClaims' && renderPrizeClaims()}
+
                         <button onClick={onClose} className="mt-6 w-full btn-vintage font-bold py-2 px-4 rounded-sm">
                             Close
                         </button>

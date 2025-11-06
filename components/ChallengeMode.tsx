@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TASKS } from '../services/challengeService';
 import { User, Task } from '../types';
 import useTypingGame from '../hooks/useTypingGame';
@@ -6,8 +6,6 @@ import Results from './Results';
 import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
 import Certificate from './Certificate';
-import { SettingsContext } from '../contexts/SettingsContext';
-import { playSound } from '../services/soundService';
 
 type CharStyle = {
   transform: string;
@@ -55,7 +53,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
     const [showCompletionCertificate, setShowCompletionCertificate] = useState(false);
-    const { settings } = useContext(SettingsContext);
+    const [lastEarnedCoins, setLastEarnedCoins] = useState(0);
 
     if (user.isGuest) {
         return (
@@ -72,6 +70,11 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     }
 
     const { status, typedText, textToType, wpm, handleKeyDown, stats, reset } = useTypingGame(activeTask?.text || '', 999);
+    
+    const totalChallenges = TASKS.length;
+    const completedChallenges = user.completedTasks.length;
+    const progressPercentage = totalChallenges > 0 ? (completedChallenges / totalChallenges) * 100 : 0;
+
 
     const handleSelectTask = (task: Task) => {
         const isUnlocked = task.id === 1 || user.completedTasks.includes(task.id - 1);
@@ -93,18 +96,20 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         const passed = stats.wpm >= activeTask.wpmGoal && stats.accuracy >= activeTask.accuracyGoal;
         if (passed && !user.completedTasks.includes(activeTask.id)) {
             const performanceUpdates = updateUserAfterTest(user, stats);
+            
+            const earnedCoins = activeTask.coinReward;
+            setLastEarnedCoins(earnedCoins);
+
             const updatedUser = { 
                 ...user,
                 ...performanceUpdates,
+                coins: (user.coins || 0) + earnedCoins,
                 completedTasks: [...user.completedTasks, activeTask.id].sort((a, b) => a - b)
              };
             onUserUpdate(updatedUser);
             setShowBadge(activeTask);
-            if (settings.soundEnabled) {
-                playSound('challenge');
-            }
         }
-    }, [activeTask, stats, user, onUserUpdate, settings.soundEnabled]);
+    }, [activeTask, stats, user, onUserUpdate]);
 
 
     useEffect(() => {
@@ -120,26 +125,12 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
             if (e.key === 'Tab' || e.key === 'Enter') return;
             if (e.key.match(/^[a-zA-Z0-9 `~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]$/) || e.key === ' ' || e.key === 'Backspace') {
                  e.preventDefault();
-                 if (settings.soundEnabled) {
-                    if (e.key === 'Backspace') {
-                        if (typedText.length > 0) {
-                            playSound('keyPress');
-                        }
-                    } else if (e.key.length === 1) {
-                        const isError = typedText.length >= textToType.length || e.key !== textToType[typedText.length];
-                        if (isError) {
-                            playSound('error');
-                        } else {
-                            playSound('keyPress');
-                        }
-                    }
-                 }
                  handleKeyDown(e.key);
             }
         };
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-    }, [handleKeyDown, activeTask, status, typedText, textToType, settings.soundEnabled]);
+    }, [handleKeyDown, activeTask, status]);
 
     const handleRestart = () => {
         setShowBadge(null);
@@ -171,7 +162,6 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                 <p className="text-xl text-[var(--color-text-muted)]">
                     You have conquered all 100 challenges. As a testament to your dedication and skill, you have been awarded the Certificate of Achievement.
                 </p>
-                {/* FIX: Add required 'isUnlocked' prop to Certificate component. */}
                 <Certificate isUnlocked={true} />
                 <button
                     onClick={() => {
@@ -196,6 +186,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                  <Results
                     stats={stats}
                     onRestart={handleRestart}
+                    coinsEarned={lastEarnedCoins}
                     challengeInfo={{
                         wpmGoal: showBadge.wpmGoal,
                         accuracyGoal: showBadge.accuracyGoal,
@@ -210,6 +201,26 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         return (
             <div className="w-full max-w-4xl flex flex-col items-center gap-6">
                  <button onClick={() => setActiveTask(null)} className="self-start text-[var(--color-primary)] hover:underline">&larr; Back to Challenges</button>
+                 
+                 <div
+                    role="progressbar"
+                    aria-valuenow={completedChallenges}
+                    aria-valuemin={0}
+                    aria-valuemax={totalChallenges}
+                    aria-label={`Challenge progress: ${completedChallenges} of ${totalChallenges} completed`}
+                    className="relative w-full h-8 bg-[var(--color-secondary)] rounded-sm border-2 border-[var(--color-text)] overflow-hidden shadow-inner"
+                >
+                    <div 
+                        className="absolute top-0 left-0 h-full bg-[var(--color-primary)] transition-all duration-700 ease-out"
+                        style={{ width: `${progressPercentage}%` }}
+                    ></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-bold text-lg text-[var(--color-bg)]" style={{ textShadow: '1px 1px 1px var(--color-text)'}}>
+                            Level {completedChallenges} / {totalChallenges}
+                        </span>
+                    </div>
+                </div>
+
                  <h2 className="text-3xl font-bold">Level {activeTask.level}: {activeTask.badge.name}</h2>
                 {status !== 'finished' ? (
                      <>
@@ -227,6 +238,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
                     <Results
                         stats={stats}
                         onRestart={handleRestart}
+                        coinsEarned={lastEarnedCoins}
                         challengeInfo={{
                             wpmGoal: activeTask.wpmGoal,
                             accuracyGoal: activeTask.accuracyGoal,
@@ -240,7 +252,29 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
 
     return (
         <div className="w-full max-w-5xl">
-            <h1 className="text-4xl font-bold text-[var(--color-primary)] text-center mb-8">100 Challenges</h1>
+            <h1 className="text-4xl font-bold text-[var(--color-primary)] text-center mb-4">100 Challenges</h1>
+            
+            <div className="mb-8">
+                <div
+                    role="progressbar"
+                    aria-valuenow={completedChallenges}
+                    aria-valuemin={0}
+                    aria-valuemax={totalChallenges}
+                    aria-label={`Challenge progress: ${completedChallenges} of ${totalChallenges} completed`}
+                    className="relative w-full h-8 bg-[var(--color-secondary)] rounded-sm border-2 border-[var(--color-text)] overflow-hidden shadow-inner"
+                >
+                    <div 
+                        className="absolute top-0 left-0 h-full bg-[var(--color-primary)] transition-all duration-700 ease-out"
+                        style={{ width: `${progressPercentage}%` }}
+                    ></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-bold text-lg text-[var(--color-bg)]" style={{ textShadow: '1px 1px 1px var(--color-text)'}}>
+                            Level {completedChallenges} / {totalChallenges}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
                 {TASKS.map(task => {
                     const isCompleted = user.completedTasks.includes(task.id);

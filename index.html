@@ -76,6 +76,13 @@
         from { opacity: 0; transform: scale(0.98); }
         to { opacity: 1; transform: scale(1); }
       }
+      @keyframes highlight-border {
+        0%, 100% { border-color: transparent; }
+        50% { border-color: var(--color-primary); }
+      }
+      .animate-highlight {
+        animation: highlight-border 2s ease-in-out 1;
+      }
     </style>
   <script type="importmap">
 {

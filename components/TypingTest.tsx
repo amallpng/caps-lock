@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import useTypingGame from '../hooks/useTypingGame';
 import { generateText } from '../services/textService';
 import { Difficulty, User } from '../types';
 import Results from './Results';
 import { updateUserAfterTest } from '../utils/statsUpdater';
 import CustomTimeModal from './CustomTimeModal';
-import { SettingsContext } from '../contexts/SettingsContext';
-import { playSound } from '../services/soundService';
 
 type CharStyle = {
   transform: string;
@@ -59,7 +57,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
     const [isCustomTimeModalOpen, setIsCustomTimeModalOpen] = useState(false);
     const [text, setText] = useState(() => generateText(difficulty, timeOption));
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
-    const { settings } = useContext(SettingsContext);
     
     const { status, typedText, textToType, timeLeft, wpm, handleKeyDown, stats, reset } = useTypingGame(text, timeOption);
     const prevStatusRef = useRef(status);
@@ -69,13 +66,10 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
              if (stats.wpm > 0) {
                 const updatedStats = updateUserAfterTest(user, stats);
                 onUserUpdate({ ...user, ...updatedStats });
-                if (settings.soundEnabled) {
-                    playSound('complete');
-                }
             }
         }
         prevStatusRef.current = status;
-    }, [status, stats, user, onUserUpdate, settings.soundEnabled]);
+    }, [status, stats, user, onUserUpdate]);
 
 
     useEffect(() => {
@@ -89,26 +83,12 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
             }
             if (e.key.match(/^[a-zA-Z0-9 `~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]$/) || e.key === ' ' || e.key === 'Backspace') {
                  e.preventDefault();
-                 if (status !== 'finished' && settings.soundEnabled) {
-                    if (e.key === 'Backspace') {
-                        if (typedText.length > 0) {
-                            playSound('keyPress');
-                        }
-                    } else if (e.key.length === 1) {
-                        const isError = typedText.length >= textToType.length || e.key !== textToType[typedText.length];
-                        if (isError) {
-                            playSound('error');
-                        } else {
-                            playSound('keyPress');
-                        }
-                    }
-                 }
                  handleKeyDown(e.key);
             }
         };
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-    }, [handleKeyDown, status, typedText, textToType, settings.soundEnabled]);
+    }, [handleKeyDown, status]);
 
     const generateNewText = useCallback(() => {
         const newText = generateText(difficulty, timeOption);

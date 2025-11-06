@@ -72,9 +72,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         streak: 0,
         lastTestDate: '',
         testHistory: [],
+        coins: 0,
         isFirstLogin: true,
         isChallengeParticipant: false,
         isBlocked: false,
+        hasClaimedShareReward: false,
       };
       users.push(newGoogleUser);
       localStorage.setItem('users', JSON.stringify(users));
@@ -97,6 +99,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         streak: 0,
         lastTestDate: '',
         testHistory: [],
+        coins: 0,
     };
     onLogin(guestUser);
   };

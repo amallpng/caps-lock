@@ -21,6 +21,8 @@ export interface User {
   isFirstLogin?: boolean;
   isChallengeParticipant?: boolean;
   isBlocked?: boolean;
+  coins: number;
+  hasClaimedShareReward?: boolean;
 }
 
 export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython';
@@ -37,6 +39,7 @@ export interface Task {
   text: string;
   wpmGoal: number;
   accuracyGoal: number;
+  coinReward: number;
   badge: {
     name: string;
     icon: keyof typeof BadgeIcons;
@@ -44,7 +47,7 @@ export interface Task {
 }
 
 export interface Theme {
-  id: string;
+  id:string;
   name: string;
   colors: {
     bg: string;
@@ -55,4 +58,14 @@ export interface Theme {
     error: string;
     'text-muted': string;
   };
+}
+
+export interface PrizeClaim {
+  id: string;
+  userId: string;
+  username: string;
+  upiId: string;
+  prizeName: string;
+  prizeAmount: number;
+  date: string;
 }

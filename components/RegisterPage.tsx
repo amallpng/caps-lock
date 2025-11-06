@@ -39,8 +39,10 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
       streak: 0,
       lastTestDate: '',
       testHistory: [],
+      coins: 0,
       isFirstLogin: true,
       isChallengeParticipant: false,
+      hasClaimedShareReward: false,
     };
 
     users.push(newUser);
