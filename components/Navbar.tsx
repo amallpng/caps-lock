@@ -67,48 +67,50 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
 
                 <div className="flex items-center gap-4">
                     {user.isGuest ? (
-                        <>
-                            {/* For guest users, the profile/logout button becomes the main call to action */}
-                            <button
-                                onClick={onLogout}
-                                className="btn-vintage font-bold py-2 px-4 rounded-sm text-lg whitespace-nowrap"
-                            >
-                                Login / Sign Up
-                            </button>
-                        </>
+                        <button
+                            onClick={onLogout}
+                            className="btn-vintage font-bold py-2 px-4 rounded-sm text-lg whitespace-nowrap"
+                        >
+                            Login / Sign Up
+                        </button>
                     ) : (
-                        <>
-                             <div className="flex items-center gap-4">
-                                <button
-                                    onClick={handleCoinClick}
-                                    className="hidden sm:flex items-center gap-2 p-1 pr-3 bg-[var(--color-bg)] rounded-full border-2 border-[var(--color-primary)] hover:bg-[var(--color-secondary)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--color-secondary)] focus:ring-[var(--color-primary)]"
-                                    aria-label={`Coins: ${user.coins || 0}. Click to see rewards.`}
-                                >
-                                    <CoinIcon className="h-8 w-8" />
-                                    <span className="font-bold text-lg text-[var(--color-text)]">{user.coins || 0}</span>
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={handleCoinClick}
+                                className="hidden sm:flex items-center gap-2 transition-transform hover:scale-105"
+                                aria-label={`Coins: ${user.coins || 0}. Click to see rewards.`}
+                            >
+                                <CoinIcon className="h-8 w-8" />
+                                <span className="font-bold text-lg text-[var(--color-text)]">{user.coins || 0}</span>
+                            </button>
+                            <div className="group relative">
+                                <button onClick={() => onNavigate('profile')} className="flex items-center gap-2 p-1 rounded-full transition-colors hover:bg-[var(--color-border)]/50">
+                                    <Avatar avatarKey={user.profilePic} className="w-10 h-10 rounded-full border-2 border-[var(--color-primary)]" />
+                                    <span className="hidden lg:block font-semibold text-[var(--color-text)]">{user.username}</span>
                                 </button>
-                                <div className="group relative">
-                                    <button onClick={() => onNavigate('profile')} className="flex items-center gap-2 p-1 rounded-full transition-colors hover:bg-[var(--color-border)]/50">
-                                        <Avatar avatarKey={user.profilePic} className="w-10 h-10 rounded-full border-2 border-[var(--color-primary)]" />
-                                        <span className="hidden lg:block font-semibold text-[var(--color-text)]">{user.username}</span>
-                                    </button>
-                                    {/* Profile dropdown contains all links, serving as primary nav on mobile */}
-                                    <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--color-bg)] rounded-sm border border-[var(--color-border)] shadow-lg hidden group-hover:block" style={{zIndex: 50}}>
-                                        <div className="flex sm:hidden items-center gap-2 p-2 border-b border-[var(--color-border)]">
-                                            <CoinIcon className="h-6 w-6" />
-                                            <span className="font-bold text-lg text-[var(--color-text)]">{user.coins || 0}</span>
-                                        </div>
-                                        {navLinks.map(({ page, label }) => (
-                                            <button key={page} onClick={() => onNavigate(page)} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">{label}</button>
-                                        ))}
-                                        <div className="border-t border-[var(--color-border)] my-1"></div>
-                                        <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Profile</button>
-                                        <div className="border-t border-[var(--color-border)] my-1"></div>
-                                        <button onClick={onLogout} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Logout</button>
+                                {/* Profile dropdown contains all links, serving as primary nav on mobile */}
+                                <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--color-bg)] rounded-sm border border-[var(--color-border)] shadow-lg hidden group-hover:block" style={{zIndex: 50}}>
+                                    <div className="flex sm:hidden items-center gap-2 p-2 border-b border-[var(--color-border)]">
+                                        <CoinIcon className="h-6 w-6" />
+                                        <span className="font-bold text-lg text-[var(--color-text)]">{user.coins || 0}</span>
                                     </div>
+                                    {navLinks.map(({ page, label }) => (
+                                        <button key={page} onClick={() => onNavigate(page)} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">{label}</button>
+                                    ))}
+                                    <div className="border-t border-[var(--color-border)] my-1"></div>
+                                    <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Profile</button>
+                                    <div className="border-t border-[var(--color-border)] my-1"></div>
+                                    <button onClick={onLogout} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Logout</button>
                                 </div>
-                             </div>
-                        </>
+                            </div>
+                             <button
+                                onClick={onLogout}
+                                className="hidden md:block btn-vintage font-bold py-2 px-4 rounded-sm text-sm"
+                                aria-label="Logout"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     )}
                 </div>
             </nav>
