@@ -57,6 +57,19 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [showCompletionCertificate, setShowCompletionCertificate] = useState(false);
     const { settings } = useContext(SettingsContext);
 
+    if (user.isGuest) {
+        return (
+            <div className="w-full max-w-xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-dashed border-[var(--color-border)] flex flex-col items-center gap-6 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <h2 className="text-3xl font-bold text-[var(--color-primary)]">Access Denied</h2>
+                <p className="text-lg text-[var(--color-text-muted)] leading-relaxed">
+                    The 100 Challenges mode is only available to registered users. Progress is not saved for guests. Please log in or create an account to start your journey.
+                </p>
+            </div>
+        );
+    }
 
     const { status, typedText, textToType, wpm, handleKeyDown, stats, reset } = useTypingGame(activeTask?.text || '', 999);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import useTypingGame from '../hooks/useTypingGame';
-import { getText } from '../services/textService';
+import { generateText } from '../services/textService';
 import { Difficulty, User } from '../types';
 import Results from './Results';
 import { updateUserAfterTest } from '../utils/statsUpdater';
@@ -57,7 +57,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
     const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Medium);
     const [timeOption, setTimeOption] = useState(60);
     const [isCustomTimeModalOpen, setIsCustomTimeModalOpen] = useState(false);
-    const [text, setText] = useState(() => getText(difficulty));
+    const [text, setText] = useState(() => generateText(difficulty, timeOption));
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const { settings } = useContext(SettingsContext);
     
@@ -111,7 +111,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
     }, [handleKeyDown, status, typedText, textToType, settings.soundEnabled]);
 
     const generateNewText = useCallback(() => {
-        const newText = getText(difficulty);
+        const newText = generateText(difficulty, timeOption);
         setText(newText);
         
         const styles = newText.split('').map(() => ({
@@ -121,7 +121,7 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
         setCharStyles(styles);
 
         reset();
-    }, [difficulty, reset]);
+    }, [difficulty, timeOption, reset]);
     
     useEffect(() => {
         generateNewText();

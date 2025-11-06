@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Logo from './icons/Logo';
-import CreatorModal from './CreatorModal';
+import SettingsModal from './SettingsModal';
 
 const AboutPage: React.FC = () => {
-  const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   return (
     <div className="w-full max-w-4xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-[var(--color-border)] flex flex-col gap-8 leading-relaxed">
@@ -46,13 +46,13 @@ const AboutPage: React.FC = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44s-3.115.01-4.24.06c-2.45.11-3.66 1.32-3.77 3.77-.05 1.12-.06 2.9-.06 4.47s.01 3.35.06 4.47c.11 2.45 1.32 3.66 3.77 3.77 1.12.05 4.24.06 4.24.06s3.115-.01 4.24-.06c2.45-.11 3.66-1.32 3.77-3.77.05-1.12.06-2.9.06-4.47s-.01-3.35-.06-4.47c-.11-2.45-1.32-3.66-3.77-3.77-1.12-.05-4.24-.06-4.24-.06zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zm0 7.81a3.06 3.06 0 110-6.12 3.06 3.06 0 010 6.12zM17.63 6.04a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"></path></svg>
                 Instagram
             </a>
-            <button onClick={() => setIsCreatorModalOpen(true)} className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
+            <button onClick={() => setIsSettingsModalOpen(true)} className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 Settings
             </button>
          </div>
       </div>
-      {isCreatorModalOpen && <CreatorModal onClose={() => setIsCreatorModalOpen(false)} />}
+      {isSettingsModalOpen && <SettingsModal onClose={() => setIsSettingsModalOpen(false)} />}
     </div>
   );
 };

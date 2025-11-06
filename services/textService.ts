@@ -1,4 +1,3 @@
-
 import { Difficulty } from '../types';
 
 const easyTexts = [
@@ -32,15 +31,47 @@ const getRandomText = (texts: string[]): string => {
   return texts[Math.floor(Math.random() * texts.length)];
 };
 
-export const getText = (difficulty: Difficulty): string => {
+export const generateText = (difficulty: Difficulty, timeInSeconds: number): string => {
+  let sourceTexts: string[];
   switch (difficulty) {
     case Difficulty.Easy:
-      return getRandomText(easyTexts);
+      sourceTexts = easyTexts;
+      break;
     case Difficulty.Medium:
-      return getRandomText(mediumTexts);
+      sourceTexts = mediumTexts;
+      break;
     case Difficulty.Hard:
-      return getRandomText(hardTexts);
+      sourceTexts = hardTexts;
+      break;
     default:
-      return getRandomText(mediumTexts);
+      sourceTexts = mediumTexts;
   }
+
+  // Target character count based on an average typing speed of 45 WPM.
+  // (time in minutes) * (WPM) * (average characters per word)
+  const targetChars = (timeInSeconds / 60) * 45 * 5;
+
+  let phrases: string[] = [];
+  let currentChars = 0;
+  
+  // Ensure we get at least one phrase
+  if (sourceTexts.length > 0) {
+      phrases.push(getRandomText(sourceTexts));
+      currentChars = phrases[0].length;
+  } else {
+      return "";
+  }
+  
+  // Keep adding phrases until we meet the target character count.
+  while (currentChars < targetChars && sourceTexts.length > 1) {
+    let newPhrase = getRandomText(sourceTexts);
+    // Avoid adding the same phrase back-to-back.
+    if (newPhrase === phrases[phrases.length - 1]) {
+        continue;
+    }
+    phrases.push(newPhrase);
+    currentChars = phrases.join(' ').length;
+  }
+
+  return phrases.join(' ');
 };
