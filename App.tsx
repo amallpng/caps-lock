@@ -12,12 +12,16 @@ import AboutPage from './components/AboutPage';
 import ChallengeSignupModal from './components/ChallengeSignupModal';
 import LearnPythonPage from './components/LearnPythonPage';
 import PrivacyPolicyModal from './components/PrivacyPolicyModal';
+import TutorialModal from './components/TutorialModal';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState<Page>('login');
   const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  
+  const [isTutorialModalOpen, setIsTutorialModalOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     const loggedInUserId = localStorage.getItem('loggedInUserId');
@@ -25,28 +29,32 @@ const App: React.FC = () => {
       const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
       const loggedInUser = users.find(u => u.id === loggedInUserId);
       if (loggedInUser) {
-        // Exclude password from the user object in the app's state
         const { password, ...userToLogin } = loggedInUser;
         setCurrentUser(userToLogin as User);
         setCurrentPage('practice');
         if (loggedInUser.isFirstLogin === true && !loggedInUser.isGuest) {
-          setIsChallengeModalOpen(true);
+          setShowOnboarding(true);
         }
       } else {
-        // If the user ID from localStorage is invalid, clear it
         localStorage.removeItem('loggedInUserId');
       }
     }
   }, []);
 
+  useEffect(() => {
+    if (showOnboarding) {
+        setIsTutorialModalOpen(true);
+    }
+  }, [showOnboarding]);
+
+
   const handleLogin = (user: User) => {
     setCurrentUser(user);
-    // Do not persist guest sessions.
     if (!user.isGuest) {
       localStorage.setItem('loggedInUserId', user.id);
     }
     if (user.isFirstLogin === true && !user.isGuest) {
-        setIsChallengeModalOpen(true);
+        setShowOnboarding(true);
     }
     setCurrentPage('practice');
   };
@@ -59,20 +67,22 @@ const App: React.FC = () => {
 
   const handleUserUpdate = (updatedUser: User) => {
     setCurrentUser(updatedUser);
-
-    // Prevent guest data from being saved to localStorage.
     if (updatedUser.isGuest) {
       return;
     }
-    
     const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const userIndex = allUsers.findIndex(u => u.id === updatedUser.id);
     if (userIndex !== -1) {
       const existingUser = allUsers[userIndex];
-      // Merge updates into the full user object to preserve all original fields like password, provider, etc.
       allUsers[userIndex] = { ...existingUser, ...updatedUser };
       localStorage.setItem('users', JSON.stringify(allUsers));
     }
+  };
+
+  const handleTutorialFinish = () => {
+    setIsTutorialModalOpen(false);
+    setIsChallengeModalOpen(true);
+    setShowOnboarding(false);
   };
 
   const handleChallengeSignup = (name: string, email: string) => {
@@ -131,6 +141,7 @@ const App: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} />}
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
+        {isTutorialModalOpen && <TutorialModal onClose={handleTutorialFinish} />}
         {isChallengeModalOpen && currentUser && (
             <ChallengeSignupModal
                 user={currentUser}
