@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { SettingsContext } from '../contexts/SettingsContext';
+import { playSound } from '../services/soundService';
 
 export type GameStatus = 'waiting' | 'started' | 'finished';
 
@@ -9,6 +11,7 @@ export interface TypingStats {
 }
 
 const useTypingGame = (textToType: string, timeLimit: number) => {
+  const { settings } = useContext(SettingsContext);
   const [status, setStatus] = useState<GameStatus>('waiting');
   const [typedText, setTypedText] = useState('');
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -70,7 +73,11 @@ const useTypingGame = (textToType: string, timeLimit: number) => {
       const newTypedText = typedText + key;
       if (newTypedText.length <= textToType.length) {
         setTypedText(newTypedText);
-        if (key !== textToType[typedText.length]) { // Check against current character
+        const isCorrect = key === textToType[typedText.length];
+        if (settings.soundEnabled) {
+          playSound(isCorrect ? 'keyPress' : 'error');
+        }
+        if (!isCorrect) {
           setErrors(prev => prev + 1);
         }
       }

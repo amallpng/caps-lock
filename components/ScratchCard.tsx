@@ -146,7 +146,7 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ isUnlocked, isRevealed, onRev
     if (hasBeenRevealed) {
         return (
              <div className="w-full max-w-sm bg-[var(--color-bg)] p-4 rounded-sm border-2 border-[var(--color-primary)] flex flex-col items-center text-center">
-                 <Badge task={grandChallengeBadge} />
+                 <Badge task={grandChallengeBadge} isPulsing={true} />
              </div>
         );
     }

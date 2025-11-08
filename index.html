@@ -54,6 +54,17 @@
           opacity: 1;
         }
       }
+      .badge-pulse {
+        animation: badge-pulse-effect 3s ease-in-out infinite;
+      }
+      @keyframes badge-pulse-effect {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.04);
+        }
+      }
       .btn-vintage {
         background-color: var(--color-primary);
         color: var(--color-bg);

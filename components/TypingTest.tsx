@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import useTypingGame from '../hooks/useTypingGame';
 import { generateText } from '../services/textService';
 import { Difficulty, User } from '../types';
 import Results from './Results';
 import { updateUserAfterTest } from '../utils/statsUpdater';
 import CustomTimeModal from './CustomTimeModal';
+import { SettingsContext } from '../contexts/SettingsContext';
+import { playSound } from '../services/soundService';
 
 type CharStyle = {
   transform: string;
@@ -57,19 +59,23 @@ const TypingTest: React.FC<TypingTestProps> = ({ user, onUserUpdate }) => {
     const [isCustomTimeModalOpen, setIsCustomTimeModalOpen] = useState(false);
     const [text, setText] = useState(() => generateText(difficulty, timeOption));
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
+    const { settings } = useContext(SettingsContext);
     
     const { status, typedText, textToType, timeLeft, wpm, handleKeyDown, stats, reset } = useTypingGame(text, timeOption);
     const prevStatusRef = useRef(status);
 
     useEffect(() => {
         if (status === 'finished' && prevStatusRef.current !== 'finished') {
+             if (settings.soundEnabled) {
+                 playSound('complete');
+             }
              if (stats.wpm > 0) {
                 const updatedStats = updateUserAfterTest(user, stats);
                 onUserUpdate({ ...user, ...updatedStats });
             }
         }
         prevStatusRef.current = status;
-    }, [status, stats, user, onUserUpdate]);
+    }, [status, stats, user, onUserUpdate, settings]);
 
 
     useEffect(() => {

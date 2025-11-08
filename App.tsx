@@ -13,12 +13,14 @@ import ChallengeSignupModal from './components/ChallengeSignupModal';
 import LearnPythonPage from './components/LearnPythonPage';
 import PrivacyPolicyModal from './components/PrivacyPolicyModal';
 import TutorialModal from './components/TutorialModal';
+import SettingsModal from './components/SettingsModal';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState<Page>('login');
   const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   
   const [isTutorialModalOpen, setIsTutorialModalOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -139,7 +141,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-      {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} />}
+      {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} onOpenSettings={() => setIsSettingsModalOpen(true)} />}
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
         {isTutorialModalOpen && <TutorialModal onClose={handleTutorialFinish} />}
         {isChallengeModalOpen && currentUser && (
@@ -150,6 +152,7 @@ const App: React.FC = () => {
             />
         )}
         {isPrivacyModalOpen && <PrivacyPolicyModal onClose={() => setIsPrivacyModalOpen(false)} />}
+        {isSettingsModalOpen && <SettingsModal onClose={() => setIsSettingsModalOpen(false)} />}
         {renderPage()}
       </main>
       <Footer />

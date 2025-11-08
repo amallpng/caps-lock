@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { TASKS } from '../services/challengeService';
 import { User, Task } from '../types';
 import useTypingGame from '../hooks/useTypingGame';
 import Results from './Results';
 import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
+import { SettingsContext } from '../contexts/SettingsContext';
+import { playSound } from '../services/soundService';
 
 type CharStyle = {
   transform: string;
@@ -52,6 +54,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
     const [lastEarnedCoins, setLastEarnedCoins] = useState(0);
+    const { settings } = useContext(SettingsContext);
 
     if (user.isGuest) {
         return (
@@ -93,6 +96,9 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
         if (!activeTask) return;
         const passed = stats.wpm >= activeTask.wpmGoal && stats.accuracy >= activeTask.accuracyGoal;
         if (passed && !user.completedTasks.includes(activeTask.id)) {
+            if (settings.soundEnabled) {
+                playSound('challenge');
+            }
             const performanceUpdates = updateUserAfterTest(user, stats);
             
             const earnedCoins = activeTask.coinReward;
@@ -107,7 +113,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
             onUserUpdate(updatedUser);
             setShowBadge(activeTask);
         }
-    }, [activeTask, stats, user, onUserUpdate]);
+    }, [activeTask, stats, user, onUserUpdate, settings]);
 
 
     useEffect(() => {
@@ -154,7 +160,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
             <div className="w-full max-w-2xl flex flex-col items-center gap-6 text-center">
                 <h2 className="text-4xl font-bold text-yellow-600">Badge Unlocked!</h2>
                 <div className="bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-lg p-4">
-                  <Badge task={showBadge} />
+                  <Badge task={showBadge} isPulsing={true} />
                 </div>
                  <Results
                     stats={stats}

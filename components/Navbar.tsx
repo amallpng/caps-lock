@@ -9,9 +9,10 @@ interface NavbarProps {
     onNavigate: (page: Page) => void;
     onLogout: () => void;
     currentPage: Page;
+    onOpenSettings: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage, onOpenSettings }) => {
 
     // A single source of truth for navigation links.
     // Guests can see challenge/leaderboard pages but will get an access denied message on those pages.
@@ -99,6 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
                                     ))}
                                     <div className="border-t border-[var(--color-border)] my-1"></div>
                                     <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Profile</button>
+                                    <button onClick={onOpenSettings} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Settings</button>
                                     <div className="border-t border-[var(--color-border)] my-1"></div>
                                     <button onClick={onLogout} className="block w-full text-left px-4 py-2 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]">Logout</button>
                                 </div>
