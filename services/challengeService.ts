@@ -1,18 +1,6 @@
 import { BadgeIcons } from '../components/icons/BadgeIcons';
 import { Task } from '../types';
 
-const badgeAdjectives = [
-    'Swift', 'Quick', 'Agile', 'Deft', 'Rapid', 'Adept', 'Nimble', 'Fleet',
-    'Bronze', 'Silver', 'Golden', 'Platinum', 'Diamond', 'Ruby', 'Sapphire', 'Emerald',
-    'Focused', 'Steady', 'Precise', 'Sharp', 'Keen', 'Ascendant', 'Rising', 'Elite'
-];
-
-const badgeNouns = [
-    'Typist', 'Scribe', 'Ninja', 'Virtuoso', 'Sprinter', 'Maven', 'Prodigy', 'Master',
-    'Key-Master', 'Digitizer', 'Commander', 'Explorer', 'Adept', 'Specialist',
-    'Expert', 'Champion', 'Guardian', 'Pilot', 'Officer', 'Legend', 'Ace'
-];
-
 const originalTasks: Omit<Task, 'badge'>[] = [
   { id: 1, level: 1, text: "type this line of text", wpmGoal: 10, accuracyGoal: 90, coinReward: 2 },
   { id: 2, level: 2, text: "practice makes perfect always", wpmGoal: 15, accuracyGoal: 92, coinReward: 1 },
@@ -117,16 +105,7 @@ const originalTasks: Omit<Task, 'badge'>[] = [
 ];
 
 export const TASKS: Task[] = originalTasks.map(task => {
-    if (task.level >= 1 && task.level <= 99) {
-        return {
-            ...task,
-            badge: {
-                name: `Level ${task.level}: ${badgeAdjectives[(task.level - 1) % badgeAdjectives.length]} ${badgeNouns[(task.level - 1) % badgeNouns.length]}`,
-                icon: `LevelBadge${task.level}` as keyof typeof BadgeIcons
-            }
-        };
-    }
-    // Keep level 100 as a special, manually-defined badge
+    // Special case for the final, ultimate badge
     if (task.level === 100) {
         return {
             ...task,
@@ -136,5 +115,13 @@ export const TASKS: Task[] = originalTasks.map(task => {
             }
         };
     }
-    return task as Task; // Should not happen, but satisfies TS
+    
+    // Generic badge for all other levels
+    return {
+        ...task,
+        badge: {
+            name: `Level ${task.level} Complete`,
+            icon: `LevelBadge${task.level}` as keyof typeof BadgeIcons
+        }
+    };
 });

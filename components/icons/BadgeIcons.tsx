@@ -6,67 +6,6 @@ type BadgeAsset = {
   svgString: string;
 };
 
-const BronzeStar: React.FC<{className?: string}> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="bronze-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#CD7F32" />
-        <stop offset="100%" stopColor="#A0522D" />
-      </linearGradient>
-    </defs>
-    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z" fill="url(#bronze-gradient)" />
-  </svg>
-);
-
-const SilverShield: React.FC<{className?: string}> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="silver-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#C0C0C0" />
-        <stop offset="100%" stopColor="#A9A9A9" />
-      </linearGradient>
-    </defs>
-    <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z" fill="url(#silver-gradient)" />
-  </svg>
-);
-
-const GoldMedal: React.FC<{className?: string}> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#FFD700" />
-        <stop offset="100%" stopColor="#FFA500" />
-      </linearGradient>
-    </defs>
-    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" fill="url(#gold-gradient)" />
-    <path d="M12 12.6l-2.47 1.28.47-2.75-2-1.95 2.76-.4L12 6.5l1.24 2.28 2.76.4-2 1.95.47 2.75L12 12.6z" fill="#FFF"/>
-  </svg>
-);
-
-const PlatinumTrophy: React.FC<{className?: string}> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="platinum-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#E5E4E2" />
-        <stop offset="100%" stopColor="#BFC1C2" />
-      </linearGradient>
-    </defs>
-    <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-8-2h4v2h-4V4z" fill="url(#platinum-gradient)" />
-  </svg>
-);
-
-const DiamondGem: React.FC<{className?: string}> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="diamond-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#B9F2FF" />
-        <stop offset="100%" stopColor="#73C2FB" />
-      </linearGradient>
-    </defs>
-    <path d="M12 2L2 8l10 14L22 8l-10-6z" fill="url(#diamond-gradient)" />
-  </svg>
-);
-
 const MasterCrown: React.FC<{className?: string}> = ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -96,39 +35,42 @@ const GrandMasterTrophy: React.FC<{className?: string}> = ({ className }) => (
     </svg>
 );
 
-const GeneratedBadge: React.FC<{ level: number; className?: string }> = ({ level, className }) => {
-    const shapes = [
-        <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z" />, // Shield
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z" />, // Star
-        <path d="M18,6 L6,6 L2,12 L6,18 L18,18 L22,12 Z" />, // Hexagon
-        <circle cx="12" cy="12" r="11" />, // Circle
-        <rect x="2" y="2" width="20" height="20" rx="3" />, // Square
+// Generic Badge Generator
+const LevelBadge: React.FC<{ level: number; className?: string }> = ({ level, className }) => {
+    const tier = Math.floor((level - 1) / 10);
+    const tierColors = [
+        { main: '#CD7F32', stroke: '#8C5A23' }, // Bronze
+        { main: '#C0C0C0', stroke: '#808080' }, // Silver
+        { main: '#FFD700', stroke: '#B8860B' }, // Gold
+        { main: '#a2d2ff', stroke: '#4a759a' }, // Sky
+        { main: '#b2f7a7', stroke: '#4c8a42' }, // Jade
+        { main: '#ffb3c1', stroke: '#a35061' }, // Rose
+        { main: '#c77dff', stroke: '#703c99' }, // Amethyst
+        { main: '#ff6b6b', stroke: '#993030' }, // Ruby
+        { main: '#48cae4', stroke: '#1a6f81' }, // Sapphire
+        { main: '#f0e68c', stroke: '#968f58' }, // Platinum/Champagne
     ];
-
-    const gradients = [
-        'url(#bronze-gradient)', 'url(#silver-gradient)', 'url(#gold-gradient)', 'url(#platinum-gradient)',
-        'url(#diamond-gradient)', 'url(#ruby-gradient)', 'url(#sapphire-gradient)', 'url(#emerald-gradient)',
+    
+    const { main, stroke } = tierColors[tier % tierColors.length];
+    
+    const shapePaths = [
+        "M12 2 L22 12 L12 22 L2 12 Z", // 1. Diamond
+        "M12 2 L22 7 L22 17 L12 22 L2 17 L2 7 Z", // 2. Hexagon
+        "M12 2 L15.09 8.26 L22 9.27 L17 14.14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14.14 L2 9.27 L8.91 8.26 Z", // 3. Star
+        "M12 2 L22 9 L18 22 L6 22 L2 9 Z", // 4. Pentagon
+        "M12 2 L20 4 L22 12 L20 20 L12 22 L4 20 L2 12 L4 4 Z", // 5. Octagon
+        "M12 2 L22 6 V 14 C 22 18, 18 22, 12 22 C 6 22, 2 18, 2 14 V 6 Z", // 6. Shield
+        "M3 3 H 21 V 21 H 3 Z", // 7. Square
+        "M9 2 H 15 V 9 H 22 V 15 H 15 V 22 H 9 V 15 H 2 V 9 H 9 Z", // 8. Cross
+        "M12 2 L22 22 L2 22 Z", // 9. Triangle
+        "M2 8 L12 2 L22 8 L22 16 L12 22 L2 16 Z" // 10. Gem
     ];
-
-    const shape = shapes[level % shapes.length];
-    const gradient = gradients[level % gradients.length];
-    const showMilestoneRing = level % 10 === 0 && level > 0 && level < 100;
+    const shape = shapePaths[(level - 1) % shapePaths.length];
 
     return (
         <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="bronze-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#CD7F32" /><stop offset="100%" stopColor="#A0522D" /></linearGradient>
-              <linearGradient id="silver-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#C0C0C0" /><stop offset="100%" stopColor="#A9A9A9" /></linearGradient>
-              <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#FFD700" /><stop offset="100%" stopColor="#FFA500" /></linearGradient>
-              <linearGradient id="platinum-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#E5E4E2" /><stop offset="100%" stopColor="#BFC1C2" /></linearGradient>
-              <linearGradient id="diamond-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#B9F2FF" /><stop offset="100%" stopColor="#73C2FB" /></linearGradient>
-              <linearGradient id="ruby-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#E0115F" /><stop offset="100%" stopColor="#9B111E" /></linearGradient>
-              <linearGradient id="sapphire-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#0F52BA" /><stop offset="100%" stopColor="#002366" /></linearGradient>
-              <linearGradient id="emerald-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#50C878" /><stop offset="100%" stopColor="#007A33" /></linearGradient>
-            </defs>
-            {React.cloneElement(shape, { fill: gradient, stroke: "#282828", strokeWidth: "0.5" })}
-            {showMilestoneRing && <circle cx="12" cy="12" r="10" stroke="url(#gold-gradient)" strokeWidth="1.5" fill="none" />}
-            <text x="12" y="13" fill="#F1EFE9" fontFamily="'Special Elite', monospace" fontWeight="bold" fontSize={level > 9 ? "10" : "12"} textAnchor="middle" dominantBaseline="middle" stroke="#282828" strokeWidth="0.2px" >
+            <path d={shape} fill={main} stroke={stroke} strokeWidth="2" />
+            <text x="12" y="13" fill={stroke} fontFamily="'Special Elite', monospace" fontWeight="bold" fontSize={level > 99 ? "7" : (level > 9 ? "8" : "9")} textAnchor="middle" dominantBaseline="middle">
                 {level}
             </text>
         </svg>
@@ -137,11 +79,6 @@ const GeneratedBadge: React.FC<{ level: number; className?: string }> = ({ level
 
 
 const icons: Record<string, React.FC<{className?: string}>> = {
-  BronzeStar,
-  SilverShield,
-  GoldMedal,
-  PlatinumTrophy,
-  DiamondGem,
   MasterCrown,
   GrandMasterTrophy,
 };
@@ -149,7 +86,7 @@ const icons: Record<string, React.FC<{className?: string}>> = {
 // Programmatically generate badge components for levels 1-99
 for (let i = 1; i <= 99; i++) {
     const LevelBadgeComponent: React.FC<{className?: string}> = ({ className }) => (
-        <GeneratedBadge level={i} className={className} />
+        <LevelBadge level={i} className={className} />
     );
     Object.defineProperty(LevelBadgeComponent, "name", { value: `LevelBadge${i}` });
     icons[`LevelBadge${i}`] = LevelBadgeComponent;
