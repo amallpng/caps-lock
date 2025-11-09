@@ -1,165 +1,220 @@
 import React from 'react';
 
-// A collection of 16 monochrome green, pixel-art style avatars.
-// Color Palette:
-const C1 = '#d3efd3'; // lightest
-const C2 = '#9bbc9b'; // medium-light
-const C3 = '#4a6b4a'; // medium-dark
-const C4 = '#1f3b1f'; // darkest
-
-const PixelAvatar1: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C3} width="24" height="24"/>
-    <path fill={C2} d="M7 9H17V19H15V20H9V19H7V9Z"/>
-    <path fill={C4} d="M6 5H18V6H19V9H17V8H7V9H5V6H6V5ZM7 10H8V11H7V10ZM16 10H17V11H16V10ZM9 15H11V16H9V15ZM7 19H9V20H7V19ZM15 19H17V20H15V19Z"/>
-    <path fill={C1} d="M6 6H9V7H6V6ZM10 6H12V7H10V6ZM7 9H9V10H7V9ZM15 9H17V10H15V9Z"/>
-  </svg>
+// Common base component for all avatars
+const AvatarBase: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => (
+    <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
+        <g>{children}</g>
+    </svg>
 );
 
-const PixelAvatar2: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C3} width="24" height="24"/>
-    <path fill={C2} d="M6 9H18V19H17V20H7V19H6V9Z"/>
-    <path fill={C4} d="M8 6H16V7H18V9H6V7H8V6ZM8 10H9V11H8V10ZM15 10H16V11H15V10ZM8 15H16V16H8V15ZM10 17H14V18H10V17Z"/>
-    <path fill={C1} d="M16 7H17V8H16V7ZM7 7H8V8H7V7ZM6 10H8V11H6V10ZM16 10H18V11H16V10ZM9 16H15V17H9V16Z"/>
-  </svg>
+// Helper to create pixel art paths
+const P = (props: {c: string, d: string}) => <path fill={props.c} d={props.d} />;
+
+// 1. Boy, brown hair, blue shirt
+const Avatar1: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+      <P c="#ffc999" d="M8,9h8v7H8z" />
+      <P c="#6a4f3a" d="M8,7h8v2H8z" />
+      <P c="#fff" d="M10,11h2v2h-2z M14,11h2v2h-2z"/>
+      <P c="#222" d="M11,12h1v1h-1z M15,12h1v1h-1z"/>
+      <P c="#4a90e2" d="M8,16h8v2H8z M9,18h6v1H9z" />
+      <P c="#222" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar3: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C3} width="24" height="24"/>
-    <path fill={C2} d="M6 9H18V19H17V20H8V19H6V9Z"/>
-    <path fill={C4} d="M9 4H11V5H14V6H18V9H6V6H9V4ZM8 10H9V11H8V10ZM15 10H16V11H15V10ZM11 15H13V16H11V15Z"/>
-    <path fill={C1} d="M11 4H14V5H11V4ZM6 6H9V7H6V6ZM14 6H18V7H14V6ZM6 9H8V10H6V9ZM16 9H18V10H16V9Z"/>
-  </svg>
+// 2. Girl, blonde hair, pink dress
+const Avatar2: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffdda6" d="M8,9h8v7H8z" />
+        <P c="#ffd343" d="M7,7h10v3H7z M7,10h1v4H7z M16,10h1v4h-1z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#5481e2" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+        <P c="#ff80a4" d="M7,16h10v2H7z M8,18h8v1H8z"/>
+        <P c="#ff5c8a" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar4: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M6 9H18V19H17V20H8V19H6V9Z"/>
-    <path fill={C4} d="M8 5H18V11H16V10H11V11H8V5ZM9 12H10V13H9V12ZM14 12H15V13H14V12ZM10 16H14V17H10V16Z"/>
-  </svg>
+// 3. Boy, glasses, green shirt
+const Avatar3: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M8,9h8v7H8z" />
+        <P c="#333" d="M8,7h8v2H8z M9,9h1v1H9z M14,9h1v1h-1z"/>
+        <P c="#222" d="M9,11h3v2H9z M14,11h3v2h-3z M12,11h2v1h-2z"/>
+        <P c="#34a853" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#222" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar5: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M8 9H17V19H16V20H9V19H8V9Z"/>
-    <path fill={C4} d="M9 5H16V6H17V9H8V6H9V5ZM5 12H7V14H5V12ZM9 11H10V12H9V11ZM15 11H16V12H15V11ZM11 15H14V16H11V15Z"/>
-    <path fill={C1} d="M6 12H7V13H6V12Z"/>
-  </svg>
+// 4. Girl, red hair, yellow shirt
+const Avatar4: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffdda6" d="M8,9h8v7H8z"/>
+        <P c="#e54335" d="M8,7h8v3H8z M7,8h1v3H7z M16,8h1v3h-1z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+        <P c="#fbbc05" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#e54335" d="M10,15h4v1h-4z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar6: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M6 9H18V19H17V20H7V19H6V9Z"/>
-    <path fill={C4} d="M8 6H16V7H18V9H6V7H8V6ZM8 11H9V12H8V11ZM15 11H16V12H15V11ZM10 16H14V17H10V16Z"/>
-    <path fill={C1} d="M8 6H9V7H8V6ZM10 6H11V7H10V6ZM12 6H13V7H12V6ZM14 6H15V7H14V6ZM7 7H8V8H7V7ZM9 7H10V8H9V7ZM11 7H12V8H11V7ZM13 7H14V8H13V7ZM15 7H16V8H15V7Z"/>
-  </svg>
+// 5. Boy, spiky hair, purple shirt
+const Avatar5: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M8,9h8v7H8z" />
+        <P c="#d94a38" d="M8,7h1v1H8z M10,7h1v1h-1z M12,7h1v1h-1z M14,7h1v1h-1z M16,7h1v1h-1z M9,8h1v1H9z M11,8h1v1h-1z M13,8h1v1h-1z M15,8h1v1h-1z" />
+        <P c="#fff" d="M10,12h2v1h-2z M14,12h2v1h-2z"/>
+        <P c="#222" d="M11,12h1v1h-1z M15,12h1v1h-1z"/>
+        <P c="#8e44ad" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#222" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar7: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C3} width="24" height="24"/>
-    <path fill={C2} d="M8 12H16V18H15V19H9V18H8V12Z"/>
-    <path fill={C4} d="M6 7H18V8H19V11H17V12H7V11H5V8H6V7ZM8 12H16V14H8V12ZM10 16H14V17H10V16Z"/>
-    <path fill={C1} d="M9 13H15V14H9V13Z"/>
-  </svg>
+// 6. Girl, long brown hair, cyan dress
+const Avatar6: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M9,9h6v7H9z"/>
+        <P c="#8a6e5a" d="M8,7h8v8H8z M16,9h1v7h-1z M7,9h1v7H7z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+        <P c="#16a085" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#d35400" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar8: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C3} width="24" height="24"/>
-    <path fill={C2} d="M7 9H17V18H16V19H8V18H7V9Z"/>
-    <path fill={C4} d="M6 6H18V9H17V8H7V9H6V6ZM7 10H10V11H7V10ZM14 10H17V11H14V10ZM11 10H13V12H11V10ZM7 12H9V13H7V12ZM15 12H17V13H15V12ZM9 15H15V16H9V15Z"/>
-    <path fill={C1} d="M8 11H9V12H8V11ZM15 11H16V12H15V11Z"/>
-  </svg>
+// 7. Boy, cap, orange shirt
+const Avatar7: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M8,10h8v6H8z"/>
+        <P c="#e54335" d="M7,8h10v2H7z"/>
+        <P c="#333" d="M8,10h8v1H8z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+        <P c="#f39c12" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar9: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C1} width="24" height="24"/>
-    <path fill={C2} d="M7 10H17V19H16V20H8V19H7V10Z"/>
-    <path fill={C4} d="M8 6H16V7H17V10H7V7H8V6ZM7 11H10V12H7V11ZM14 11H17V12H14V11ZM11 11H13V13H11V11ZM7 13H9V14H7V13ZM15 13H17V14H15V13ZM9 16H15V17H9V16Z"/>
-  </svg>
+// 8. Girl, hair buns, red shirt
+const Avatar8: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffdda6" d="M8,9h8v7H8z"/>
+        <P c="#333" d="M8,8h2v2H8z M14,8h2v2h-2z M10,7h4v1h-4z"/>
+        <P c="#fff" d="M10,12h2v1h-2z M14,12h2v1h-2z"/>
+        <P c="#222" d="M11,12h1v1h-1z M15,12h1v1h-1z"/>
+        <P c="#c0392b" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#222" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar10: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M6 9H18V19H17V20H7V19H6V9Z"/>
-    <path fill={C4} d="M9 6H15V7H17V9H7V7H9V6ZM8 10H9V11H8V10ZM15 10H16V11H15V10ZM10 14H14V15H10V14ZM11 16H13V18H11V16Z"/>
-  </svg>
+// 9. Boy, dark skin, afro
+const Avatar9: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#9a6a42" d="M8,9h8v7H8z"/>
+        <P c="#222" d="M7,8h10v3H7z M8,7h8v1H8z M11,15h2v1h-2z"/>
+        <P c="#fff" d="M10,12h2v1h-2z M14,12h2v1h-2z"/>
+        <P c="#2980b9" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar11: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M6 11H18V19H17V20H7V19H6V11Z"/>
-    <path fill={C4} d="M6 7H18V8H20V10H4V8H6V7ZM9 8H15V11H9V8ZM8 12H9V13H8V12ZM15 12H16V13H15V12ZM11 16H13V17H11V16Z"/>
-    <path fill={C1} d="M10 8H14V9H10V8Z"/>
-  </svg>
+// 10. Girl, dark skin, braids
+const Avatar10: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#654321" d="M8,9h8v7H8z"/>
+        <P c="#222" d="M7,7h2v8H7z M15,7h2v8h-2z M9,7h6v2H9z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+        <P c="#f1c40f" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar12: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C3} width="24" height="24"/>
-    <path fill={C2} d="M5 9H19V19H18V20H6V19H5V9Z"/>
-    <path fill={C4} d="M7 6H17V7H19V9H5V7H7V6ZM7 10H8V11H7V10ZM16 10H17V11H16V10ZM9 15H15V16H9V15Z"/>
-  </svg>
+// 11. Boy, light brown hair, hoodie
+const Avatar11: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M9,10h6v6H9z"/>
+        <P c="#a17d5b" d="M8,7h8v3H8z"/>
+        <P c="#bdc3c7" d="M8,10h8v7H8z M7,11h1v5H7z M16,11h1v5h-1z"/>
+        <P c="#95a5a6" d="M8,17h8v1H8z M9,18h6v1H9z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar13: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C1} width="24" height="24"/>
-    <path fill={C2} d="M7 9H17V14H18V19H16V20H8V19H6V14H7V9Z"/>
-    <path fill={C4} d="M8 6H16V7H17V9H7V7H8V6ZM7 10H10V11H7V10ZM14 10H17V11H14V10ZM11 10H13V12H11V10ZM7 12H9V13H7V12ZM15 12H17V13H15V12ZM6 14H18V15H6V14ZM7 16H17V18H7V16Z"/>
-  </svg>
+// 12. Girl, pink hair
+const Avatar12: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffdda6" d="M8,9h8v7H8z"/>
+        <P c="#ff7bac" d="M7,7h10v3H7z M8,10h8v1H8z"/>
+        <P c="#fff" d="M10,11h2v2h-2z M14,11h2v2h-2z"/>
+        <P c="#2c3e50" d="M11,12h1v1h-1z M15,12h1v1h-1z"/>
+        <P c="#ecf0f1" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#222" d="M10,15h4v1h-4z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar14: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M6 9H18V19H17V20H7V19H6V9Z"/>
-    <path fill={C4} d="M7 5H17V6H18V7H19V9H5V7H6V6H7V5ZM8 10H9V11H8V10ZM15 10H16V11H15V10ZM9 15H15V16H9V15Z"/>
-  </svg>
+// 13. Boy, ginger hair, freckles
+const Avatar13: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M8,9h8v7H8z" />
+        <P c="#e67e22" d="M8,7h8v2H8z M9,9h1v1H9z M14,9h1v1h-1z"/>
+        <P c="#d35400" d="M9,14h1v1H9z M14,14h1v1h-1z"/>
+        <P c="#fff" d="M10,11h2v2h-2z M14,11h2v2h-2z"/>
+        <P c="#222" d="M11,12h1v1h-1z M15,12h1v1h-1z"/>
+        <P c="#27ae60" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar15: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C2} width="24" height="24"/>
-    <path fill={C3} d="M6 9H18V19H17V20H7V19H6V9Z"/>
-    <path fill={C4} d="M8 6H16V7H18V9H6V7H8V6ZM8 10H9V11H8V10ZM15 10H16V11H15V10ZM9 15H10V16H9V15ZM14 15H15V16H14V15ZM10 16H14V17H10V16Z"/>
-  </svg>
+// 14. Girl, blue hair
+const Avatar14: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffdda6" d="M8,9h8v7H8z"/>
+        <P c="#3498db" d="M7,7h10v4H7z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z"/>
+        <P c="#9b59b6" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+        <P c="#222" d="M11,15h2v1h-2z"/>
+    </AvatarBase>
 );
 
-const PixelAvatar16: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-    <rect fill={C4} width="24" height="24"/>
-    <path fill={C2} d="M8 10H16V17H15V18H9V17H8V10Z"/>
-    <path fill={C3} d="M6 7H18V8H19V10H5V8H6V7Z"/>
-  </svg>
+// 15. Boy, headphones
+const Avatar15: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffc999" d="M8,9h8v7H8z"/>
+        <P c="#6a4f3a" d="M8,7h8v2H8z"/>
+        <P c="#333" d="M6,10h2v4H6z M16,10h2v4h-2z"/>
+        <P c="#555" d="M8,10h8v1H8z"/>
+        <P c="#fff" d="M10,12h2v2h-2z M14,12h2v2h-2z"/>
+        <P c="#222" d="M11,13h1v1h-1z M15,13h1v1h-1z M8,16h8v2H8z M9,18h6v1H9z"/>
+    </AvatarBase>
 );
+
+// 16. Girl, glasses, short hair
+const Avatar16: React.FC<{ className?: string }> = ({ className }) => (
+    <AvatarBase className={className}>
+        <P c="#ffdda6" d="M8,9h8v7H8z"/>
+        <P c="#8a6e5a" d="M7,7h10v4H7z"/>
+        <P c="#222" d="M9,11h3v2H9z M14,11h3v2h-3z M12,11h2v1h-2z"/>
+        <P c="#222" d="M11,15h2v1h-2z"/>
+        <P c="#1abc9c" d="M8,16h8v2H8z M9,18h6v1H9z"/>
+    </AvatarBase>
+);
+
 
 export const avatarComponents: { [key: string]: React.FC<{ className?: string }> } = {
-  pixel1: PixelAvatar1,
-  pixel2: PixelAvatar2,
-  pixel3: PixelAvatar3,
-  pixel4: PixelAvatar4,
-  pixel5: PixelAvatar5,
-  pixel6: PixelAvatar6,
-  pixel7: PixelAvatar7,
-  pixel8: PixelAvatar8,
-  pixel9: PixelAvatar9,
-  pixel10: PixelAvatar10,
-  pixel11: PixelAvatar11,
-  pixel12: PixelAvatar12,
-  pixel13: PixelAvatar13,
-  pixel14: PixelAvatar14,
-  pixel15: PixelAvatar15,
-  pixel16: PixelAvatar16,
+  avatar1: Avatar1,
+  avatar2: Avatar2,
+  avatar3: Avatar3,
+  avatar4: Avatar4,
+  avatar5: Avatar5,
+  avatar6: Avatar6,
+  avatar7: Avatar7,
+  avatar8: Avatar8,
+  avatar9: Avatar9,
+  avatar10: Avatar10,
+  avatar11: Avatar11,
+  avatar12: Avatar12,
+  avatar13: Avatar13,
+  avatar14: Avatar14,
+  avatar15: Avatar15,
+  avatar16: Avatar16,
 };
 
 export const avatarOptions = Object.keys(avatarComponents);
