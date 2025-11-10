@@ -49,8 +49,8 @@ const Navbar: React.FC<NavbarProps> = ({ user, onNavigate, onLogout, currentPage
         <header className="w-full bg-[var(--color-secondary)] border-b-2 border-[var(--color-text)] shadow-md sticky top-0 z-40">
             <nav className="container mx-auto px-4 flex justify-between items-center h-20">
                 <div className="flex items-center gap-8">
-                    <button onClick={() => onNavigate('practice')} className="flex items-center gap-2">
-                            <Logo className="h-10 w-auto" />
+                    <button onClick={() => onNavigate('practice')} className="flex items-center gap-2 h-12">
+                            <Logo className="h-full w-auto" />
                     </button>
                     {/* Desktop Links */}
                     <div className="hidden md:flex items-center gap-6">
