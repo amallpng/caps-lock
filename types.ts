@@ -26,11 +26,13 @@ export interface User {
   hasRevealedGrandReward?: boolean;
   pythonChallengeProgress: {
     currentLevel: number;
-    code: { [level: number]: string };
+    attemptsToday?: number;
+    lastAttemptTimestamp?: number;
+    pythonCourseStartDate?: number;
   };
 }
 
-export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython';
+export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython' | 'imageGenerator' | 'videoGenerator';
 
 export enum Difficulty {
   Easy = 'easy',

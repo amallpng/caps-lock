@@ -80,7 +80,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         hasRevealedGrandReward: false,
         pythonChallengeProgress: {
           currentLevel: 1,
-          code: {},
+          attemptsToday: 0,
+          lastAttemptTimestamp: 0,
         },
       };
       users.push(newGoogleUser);
@@ -107,7 +108,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         coins: 0,
         pythonChallengeProgress: {
             currentLevel: 1,
-            code: {},
+            attemptsToday: 0,
+            lastAttemptTimestamp: 0,
         },
     };
     onLogin(guestUser);

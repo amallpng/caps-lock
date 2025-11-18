@@ -46,7 +46,8 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
       hasRevealedGrandReward: false,
       pythonChallengeProgress: {
         currentLevel: 1,
-        code: {},
+        attemptsToday: 0,
+        lastAttemptTimestamp: 0,
       },
     };
 
