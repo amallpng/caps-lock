@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { loadPyodide } from 'pyodide';
 import { User } from '../types';
 import { PYTHON_CHALLENGES, PythonChallenge } from '../services/pythonChallengeService';
@@ -12,29 +12,33 @@ interface LearnPythonPageProps {
 
 const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate }) => {
     const [pyodide, setPyodide] = useState<any | null>(null);
-    const [isPyodideLoading, setIsPyodideLoading] = useState(true);
+    const [pyodideStatus, setPyodideStatus] = useState<'loading' | 'ready' | 'error'>('loading');
     const [activeChallenge, setActiveChallenge] = useState<PythonChallenge | null>(null);
     const [userCode, setUserCode] = useState('');
     const [consoleOutput, setConsoleOutput] = useState<string[]>([]);
     const [isRunning, setIsRunning] = useState(false);
     const [showRewardModal, setShowRewardModal] = useState<PythonChallenge | null>(null);
 
-    useEffect(() => {
-        const initPyodide = async () => {
-            try {
-                const pyodideInstance = await loadPyodide({
-                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"
-                });
-                setPyodide(pyodideInstance);
-            } catch (error) {
-                console.error("Failed to load Pyodide:", error);
-                setConsoleOutput(["Error: Could not load the Python interpreter."]);
-            } finally {
-                setIsPyodideLoading(false);
-            }
-        };
-        initPyodide();
+    const initPyodide = useCallback(async () => {
+        setPyodideStatus('loading');
+        setConsoleOutput([]); // Clear console on new attempt
+        try {
+            const pyodideInstance = await loadPyodide({
+                indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"
+            });
+            setPyodide(pyodideInstance);
+            setPyodideStatus('ready');
+        } catch (error) {
+            console.error("Failed to load Pyodide:", error);
+            setPyodideStatus('error');
+        }
     }, []);
+
+    useEffect(() => {
+        // On initial mount, load pyodide.
+        // It won't re-run on its own because initPyodide is memoized.
+        initPyodide();
+    }, [initPyodide]);
 
     useEffect(() => {
         if (user && user.pythonChallengeProgress) {
@@ -53,7 +57,7 @@ const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate })
                 setUserCode(savedCode || challenge.initialCode);
             }
         }
-    }, [user]);
+    }, [user, pyodideStatus]);
     
     const handleSelectChallenge = (challenge: PythonChallenge) => {
         if (challenge.level > (user.pythonChallengeProgress.currentLevel || 1)) {
@@ -198,11 +202,31 @@ const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate })
         );
     }
     
-    if (isPyodideLoading) {
-        return <div className="text-center">
-            <h2 className="text-2xl font-bold text-[var(--color-primary)]">Loading Python Environment...</h2>
-            <p>This may take a moment.</p>
-        </div>;
+    if (pyodideStatus === 'loading') {
+        return (
+            <div className="w-full h-full flex items-center justify-center text-center">
+                <div>
+                    <h2 className="text-2xl font-bold text-[var(--color-primary)] animate-pulse">Loading Python Environment...</h2>
+                    <p className="text-[var(--color-text-muted)]">This can take a moment, please wait.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (pyodideStatus === 'error') {
+        return (
+             <div className="w-full h-full flex items-center justify-center">
+                 <div className="w-full max-w-xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-dashed border-[var(--color-error)] flex flex-col items-center gap-6 text-center">
+                    <h2 className="text-3xl font-bold text-[var(--color-error)]">Environment Error</h2>
+                    <p className="text-lg text-[var(--color-text-muted)] leading-relaxed">
+                        The Python interpreter failed to load. This is usually caused by a network issue. Please check your internet connection and try again.
+                    </p>
+                    <button onClick={initPyodide} className="btn-vintage font-bold py-3 px-6 rounded-sm text-xl">
+                        Retry Loading
+                    </button>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -295,11 +319,11 @@ const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate })
                         spellCheck="false"
                     />
                     <div className="bg-[var(--color-secondary)] p-2 rounded-b-sm border-b border-x border-[var(--color-border)] flex justify-end gap-2">
-                         <button onClick={handleRun} disabled={isRunning || !pyodide} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50">
-                            {isPyodideLoading ? 'Loading Env...' : !pyodide ? 'Env Error' : isRunning ? 'Running...' : 'Run Code'}
+                         <button onClick={handleRun} disabled={isRunning} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50">
+                            {isRunning ? 'Running...' : 'Run Code'}
                          </button>
-                         <button onClick={handleSubmit} disabled={isRunning || !pyodide} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50 bg-green-700">
-                            {isPyodideLoading ? 'Loading Env...' : !pyodide ? 'Env Error' : isRunning ? 'Submitting...' : 'Submit'}
+                         <button onClick={handleSubmit} disabled={isRunning} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50 bg-green-700">
+                            {isRunning ? 'Submitting...' : 'Submit'}
                          </button>
                     </div>
                 </div>
