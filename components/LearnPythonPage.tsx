@@ -41,7 +41,7 @@ const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate })
     }, [initPyodide]);
 
     useEffect(() => {
-        if (user && user.pythonChallengeProgress) {
+        if (user && user.pythonChallengeProgress && pyodideStatus === 'ready') {
             // Fix for users who completed all levels
             const totalChallenges = PYTHON_CHALLENGES.length;
             let currentLevel = user.pythonChallengeProgress.currentLevel || 1;
@@ -215,15 +215,35 @@ const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate })
 
     if (pyodideStatus === 'error') {
         return (
-             <div className="w-full h-full flex items-center justify-center">
-                 <div className="w-full max-w-xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-dashed border-[var(--color-error)] flex flex-col items-center gap-6 text-center">
-                    <h2 className="text-3xl font-bold text-[var(--color-error)]">Environment Error</h2>
-                    <p className="text-lg text-[var(--color-text-muted)] leading-relaxed">
-                        The Python interpreter failed to load. This is usually caused by a network issue. Please check your internet connection and try again.
+            <div className="w-full h-full flex items-center justify-center animate-fade-in">
+                <div className="w-full max-w-2xl bg-[var(--color-bg)] p-8 rounded-sm border-2 border-dashed border-[var(--color-error)] flex flex-col items-center gap-6 text-center shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-[var(--color-error)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+
+                    <h2 className="text-3xl font-bold text-[var(--color-error)]">Could not load the Python interpreter</h2>
+                    <p className="text-lg text-[var(--color-text-muted)] leading-relaxed max-w-lg">
+                        The environment failed to load, which can happen for a few reasons:
                     </p>
-                    <button onClick={initPyodide} className="btn-vintage font-bold py-3 px-6 rounded-sm text-xl">
+
+                    <ul className="text-left text-[var(--color-text-muted)] list-disc list-inside space-y-1 bg-[var(--color-secondary)]/50 p-4 rounded-sm border border-[var(--color-border)]">
+                        <li>A slow or unstable internet connection.</li>
+                        <li>A network firewall (e.g., at a school or office) blocking the required files.</li>
+                        <li>A temporary issue with the service that provides the Python environment.</li>
+                    </ul>
+
+                    <button onClick={initPyodide} className="btn-vintage font-bold py-3 px-8 rounded-sm text-xl mt-2">
                         Retry Loading
                     </button>
+
+                    <div className="w-full border-t-2 border-dashed border-[var(--color-border)] pt-4 mt-2">
+                        <h3 className="font-bold text-lg text-[var(--color-primary)]">What you can do:</h3>
+                        <ul className="text-left text-[var(--color-text-muted)] list-disc list-inside mt-2 space-y-1">
+                            <li>Make sure you're connected to the internet.</li>
+                            <li>If you're on a restricted network, try switching to another (e.g., mobile data).</li>
+                            <li>Wait a few minutes and try again.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         );
