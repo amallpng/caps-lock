@@ -1,5 +1,3 @@
-
-
 import type { BadgeIcons } from '../components/icons/BadgeIcons';
 
 export interface PythonChallenge {
@@ -49,6 +47,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\napples = 5\nprice_per_apple = 1.50\ntotal_cost = apples * price_per_apple\nprint(total_cost)\n```",
         task: "Create a variable `a` with the value 25 and a variable `b` with the value 5. Print the result of `a` divided by `b`.",
         initialCode: "a = 25\nb = 5\n# Print the result of a divided by b\n",
+        coinReward: 1,
         testCases: [ { description: "Calculates and prints division", testCode: "pass", expectedOutput: "5.0" } ]
     },
     {
@@ -58,7 +57,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nfirst_name = \"John\"\nlast_name = \"Doe\"\nfull_name = first_name + \" \" + last_name\nprint(full_name)\n```",
         task: "Create two string variables, `part1` with value 'Python is ' and `part2` with value 'fun'. Concatenate them and print the result.",
         initialCode: "part1 = 'Python is '\npart2 = 'fun'\n# Combine and print\n",
-        coinReward: 1,
         testCases: [ { description: "Concatenates two strings", testCode: "pass", expectedOutput: "Python is fun" } ]
     },
     {
@@ -88,7 +86,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\ntext = \"Hello World\"\nprint(text.upper())\nprint(text.lower())\nprint(text) # Original is unchanged\n```",
         task: "Given the variable `movie_title`, print it in all uppercase letters.",
         initialCode: "movie_title = \"The Grand Adventure\"\n# Print in uppercase\n",
-        coinReward: 1,
         testCases: [ { description: "Converts to uppercase", testCode: "pass", expectedOutput: "THE GRAND ADVENTURE" } ]
     },
     {
@@ -98,6 +95,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nword = \"Python\"\nfirst_char = word[0]  # 'P'\nthird_char = word[2]  # 't'\nprint(first_char)\nprint(third_char)\n```",
         task: "Print the first character of the string `language`.",
         initialCode: "language = \"JavaScript\"\n# Print the first character\n",
+        coinReward: 1,
         testCases: [ { description: "Accesses the first character", testCode: "pass", expectedOutput: "J" } ]
     },
     {
@@ -107,6 +105,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nname = input(\"Enter your name: \")\nprint(f\"Hello, {name}!\")\n```",
         task: "Our tests will automatically provide input. Write a program that asks for a favorite color and prints 'Your favorite color is [color].'",
         initialCode: "# Get user input and print a message\n",
+        coinReward: 1,
         testCases: [ { description: "Handles input", testCode: "pass", expectedOutput: "What is your favorite color? Your favorite color is blue." } ]
     },
     {
@@ -116,6 +115,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nage_str = \"25\"\nage_int = int(age_str)\nyear_of_birth = 2024 - age_int\nprint(year_of_birth)\n```",
         task: "The test will provide the string '100' as input. Convert it to an integer, add 50 to it, and print the result.",
         initialCode: "value_str = '100'\n# Convert to int, add 50, and print\n",
+        coinReward: 1,
         testCases: [ { description: "Converts string to int and calculates", testCode: "pass", expectedOutput: "150" } ]
     },
     // --- CONDITIONALS ---
@@ -126,7 +126,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nx = 10\ny = 5\nprint(x > y)  # True\nprint(x == 10) # True\nprint(y != 5)  # False\n```",
         task: "Create two variables, `num1 = 50` and `num2 = 100`. Print whether `num1` is less than `num2`.",
         initialCode: "num1 = 50\nnum2 = 100\n# Print the result of the comparison\n",
-        coinReward: 1,
         testCases: [ { description: "Compares two numbers", testCode: "pass", expectedOutput: "True" } ]
     },
     {
@@ -145,6 +144,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nage = 16\nif age >= 18:\n    print(\"You can vote.\")\nelse:\n    print(\"You cannot vote yet.\")\n```",
         task: "Write an if/else block. If `is_day` is `True`, print 'Good morning'. Otherwise, print 'Good night'.",
         initialCode: "is_day = False\n# Write your if/else block here\n",
+        coinReward: 1,
         testCases: [ { description: "Prints correct greeting", testCode: "pass", expectedOutput: "Good night" } ]
     },
     {
@@ -163,7 +163,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nage = 25\nhas_license = True\nif age > 18 and has_license:\n    print(\"Allowed to drive.\")\n```",
         task: "Check if `temperature` is between 20 and 30 (inclusive). Print `True` if it is, `False` otherwise.",
         initialCode: "temperature = 22\n# Check if temperature is in range and print the boolean result\n",
-        coinReward: 1,
         testCases: [ { description: "Checks if a number is in range", testCode: "pass", expectedOutput: "True" } ]
     },
     // --- LISTS ---
@@ -174,7 +173,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nnumbers = [1, 2, 3, 4, 5]\nfruits = [\"apple\", \"banana\", \"cherry\"]\nprint(numbers)\nprint(fruits)\n```",
         task: "Create a list named `planets` containing the strings 'Mercury', 'Venus', and 'Earth'. Then, print the list.",
         initialCode: "# Create the planets list\n",
-        coinReward: 1,
         testCases: [ { description: "Creates and prints a list", testCode: "pass", expectedOutput: "['Mercury', 'Venus', 'Earth']" } ]
     },
     {
@@ -184,6 +182,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\ncolors = [\"red\", \"green\", \"blue\"]\nprint(colors[0]) # 'red'\nprint(colors[2]) # 'blue'\n```",
         task: "Given the list `scores`, print the second item.",
         initialCode: "scores = [98, 87, 91, 79]\n# Print the second score\n",
+        coinReward: 1,
         testCases: [ { description: "Accesses an item by index", testCode: "pass", expectedOutput: "87" } ]
     },
     {
@@ -211,6 +210,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nletters = ['a', 'b', 'c', 'd']\nprint(len(letters)) # 4\n```",
         task: "Print the number of items in the `guests` list.",
         initialCode: "guests = ['Alice', 'Bob', 'Charlie', 'David']\n# Print the length of the list\n",
+        coinReward: 1,
         testCases: [ { description: "Calculates the length of a list", testCode: "pass", expectedOutput: "4" } ]
     },
     // --- LOOPS ---
@@ -230,7 +230,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nfor i in range(3): # i will be 0, then 1, then 2\n    print(\"Looping!\")\n```",
         task: "Use a `for` loop and `range()` to print the numbers from 0 to 4.",
         initialCode: "# Use a for loop with range to print numbers 0-4\n",
-        coinReward: 1,
         testCases: [ { description: "Loops with range()", testCode: "pass", expectedOutput: "0\n1\n2\n3\n4" } ]
     },
     {
@@ -249,6 +248,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\ncount = 0\nwhile count < 3:\n    print(\"Still counting...\")\n    count = count + 1\n```",
         task: "Use a `while` loop to print numbers from 1 to 3.",
         initialCode: "i = 1\n# Write a while loop to print numbers 1, 2, 3\n",
+        coinReward: 1,
         testCases: [ { description: "Uses a while loop to count", testCode: "pass", expectedOutput: "1\n2\n3" } ]
     },
     {
@@ -268,7 +268,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\nperson = {\n  \"name\": \"John\",\n  \"age\": 30,\n  \"city\": \"New York\"\n}\nprint(person)\n```",
         task: "Create a dictionary named `car` with keys 'brand' (value 'Ford') and 'model' (value 'Mustang'). Print the dictionary.",
         initialCode: "# Create the car dictionary\n",
-        coinReward: 1,
         testCases: [ { description: "Creates and prints a dictionary", testCode: "pass", expectedOutput: "{'brand': 'Ford', 'model': 'Mustang'}" } ]
     },
     {
@@ -353,7 +352,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\ndef double(n):\n    return n * 2\n\ndef double_and_add_one(n):\n    doubled_n = double(n)\n    return doubled_n + 1\n\nprint(double_and_add_one(5))\n```",
         task: "You have two functions. Complete `get_full_greeting` to use the `create_greeting` function and return a final message.",
         initialCode: "def create_greeting(name):\n    return f\"Hello {name}\"\n\ndef get_full_greeting(name):\n    # Call create_greeting and add \"! Welcome!\" to the end\n    pass\n\nprint(get_full_greeting(\"Maria\"))",
-        coinReward: 1,
         testCases: [ { description: "Calls another function", testCode: "pass", expectedOutput: "Hello Maria! Welcome!" } ]
     },
     // --- MINI PROJECT: CALCULATOR ---
@@ -364,6 +362,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\n# This is what we are aiming for!\ndef add(a, b):\n    return a + b\n```",
         task: "Create a function named `add` that takes two numbers, `num1` and `num2`, as arguments and returns their sum.",
         initialCode: "def add(num1, num2):\n    # Your code here\n    pass\n\nprint(add(5, 3))\nprint(add(-1, 10))",
+        coinReward: 1,
         testCases: [
             { description: "Adds 5 and 3", testCode: "pass", expectedOutput: "8" },
             { description: "Adds -1 and 10", testCode: "pass", expectedOutput: "9" }
@@ -400,7 +399,6 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\n# The final arithmetic operation.\ndef divide(a, b):\n    if b == 0:\n        return \"Error! Division by zero.\"\n    return a / b\n```",
         task: "Create a function named `divide`. If the second number `num2` is 0, it should return the string 'Error! Cannot divide by zero'. Otherwise, it should return `num1` divided by `num2`.",
         initialCode: "def divide(num1, num2):\n    # Your code here\n    pass\n\nprint(divide(20, 4))\nprint(divide(10, 0))",
-        coinReward: 1,
         testCases: [
             { description: "Divides 20 by 4", testCode: "pass", expectedOutput: "5.0" },
             { description: "Handles division by zero", testCode: "pass", expectedOutput: "Error! Cannot divide by zero" }
@@ -409,10 +407,11 @@ const initialChallenges: PythonChallenge[] = [
     {
         level: 45,
         title: "Calculator: Putting it Together",
-        explanation: "Now we'll create a main function to act as the interface for our calculator. It will take the numbers and the operation as input and call the correct function.",
+        explanation: "Now we'll create a main function to act as the interface for our calculator. It will take the numbers and the operator as input and call the correct function.",
         example: "```python\n# The main calculator logic will live here.\ndef calculate(num1, op, num2):\n    # ... logic to call add, subtract etc.\n```",
         task: "Create a function `calculate(num1, operator, num2)`. Based on the `operator` string ('+', '-', '*', '/'), it should call the correct function (`add`, `subtract`, etc.) and return the result. Assume the other functions are already defined.",
         initialCode: "def add(a, b): return a + b\ndef subtract(a, b): return a - b\ndef multiply(a, b): return a * b\ndef divide(a, b):\n    if b == 0: return \"Error! Cannot divide by zero\"\n    return a / b\n\ndef calculate(num1, operator, num2):\n    # Your code here\n    pass\n\nprint(calculate(10, '+', 5))\nprint(calculate(10, '-', 5))\nprint(calculate(10, '*', 5))\nprint(calculate(10, '/', 5))",
+        coinReward: 1,
         testCases: [
             { description: "Performs addition", testCode: "pass", expectedOutput: "15" },
             { description: "Performs subtraction", testCode: "pass", expectedOutput: "5" },
@@ -427,7 +426,7 @@ const initialChallenges: PythonChallenge[] = [
         example: "```python\ndef summarize_scores(scores_dict):\n    print(\"--- SCORE SUMMARY ---\")\n    for student, score in scores_dict.items():\n        if score >= 90:\n            grade = \"A\"\n        elif score >= 80:\n            grade = \"B\"\n        else:\n            grade = \"C\"\n        print(f\"{student}: {score} (Grade {grade})\")\n\nscores = {\"Alice\": 95, \"Bob\": 82, \"Charlie\": 75}\nsummarize_scores(scores)\n```",
         task: "This final task is a challenge and won't be auto-graded. Modify the code to create a loop that repeatedly asks the user for a number, an operator, and another number, then prints the result. The loop should stop if the user types 'exit'. Well done on completing the course!",
         initialCode: "# All your functions from previous levels go here\ndef add(a, b): return a + b\ndef subtract(a, b): return a - b\ndef multiply(a, b): return a * b\ndef divide(a, b):\n    if b == 0: return \"Error\"\n    return a / b\n\ndef calculate(num1, op, num2):\n    if op == '+': return add(num1, num2)\n    if op == '-': return subtract(num1, num2)\n    if op == '*': return multiply(num1, num2)\n    if op == '/': return divide(num1, num2)\n\n# Main loop - try it out!\n# This part is for you to experiment with.\n# Run it and see what happens in the console.\n\nprint(\"Welcome to the Python Calculator!\")\nprint(\"Enter 'exit' to quit.\")\n\n# while True:\n#     num1_input = input(\"Enter first number: \")\n#     if num1_input == 'exit':\n#         break\n#     op_input = input(\"Enter operator (+, -, *, /): \")\n#     num2_input = input(\"Enter second number: \")\n\n#     result = calculate(int(num1_input), op_input, int(num2_input))\n#     print(f\"The result is: {result}\")\n",
-        coinReward: 5,
+        coinReward: 1,
         badge: {
             name: "Python Hero",
             icon: 'GrandMasterTrophy'
@@ -453,6 +452,7 @@ const intermediateLevels: PythonChallenge[] = [
         example: "```python\nstudent = {'name': 'Anna', 'score': 95}\nif 'score' in student:\n    print(f\"Anna's score is {student['score']}\")\n```",
         task: "Given a dictionary, print the value for the key 'country'. If the key does not exist, print 'Unknown'.",
         initialCode: "user_data = {'name': 'John', 'age': 30}\n# Check for 'country' and print the value or 'Unknown'\nif 'country' in user_data:\n    print(user_data['country'])\nelse:\n    print('Unknown')",
+        coinReward: 1,
         testCases: [{ description: "Handles missing key", testCode: "pass", expectedOutput: "Unknown" }]
     },
     {
@@ -461,7 +461,6 @@ const intermediateLevels: PythonChallenge[] = [
         example: "```python\nx = 10 # global\ndef my_function():\n    y = 20 # local\n    print(x) # can access global x\n    print(y)\n\nmy_function()\n# print(y) # This would cause an error\n```",
         task: "Call the `show_message` function to correctly print the `local_message`.",
         initialCode: "global_message = \"I am global\"\ndef show_message():\n    local_message = \"I am local\"\n    print(local_message)\n\n# Call the function to print the local message.\n",
-        coinReward: 1,
         testCases: [{ description: "Correctly handles scope", testCode: "pass", expectedOutput: "I am local" }]
     },
     {
@@ -478,7 +477,6 @@ const intermediateLevels: PythonChallenge[] = [
         example: "```python\ndef is_even(number):\n    if number % 2 == 0:\n        return True\n    else:\n        return False\n\nprint(is_even(10)) # True\nprint(is_even(7))  # False\n```",
         task: "Write a function `find_max` that takes a list of numbers and returns the largest number in the list. Do not use the built-in `max()` function.",
         initialCode: "def find_max(numbers):\n    # Your code here\n    pass\n\nprint(find_max([1, 5, 2, 9, 3]))",
-        coinReward: 1,
         testCases: [{ description: "Finds the max number", testCode: "pass", expectedOutput: "9" }]
     },
     {
@@ -487,7 +485,6 @@ const intermediateLevels: PythonChallenge[] = [
         example: "```python\n# The input() function returns a string, so we need int()\nnum1_str = input(\"Enter first number: \")\nnum2_str = input(\"Enter second number: \")\nresult = int(num1_str) + int(num2_str)\nprint(f\"The sum is: {result}\")\n```",
         task: "Using your `calculate` function, get two numbers and an operator from the user and print the result. The test will simulate inputs '10', '+', '20'.",
         initialCode: "def calculate(n1, op, n2):\n    if op == '+': return n1 + n2\n    # For this exercise, you only need to handle addition.\n    return 'Invalid op'\n\n# Your code here\n# Get two numbers and an operator (the test will provide them)\n# and print the result of calling the calculate function.\n",
-        coinReward: 1,
         testCases: [{ description: "Handles simulated user input", testCode: "pass", expectedOutput: "30" }]
     },
     {
@@ -496,6 +493,7 @@ const intermediateLevels: PythonChallenge[] = [
         example: "```python\nwhile True:\n    command = input(\"Type 'exit' to stop: \")\n    if command == \"exit\":\n        print(\"Loop finished!\")\n        break\n    print(\"Looping...\")\n```",
         task: "This is a conceptual task. The code shows how a main loop would work. Add a check so if the user enters 'q' as the operator, the loop breaks using the `break` keyword.",
         initialCode: "# This is a conceptual example\n# You would put this logic inside a `while True:` loop\ndef calculator_loop(operator):\n    if operator == 'q':\n        print(\"Exiting\")\n        # In a real loop, you'd use 'break' here\n    else:\n        print(\"Calculating...\")\n\n# Try calling the function with '+' and 'q' to see what happens.\ncalculator_loop('+')\ncalculator_loop('q')",
+        coinReward: 1,
         testCases: [{ description: "Understands the loop exit condition", testCode: "pass", expectedOutput: "Calculating...\nExiting" }]
     },
     {
