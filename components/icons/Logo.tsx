@@ -1,10 +1,36 @@
 import React from 'react';
 
 export const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="5" y="2" width="14" height="12" rx="1" fill="var(--color-bg)" stroke="var(--color-text)" strokeWidth="1"/>
-    <path d="M2 13 Q4 11, 12 11 Q20 11, 22 13 L23 20 L1 20 Z" fill="var(--color-primary)" stroke="var(--color-text)" strokeWidth="1"/>
-    <path d="M4 19 C8 17, 16 17, 20 19 L19 22 L5 22 Z" fill="var(--color-secondary)" stroke="var(--color-text)" strokeWidth="1"/>
+  <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Paper */}
+    <path d="M18 8H46V28H18V8Z" fill="var(--color-bg)" stroke="var(--color-text)" strokeWidth="2" />
+    <path d="M22 14H42" stroke="var(--color-text)" strokeWidth="2" strokeOpacity="0.4" strokeLinecap="round" />
+    <path d="M22 18H38" stroke="var(--color-text)" strokeWidth="2" strokeOpacity="0.4" strokeLinecap="round" />
+    <path d="M22 22H42" stroke="var(--color-text)" strokeWidth="2" strokeOpacity="0.4" strokeLinecap="round" />
+
+    {/* Platen (roller) */}
+    <path d="M12 26H52C53.1046 26 54 26.8954 54 28V28C54 29.1046 53.1046 30 52 30H12C10.8954 30 10 29.1046 10 28V28C10 26.8954 10.8954 26 12 26Z" fill="var(--color-text-muted)" />
+    
+    {/* Typewriter Body */}
+    <path d="M8 32H56V48C56 50.2091 54.2091 52 52 52H12C9.79086 52 8 50.2091 8 48V32Z" fill="var(--color-primary)" />
+    
+    {/* Keyboard top part */}
+    <path d="M12 34C12 32.8954 12.8954 32 14 32H50C51.1046 32 52 32.8954 52 34V36H12V34Z" fill="var(--color-text)" fillOpacity="0.2"/>
+    
+    {/* Keys */}
+    <circle cx="18" cy="40" r="2" fill="var(--color-secondary)" />
+    <circle cx="26" cy="40" r="2" fill="var(--color-secondary)" />
+    <circle cx="34" cy="40" r="2" fill="var(--color-secondary)" />
+    <circle cx="42" cy="40" r="2" fill="var(--color-secondary)" />
+    <circle cx="50" cy="40" r="2" fill="var(--color-secondary)" />
+    
+    <circle cx="22" cy="46" r="2" fill="var(--color-secondary)" />
+    <circle cx="30" cy="46" r="2" fill="var(--color-secondary)" />
+    <circle cx="38" cy="46" r="2" fill="var(--color-secondary)" />
+    <circle cx="46" cy="46" r="2" fill="var(--color-secondary)" />
+    
+    {/* Spacebar */}
+    <rect x="24" y="50" width="20" height="4" rx="2" fill="var(--color-secondary)" />
   </svg>
 );
 
