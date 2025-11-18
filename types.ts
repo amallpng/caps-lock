@@ -24,6 +24,10 @@ export interface User {
   coins: number;
   hasClaimedShareReward?: boolean;
   hasRevealedGrandReward?: boolean;
+  pythonChallengeProgress: {
+    currentLevel: number;
+    code: { [level: number]: string };
+  };
 }
 
 export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython';

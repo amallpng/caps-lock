@@ -78,6 +78,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         isBlocked: false,
         hasClaimedShareReward: false,
         hasRevealedGrandReward: false,
+        pythonChallengeProgress: {
+          currentLevel: 1,
+          code: {},
+        },
       };
       users.push(newGoogleUser);
       localStorage.setItem('users', JSON.stringify(users));
@@ -101,6 +105,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
         lastTestDate: '',
         testHistory: [],
         coins: 0,
+        pythonChallengeProgress: {
+            currentLevel: 1,
+            code: {},
+        },
     };
     onLogin(guestUser);
   };

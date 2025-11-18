@@ -2,11 +2,11 @@ import { BadgeIcons } from '../components/icons/BadgeIcons';
 import { Task } from '../types';
 
 const originalTasks: Omit<Task, 'badge'>[] = [
-  { id: 1, level: 1, text: "type this line of text", wpmGoal: 10, accuracyGoal: 90, coinReward: 2 },
+  { id: 1, level: 1, text: "type this line of text", wpmGoal: 10, accuracyGoal: 90, coinReward: 1 },
   { id: 2, level: 2, text: "practice makes perfect always", wpmGoal: 15, accuracyGoal: 92, coinReward: 1 },
   { id: 3, level: 3, text: "the sun is very bright today", wpmGoal: 20, accuracyGoal: 93, coinReward: 1 },
   { id: 4, level: 4, text: "good habits form good people", wpmGoal: 25, accuracyGoal: 94, coinReward: 1 },
-  { id: 5, level: 5, text: "the dog ran across the field", wpmGoal: 30, accuracyGoal: 95, coinReward: 0 },
+  { id: 5, level: 5, text: "the dog ran across the field", wpmGoal: 30, accuracyGoal: 95, coinReward: 1 },
   { id: 6, level: 6, text: "look before you leap for safety", wpmGoal: 35, accuracyGoal: 95, coinReward: 3 },
   { id: 7, level: 7, text: "An elephant is a large mammal.", wpmGoal: 40, accuracyGoal: 96, coinReward: 1 },
   { id: 8, level: 8, text: "The moon orbits the Earth.", wpmGoal: 42, accuracyGoal: 96, coinReward: 1 },
@@ -16,8 +16,8 @@ const originalTasks: Omit<Task, 'badge'>[] = [
   { id: 12, level: 12, text: "Always check your sources for facts.", wpmGoal: 52, accuracyGoal: 98, coinReward: 0 },
   { id: 13, level: 13, text: "What's the weather like tomorrow?", wpmGoal: 55, accuracyGoal: 98, coinReward: 1 },
   { id: 14, level: 14, text: "Their_email@example.com is fake.", wpmGoal: 58, accuracyGoal: 99, coinReward: 1 },
-  { id: 15, level: 15, text: "He asked, \"What's the final plan?\"", wpmGoal: 60, accuracyGoal: 99, coinReward: 0 },
-  { id: 16, level: 16, text: "The function call is `getData(123)`. ", wpmGoal: 62, accuracyGoal: 99, coinReward: 3 },
+  { id: 15, level: 15, text: "He asked, \"What's the final plan?\"", wpmGoal: 60, accuracyGoal: 99, coinReward: 1 },
+  { id: 16, level: 16, text: "The function call is `getData(123)`. ", wpmGoal: 62, accuracyGoal: 99, coinReward: 1 },
   { id: 17, level: 17, text: "That is an astonishingly large cat!", wpmGoal: 65, accuracyGoal: 99, coinReward: 1 },
   { id: 18, level: 18, text: "The array[0] value is `undefined`.", wpmGoal: 68, accuracyGoal: 99, coinReward: 1 },
   { id: 19, level: 19, text: "It's a complex algorithm (O(n^2)).", wpmGoal: 70, accuracyGoal: 99, coinReward: 1 },
@@ -29,7 +29,7 @@ const originalTasks: Omit<Task, 'badge'>[] = [
   { id: 25, level: 25, text: "By Jove, my quick study of lexicography won a prize!", wpmGoal: 90, accuracyGoal: 100, coinReward: 2 },
   { id: 26, level: 26, text: "The variable `const user_id = 'usr-12345';` is a constant.", wpmGoal: 91, accuracyGoal: 100, coinReward: 1 },
   { id: 27, level: 27, text: "Navigate to `C:\\Users\\Default\\Documents` to find the files.", wpmGoal: 92, accuracyGoal: 100, coinReward: 1 },
-  { id: 28, level: 28, text: "The JSON response was: {\"status\": \"success\", \"data\": []}", wpmGoal: 93, accuracyGoal: 100, coinReward: 0 },
+  { id: 28, level: 28, text: "The JSON response was: {\"status\": \"success\", \"data\": []}", wpmGoal: 93, accuracyGoal: 100, coinReward: 1 },
   { id: 29, level: 29, text: "Hexadecimal colors like #FF5733 are common in CSS.", wpmGoal: 94, accuracyGoal: 100, coinReward: 1 },
   { id: 30, level: 30, text: "The regex /\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b/i matches emails.", wpmGoal: 96, accuracyGoal: 100, coinReward: 3 },
   { id: 31, level: 31, text: "The API endpoint is `https://api.example.com/v1/users`.", wpmGoal: 97, accuracyGoal: 100, coinReward: 1 },
@@ -41,17 +41,17 @@ const originalTasks: Omit<Task, 'badge'>[] = [
   { id: 37, level: 37, text: "XML tags, like `<note>`, must be properly closed with `</note>`.", wpmGoal: 104, accuracyGoal: 100, coinReward: 0 },
   { id: 38, level: 38, text: "Object-oriented programming (OOP) uses classes and objects.", wpmGoal: 105, accuracyGoal: 100, coinReward: 1 },
   { id: 39, level: 39, text: "The JWT (JSON Web Token) is used for authentication.", wpmGoal: 106, accuracyGoal: 100, coinReward: 1 },
-  { id: 40, level: 40, text: "The SHA-256 hash is a cryptographic security function.", wpmGoal: 108, accuracyGoal: 100, coinReward: 0 },
+  { id: 40, level: 40, text: "The SHA-256 hash is a cryptographic security function.", wpmGoal: 108, accuracyGoal: 100, coinReward: 1 },
   { id: 41, level: 41, text: "It was the best of times, it was the worst of times, it was the age of wisdom.", wpmGoal: 109, accuracyGoal: 100, coinReward: 1 },
   { id: 42, level: 42, text: "All that glitters is not gold; not all those who wander are lost.", wpmGoal: 110, accuracyGoal: 100, coinReward: 3 },
   { id: 43, level: 43, text: "The only thing we have to fear is fear itself—nameless, unreasoning terror.", wpmGoal: 111, accuracyGoal: 100, coinReward: 1 },
-  { id: 44, level: 44, text: "Two roads diverged in a wood, and I—I took the one less traveled by.", wpmGoal: 112, accuracyGoal: 100, coinReward: 3 },
+  { id: 44, level: 44, text: "Two roads diverged in a wood, and I—I took the one less traveled by.", wpmGoal: 112, accuracyGoal: 100, coinReward: 1 },
   { id: 45, level: 45, text: "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.", wpmGoal: 114, accuracyGoal: 100, coinReward: 1 },
   { id: 46, level: 46, text: "So we beat on, boats against the current, borne back ceaselessly into the past.", wpmGoal: 115, accuracyGoal: 100, coinReward: 1 },
   { id: 47, level: 47, text: "The woods are lovely, dark and deep, but I have promises to keep.", wpmGoal: 116, accuracyGoal: 100, coinReward: 1 },
   { id: 48, level: 48, text: "I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character.", wpmGoal: 117, accuracyGoal: 100, coinReward: 0 },
   { id: 49, level: 49, text: "Elementary, my dear Watson; it is a capital mistake to theorize before one has data.", wpmGoal: 118, accuracyGoal: 100, coinReward: 1 },
-  { id: 50, level: 50, text: "Whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune, or to take arms against a sea of troubles.", wpmGoal: 120, accuracyGoal: 100, coinReward: 2 },
+  { id: 50, level: 50, text: "Whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune, or to take arms against a sea of troubles.", wpmGoal: 120, accuracyGoal: 100, coinReward: 5 },
   { id: 51, level: 51, text: "The only way to do great work is to love what you do.", wpmGoal: 121, accuracyGoal: 100, coinReward: 1 },
   { id: 52, level: 52, text: "Stay hungry, stay foolish. Never let the noise of others' opinions drown out your own inner voice.", wpmGoal: 122, accuracyGoal: 100, coinReward: 1 },
   { id: 53, level: 53, text: "The future belongs to those who believe in the beauty of their dreams.", wpmGoal: 123, accuracyGoal: 100, coinReward: 3 },
@@ -105,6 +105,16 @@ const originalTasks: Omit<Task, 'badge'>[] = [
 ];
 
 export const TASKS: Task[] = originalTasks.map(task => {
+    // Special badge for level 50
+    if (task.level === 50) {
+        return {
+            ...task,
+            badge: {
+                name: "Midway Maestro",
+                icon: 'GrandMasterTrophy'
+            }
+        };
+    }
     // Special case for the final, ultimate badge
     if (task.level === 100) {
         return {

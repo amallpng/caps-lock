@@ -44,6 +44,10 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
       isChallengeParticipant: false,
       hasClaimedShareReward: false,
       hasRevealedGrandReward: false,
+      pythonChallengeProgress: {
+        currentLevel: 1,
+        code: {},
+      },
     };
 
     users.push(newUser);

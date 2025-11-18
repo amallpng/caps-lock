@@ -31,6 +31,11 @@ const App: React.FC = () => {
       const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
       const loggedInUser = users.find(u => u.id === loggedInUserId);
       if (loggedInUser) {
+        // Data migration: Ensure older users have the python progress object
+        if (!loggedInUser.pythonChallengeProgress) {
+          loggedInUser.pythonChallengeProgress = { currentLevel: 1, code: {} };
+        }
+        
         const { password, ...userToLogin } = loggedInUser;
         setCurrentUser(userToLogin as User);
         setCurrentPage('practice');
@@ -133,7 +138,7 @@ const App: React.FC = () => {
       case 'about':
         return <AboutPage onOpenPrivacyModal={() => setIsPrivacyModalOpen(true)} />;
       case 'learnPython':
-        return <LearnPythonPage />;
+        return <LearnPythonPage user={currentUser} onUserUpdate={handleUserUpdate} />;
       default:
         return <TypingTest user={currentUser} onUserUpdate={handleUserUpdate} />;
     }
