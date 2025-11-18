@@ -295,11 +295,11 @@ const LearnPythonPage: React.FC<LearnPythonPageProps> = ({ user, onUserUpdate })
                         spellCheck="false"
                     />
                     <div className="bg-[var(--color-secondary)] p-2 rounded-b-sm border-b border-x border-[var(--color-border)] flex justify-end gap-2">
-                         <button onClick={handleRun} disabled={isRunning || isPyodideLoading} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50">
-                            {isPyodideLoading ? 'Loading Env...' : isRunning ? 'Running...' : 'Run Code'}
+                         <button onClick={handleRun} disabled={isRunning || !pyodide} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50">
+                            {isPyodideLoading ? 'Loading Env...' : !pyodide ? 'Env Error' : isRunning ? 'Running...' : 'Run Code'}
                          </button>
-                         <button onClick={handleSubmit} disabled={isRunning || isPyodideLoading} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50 bg-green-700">
-                            {isPyodideLoading ? 'Loading Env...' : isRunning ? 'Submitting...' : 'Submit'}
+                         <button onClick={handleSubmit} disabled={isRunning || !pyodide} className="btn-vintage py-1 px-3 text-sm disabled:opacity-50 bg-green-700">
+                            {isPyodideLoading ? 'Loading Env...' : !pyodide ? 'Env Error' : isRunning ? 'Submitting...' : 'Submit'}
                          </button>
                     </div>
                 </div>
