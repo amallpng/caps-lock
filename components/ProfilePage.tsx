@@ -110,8 +110,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onUserUpdate }) => {
     if (user.hasClaimedShareReward || user.isGuest) return;
 
     const shareData = {
-        title: 'CAPS LOCK - Test Your Typing Speed',
-        text: 'I\'m practicing my typing on CAPS LOCK. Come and see if you can beat my score!',
+        title: 'Typewriter - Test Your Typing Speed',
+        text: 'I\'m practicing my typing on Typewriter. Come and see if you can beat my score!',
         url: 'https://www.capslocks.in/'
     };
     

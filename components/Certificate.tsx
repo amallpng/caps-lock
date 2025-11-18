@@ -10,7 +10,7 @@ const Certificate: React.FC<CertificateProps> = ({ isUnlocked }) => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = certificateImageUrl;
-    link.setAttribute('download', 'CAPS_LOCK_Certificate_of_Achievement.jpg');
+    link.setAttribute('download', 'Typewriter_Certificate_of_Achievement.jpg');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
