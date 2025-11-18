@@ -15,7 +15,7 @@ const WelcomeModal: React.FC = () => {
             <LogoIcon className="h-20 w-20" />
         </div>
         <h2 className="text-3xl font-bold text-[var(--color-primary)] mb-2">
-            Welcome to Typewriter!
+            Welcome to CAPS LOCK!
         </h2>
         <p className="text-[var(--color-text-muted)] mb-6 text-lg">
             Get ready to improve your typing skills.

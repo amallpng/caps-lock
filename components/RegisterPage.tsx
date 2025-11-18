@@ -57,7 +57,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess, onSwitch
       <div className="flex flex-col items-center mb-6 text-center">
         <LogoIcon className="h-16 w-auto" />
         <h1 className="text-3xl font-bold text-[var(--color-text)] mt-1 tracking-wider">
-          Typewriter
+          CAPS LOCK
         </h1>
       </div>
       <h2 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">Register</h2>

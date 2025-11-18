@@ -31,7 +31,7 @@ const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ onClose }) => {
                 <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4 text-[var(--color-text-muted)] leading-relaxed">
                     <p><strong>Last Updated:</strong> October 26, 2023</p>
                     
-                    <p>Welcome to Typewriter. We are committed to protecting your privacy. This Privacy Policy explains how we handle your information when you use our web application.</p>
+                    <p>Welcome to CAPS LOCK. We are committed to protecting your privacy. This Privacy Policy explains how we handle your information when you use our web application.</p>
                     
                     <h3 className="text-xl font-semibold text-[var(--color-text)] pt-4">1. Data Storage Location</h3>
                     <p>

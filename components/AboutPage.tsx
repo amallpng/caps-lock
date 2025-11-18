@@ -14,7 +14,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onOpenPrivacyModal }) => {
       <div className="flex flex-col items-center gap-4">
         <Logo className="h-20 w-auto" />
         <p className="text-lg text-center text-[var(--color-text-muted)]">
-          Welcome to Typewriter, a typing application designed with a vintage typewriter aesthetic to make practicing your typing skills a uniquely enjoyable experience. Our goal is to help you improve your typing speed and accuracy through various engaging modes, all while tracking your progress and celebrating your achievements.
+          Welcome to CAPS LOCK, a typing application designed with a vintage typewriter aesthetic to make practicing your typing skills a uniquely enjoyable experience. Our goal is to help you improve your typing speed and accuracy through various engaging modes, all while tracking your progress and celebrating your achievements.
         </p>
       </div>
 

@@ -17,7 +17,7 @@ const Logo: React.FC<{ className?: string }> = ({ className }) => {
             style={{ fontFamily: "'Special Elite', monospace", fontSize: '150%', fontWeight: 'normal', color: 'var(--color-text)' }}
             className="hidden sm:inline"
         >
-            Typewriter
+            CAPS LOCK
         </span>
     </div>
   );
