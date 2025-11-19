@@ -1,6 +1,7 @@
 import React from 'react';
 import { User } from '../types';
 import Avatar from './Avatar';
+import CoinIcon from './icons/CoinIcon';
 
 interface LeaderboardPageProps {
     currentUser: User;
@@ -40,14 +41,26 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser }) => {
 
                     return (
                         <div key={user.id} className={`flex items-center justify-between p-4 rounded-sm transition-colors ${isCurrentUser ? 'bg-[var(--color-primary)]/30 border-2 border-[var(--color-primary)]' : 'bg-[var(--color-bg)] border border-transparent'}`}>
-                            <div className="flex items-center gap-4">
+                            {/* Left side: Rank, Avatar, Name */}
+                            <div className="flex flex-1 items-center gap-4 min-w-0">
                                 <span className={`text-2xl font-bold w-10 text-center ${rankColor}`}>{rank}</span>
-                                <Avatar avatarKey={user.profilePic} className="w-12 h-12 rounded-full" />
-                                <span className="text-lg font-semibold text-[var(--color-text)]">{user.username}</span>
+                                <Avatar avatarKey={user.profilePic} className="w-12 h-12 rounded-full flex-shrink-0" />
+                                <span className="text-lg font-semibold text-[var(--color-text)] truncate" title={user.username}>{user.username}</span>
                             </div>
-                            <div className="text-right">
-                                <p className="text-2xl font-bold text-[var(--color-text)]">{user.bestWpm || 0}</p>
-                                <p className="text-sm text-[var(--color-text-muted)]">WPM</p>
+
+                            {/* Right side: Stats */}
+                            <div className="flex flex-shrink-0 items-center gap-4 sm:gap-8 ml-4">
+                                <div className="flex items-center gap-2">
+                                    <CoinIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                                    <div className="text-right">
+                                        <p className="text-lg sm:text-xl font-bold text-[var(--color-text)]">{user.coins || 0}</p>
+                                        <p className="text-xs sm:text-sm text-[var(--color-text-muted)]">Coins</p>
+                                    </div>
+                                </div>
+                                <div className="text-right w-16 sm:w-20">
+                                    <p className="text-lg sm:text-xl font-bold text-[var(--color-text)]">{user.bestWpm || 0}</p>
+                                    <p className="text-xs sm:text-sm text-[var(--color-text-muted)]">WPM</p>
+                                </div>
                             </div>
                         </div>
                     );

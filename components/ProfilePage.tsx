@@ -3,7 +3,7 @@ import { User, PrizeClaim } from '../types';
 import { TASKS } from '../services/challengeService';
 import Badge from './Badge';
 import PerformanceAnalysis from './PerformanceAnalysis';
-import { avatarComponents, avatarOptions } from './icons/AvatarIcons';
+import { getAvatars } from '../services/avatarService';
 import Avatar from './Avatar';
 import CoinIcon from './icons/CoinIcon';
 import ScratchCard from './ScratchCard';
@@ -164,12 +164,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onUserUpdate }) => {
               <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                   <span className="text-white font-bold text-lg">Change</span>
               </div>
-              <div className="absolute top-0 left-0 w-full h-full rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-wrap justify-center items-center gap-2 p-4 bg-black/70">
-                  {avatarOptions.map(key => {
-                      const IconComponent = avatarComponents[key];
+              <div className="absolute top-0 left-0 w-max max-w-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 grid grid-cols-5 gap-2 p-2 bg-black/80 border border-[var(--color-border)]">
+                  {getAvatars().map(avatar => {
                       return (
-                          <button key={key} onClick={() => handleAvatarChange(key)} className="w-12 h-12 bg-white rounded-full p-1 hover:scale-110 transition-transform">
-                              <IconComponent />
+                          <button key={avatar.id} onClick={() => handleAvatarChange(avatar.id)} className="w-12 h-12 bg-white rounded-full p-1 hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+                              <Avatar avatarKey={avatar.id} className="w-full h-full rounded-full" />
                           </button>
                       )
                   })}

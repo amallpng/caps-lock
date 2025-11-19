@@ -212,9 +212,16 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
                 </button>
             );
         }
-        return (
-            <button onClick={handleNext} className="w-full btn-vintage bg-green-700 font-bold py-3 px-4 rounded-sm text-lg">
-                Next Question
+        if (feedback?.type === 'correct') {
+            return (
+                <button onClick={handleNext} className="w-full btn-vintage bg-green-700 font-bold py-3 px-4 rounded-sm text-lg">
+                    Next Question
+                </button>
+            );
+        }
+         return (
+            <button onClick={() => loadChallenge(activeChallenge!.level)} className="w-full btn-vintage bg-red-700 font-bold py-3 px-4 rounded-sm text-lg">
+                Try Again
             </button>
         );
     };
@@ -317,6 +324,11 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
 
             {activeChallenge ? (
                 <>
+                    <div className="w-full p-4 bg-[var(--color-bg)] border-l-4 border-[var(--color-primary)] rounded-sm shadow-sm">
+                        <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2">First, a simple explanation:</h3>
+                        <p className="text-[var(--color-text-muted)] leading-relaxed">{activeChallenge.topicExplanation}</p>
+                    </div>
+                
                     <div className="text-center p-4 bg-[var(--color-secondary)]/30 rounded-sm border-y-2 border-dashed border-[var(--color-border)]">
                         <h1 className="text-3xl font-bold text-[var(--color-primary)]">{activeChallenge.level}. {activeChallenge.title}</h1>
                         <p className="mt-2 text-[var(--color-text-muted)] text-lg leading-relaxed">{activeChallenge.question}</p>
@@ -352,7 +364,7 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
                     <div className="flex justify-between items-center mt-2">
                         <button onClick={() => setIsLearnModalOpen(true)} className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                            Learn
+                            Learn More
                         </button>
                          <div className="w-1/2">
                             {renderActionButton()}

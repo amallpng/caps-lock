@@ -13,28 +13,34 @@ const processHistory = (history: User['testHistory'], view: ViewType): ChartData
     if (!history || history.length === 0) return [];
 
     const now = new Date();
+    // Normalize `now` to the start of the day in UTC for consistent comparisons
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+
     const groupedData: { [key: string]: { totalWpm: number; count: number } } = {};
 
     history.forEach(item => {
         const itemDate = new Date(item.date);
+        // Normalize itemDate to the start of its day in UTC
+        const itemDay = new Date(Date.UTC(itemDate.getUTCFullYear(), itemDate.getUTCMonth(), itemDate.getUTCDate()));
         let key = '';
 
         if (view === 'daily') {
-            const diffDays = Math.floor((now.getTime() - itemDate.getTime()) / (1000 * 3600 * 24));
+            const diffDays = Math.floor((today.getTime() - itemDay.getTime()) / (1000 * 3600 * 24));
             if (diffDays < 14) {
-               key = itemDate.toISOString().split('T')[0];
+               key = itemDay.toISOString().split('T')[0];
             }
         } else if (view === 'weekly') {
-            const weekStart = new Date(itemDate);
-            weekStart.setDate(itemDate.getDate() - itemDate.getDay());
-            const diffWeeks = Math.floor((now.getTime() - weekStart.getTime()) / (1000 * 3600 * 24 * 7));
+            const weekStart = new Date(itemDay);
+            weekStart.setUTCDate(itemDay.getUTCDate() - itemDay.getUTCDay()); // Sunday is day 0
+            
+            const diffWeeks = Math.floor((today.getTime() - weekStart.getTime()) / (1000 * 3600 * 24 * 7));
             if (diffWeeks < 12) {
                 key = weekStart.toISOString().split('T')[0];
             }
         } else if (view === 'monthly') {
-            const diffMonths = (now.getFullYear() - itemDate.getFullYear()) * 12 + (now.getMonth() - itemDate.getMonth());
+            const diffMonths = (today.getUTCFullYear() - itemDay.getUTCFullYear()) * 12 + (today.getUTCMonth() - itemDay.getUTCMonth());
              if (diffMonths < 12) {
-                key = `${itemDate.getFullYear()}-${String(itemDate.getMonth() + 1).padStart(2, '0')}`;
+                key = `${itemDay.getUTCFullYear()}-${String(itemDay.getUTCMonth() + 1).padStart(2, '0')}`;
             }
         }
         
@@ -64,14 +70,16 @@ const PerformanceAnalysis: React.FC<{ user: User }> = ({ user }) => {
     const maxWpm = useMemo(() => chartData.length > 0 ? Math.max(...chartData.map(d => d.value), 50) : 50, [chartData]);
 
     const getFormattedLabel = (label: string) => {
-        const date = new Date(label);
+        // For 'YYYY-MM', new Date() can be off by a day depending on timezone.
+        // We append a day and specify UTC to be consistent. Using -02 avoids month-end issues.
+        const date = new Date(label.length === 7 ? `${label}-02T00:00:00Z` : `${label}T00:00:00Z`);
         switch (view) {
             case 'daily':
-                return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                return date.toLocaleDateString(undefined, { timeZone: 'UTC', month: 'short', day: 'numeric' });
             case 'weekly':
-                return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                return date.toLocaleDateString(undefined, { timeZone: 'UTC', month: 'short', day: 'numeric' });
             case 'monthly':
-                return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short' });
+                return date.toLocaleDateString(undefined, { timeZone: 'UTC', year: 'numeric', month: 'short' });
             default:
                 return label;
         }
