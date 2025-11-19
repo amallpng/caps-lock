@@ -7,6 +7,7 @@ import Badge from './Badge';
 import { updateUserAfterTest } from '../utils/statsUpdater';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { playSound } from '../services/soundService';
+import CoinIcon from './icons/CoinIcon';
 
 type CharStyle = {
   transform: string;
@@ -54,6 +55,7 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     const [charStyles, setCharStyles] = useState<CharStyle[]>([]);
     const [showBadge, setShowBadge] = useState<Task | null>(null);
     const [lastEarnedCoins, setLastEarnedCoins] = useState(0);
+    const [coinNotification, setCoinNotification] = useState<{ amount: number; key: number } | null>(null);
     const { settings } = useContext(SettingsContext);
 
     if (user.isGuest) {
@@ -103,6 +105,11 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
             
             const earnedCoins = activeTask.coinReward;
             setLastEarnedCoins(earnedCoins);
+            
+            if (earnedCoins > 0) {
+                setCoinNotification({ amount: earnedCoins, key: Date.now() });
+                setTimeout(() => setCoinNotification(null), 2500);
+            }
 
             const updatedUser = { 
                 ...user,
@@ -179,7 +186,16 @@ const ChallengeMode: React.FC<{ user: User; onUserUpdate: (user: User) => void; 
     
     if (activeTask) {
         return (
-            <div className="w-full max-w-4xl flex flex-col items-center gap-6">
+            <div className="w-full max-w-4xl flex flex-col items-center gap-6 relative">
+                 {coinNotification && (
+                    <div
+                        key={coinNotification.key}
+                        className="absolute top-1/4 left-1/2 z-50 flex items-center gap-1 font-bold text-yellow-600 animate-coin-float text-lg"
+                    >
+                        <CoinIcon className="w-6 h-6" />
+                        <span>+{coinNotification.amount} Coin{coinNotification.amount > 1 ? 's' : ''}!</span>
+                    </div>
+                 )}
                  <button onClick={() => setActiveTask(null)} className="self-start text-[var(--color-primary)] hover:underline">&larr; Back to Challenges</button>
                  
                  <div
