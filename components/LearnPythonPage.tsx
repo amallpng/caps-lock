@@ -10,6 +10,7 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
     const [isAnswered, setIsAnswered] = useState(false);
     const [feedback, setFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
     const [showRewardModal, setShowRewardModal] = useState<PythonChallenge | null>(null);
+    const [coinNotification, setCoinNotification] = useState<{ amount: number; key: number } | null>(null);
 
     // Daily attempt lock state
     const [isDailyLocked, setIsDailyLocked] = useState(false);
@@ -114,9 +115,21 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
         const correct = selectedAnswer === activeChallenge.correctAnswerIndex;
 
         if (correct) {
-            setFeedback({ type: 'correct', message: '✅ Correct!' });
             const earnedCoins = activeChallenge.coinReward || 0;
+            let feedbackMessage = '✅ Correct!';
+            
+            if (earnedCoins > 0) {
+                setCoinNotification({ amount: earnedCoins, key: Date.now() });
+                setTimeout(() => setCoinNotification(null), 2500);
+
+                if (!activeChallenge.badge) {
+                     feedbackMessage += ` You got ${earnedCoins} coin${earnedCoins > 1 ? 's' : ''}!`;
+                }
+            }
+            setFeedback({ type: 'correct', message: feedbackMessage });
+
             onUserUpdate({ ...user, coins: (user.coins || 0) + earnedCoins });
+            
             if (activeChallenge.badge) {
                 setShowRewardModal(activeChallenge);
             }
@@ -222,6 +235,12 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
 
         return 'bg-gray-200 border-gray-400 text-gray-500 opacity-70';
     };
+    
+    const totalChallenges = PYTHON_CHALLENGES.length;
+    const currentLevel = user.pythonChallengeProgress?.currentLevel || 1;
+    const completedChallenges = Math.max(0, currentLevel - 1);
+    const progressPercentage = (completedChallenges / totalChallenges) * 100;
+    const displayLevel = Math.min(currentLevel, totalChallenges);
 
     return (
         <>
@@ -255,12 +274,47 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
             </div>
         )}
         <div className="w-full max-w-3xl flex flex-col gap-6">
-            {user.pythonChallengeProgress?.pythonCourseStartDate && (
-                 <div className="w-full text-center p-2 bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-sm">
-                    <p className="text-lg text-[var(--color-text-muted)]">Course access ends in:</p>
-                    <p className="text-3xl font-bold text-[var(--color-primary)] tracking-widest">{courseTimeLeft || '...'}</p>
+            <div className="w-full bg-[var(--color-bg)] p-4 border-2 border-dashed border-[var(--color-border)] rounded-sm">
+                <div className="flex justify-between items-center mb-2">
+                    <h2 className="text-xl font-bold text-[var(--color-primary)]">Your Progress</h2>
+                    <span className="font-semibold text-[var(--color-text-muted)]">
+                        Challenge {displayLevel} / {totalChallenges}
+                    </span>
                 </div>
-            )}
+                <div
+                    role="progressbar"
+                    aria-valuenow={completedChallenges}
+                    aria-valuemin={0}
+                    aria-valuemax={totalChallenges}
+                    className="relative w-full h-6 bg-[var(--color-secondary)] rounded-sm border-2 border-[var(--color-text)] overflow-hidden shadow-inner"
+                >
+                    <div 
+                        className="absolute top-0 left-0 h-full bg-[var(--color-primary)] transition-all duration-700 ease-out"
+                        style={{ width: `${progressPercentage}%` }}
+                    ></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-bold text-sm text-[var(--color-bg)]" style={{ textShadow: '1px 1px 1px var(--color-text)'}}>
+                            {Math.round(progressPercentage)}%
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="w-full flex flex-col sm:flex-row gap-4 items-stretch">
+                {user.pythonChallengeProgress?.pythonCourseStartDate && (
+                    <div className="flex-1 text-center p-2 bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-sm flex flex-col justify-center">
+                        <p className="text-base text-[var(--color-text-muted)]">Course ends in:</p>
+                        <p className="text-2xl font-bold text-[var(--color-primary)] tracking-widest">{courseTimeLeft || '...'}</p>
+                    </div>
+                )}
+                <div className="flex-1 text-center p-2 bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-sm flex flex-col justify-center">
+                    <p className="text-base text-[var(--color-text-muted)]">Incorrect Attempts Left Today:</p>
+                    <p className="text-2xl font-bold text-[var(--color-primary)]">
+                        {Math.max(0, 2 - (user.pythonChallengeProgress?.attemptsToday || 0))} / 2
+                    </p>
+                </div>
+            </div>
+
             {activeChallenge ? (
                 <>
                     <div className="text-center p-4 bg-[var(--color-secondary)]/30 rounded-sm border-y-2 border-dashed border-[var(--color-border)]">
@@ -284,7 +338,18 @@ const LearnPythonPage: React.FC<{ user: User; onUserUpdate: (user: User) => void
                             </button>
                         ))}
                     </div>
-                    <div className="flex justify-between items-center mt-4">
+                    <div className="h-10 relative">
+                        {coinNotification && (
+                            <div
+                                key={coinNotification.key}
+                                className="absolute bottom-0 left-1/2 flex items-center gap-1 font-bold text-yellow-600 animate-coin-float text-lg"
+                            >
+                                <CoinIcon className="w-6 h-6" />
+                                <span>+{coinNotification.amount} Coin{coinNotification.amount > 1 ? 's' : ''}!</span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex justify-between items-center mt-2">
                         <button onClick={() => setIsLearnModalOpen(true)} className="flex items-center gap-2 text-[var(--color-primary)] hover:underline font-semibold">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                             Learn

@@ -46,7 +46,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "Python is dynamically typed, which means you don't need to declare the type of a variable. You simply use the variable name, followed by the assignment operator (`=`), and then the value.",
         example: `user_name = "Alice"\nuser_age = 30\nprint(user_name)\nprint(user_age)`,
-        coinReward: 1
+        coinReward: 0
     },
     {
         level: 3,
@@ -77,7 +77,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `+` operator can be used to concatenate (join) strings in Python. It joins them directly without adding any spaces. To add a space, you would need to include it, like `print(part1 + ' ' + part2)`.",
         example: `greeting = "Hi there, "\nname = "Casey"\nwelcome_message = greeting + name\nprint(welcome_message) # Output: Hi there, Casey`,
-        coinReward: 1
+        coinReward: 0
     },
     {
         level: 5,
@@ -92,7 +92,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "In Python, numbers with a decimal point are called 'floats' (floating-point numbers). 'Integers' are whole numbers without a decimal part.",
         example: `my_integer = 100\nmy_float = 3.14\nmy_string = "Hello!"\nmy_boolean = True\n\nprint(type(my_float)) # Output: <class 'float'>`,
-        coinReward: 1
+        coinReward: 0
     },
     {
         level: 6,
@@ -107,7 +107,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 3,
         explanation: "Python uses zero-based indexing for lists. This means the first item is at index 0, the second at index 1, and the third at index 2. We use square brackets `[]` to access items by their index.",
         example: `fruits = ["apple", "banana", "cherry"]\nfirst_fruit = fruits[0] # "apple"\nlast_fruit = fruits[-1] # "cherry"\nprint(first_fruit)`,
-        coinReward: 1
+        coinReward: 0
     },
     {
         level: 7,
@@ -123,7 +123,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "Lists in Python have a built-in method called `.append()` which is used to add a single item to the very end of the list.",
         example: `my_list = [1, 2, 3]\nmy_list.append(4)\nprint(my_list) # Output: [1, 2, 3, 4]`,
-        coinReward: 1
+        coinReward: 0
     },
     {
         level: 8,
@@ -138,7 +138,8 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         ],
         correctAnswerIndex: 2,
         explanation: "A `for` loop iterates over each item in a sequence (like a list). In each iteration, the variable `i` takes the value of the current item, and the `print(i)` function is called, which prints each number on a new line.",
-        example: `colors = ["red", "green", "blue"]\nfor color in colors:\n    print(f"I like the color {color}")`,
+        // FIX: Escaped template literal placeholder to prevent TS interpolation.
+        example: `colors = ["red", "green", "blue"]\nfor color in colors:\n    print(f"I like the color \${color}")`,
         coinReward: 1
     },
     {
@@ -155,7 +156,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `if` condition `temperature > 30` is checked. Since `25` is not greater than `30`, the condition is false. The program then executes the code inside the `else` block.",
         example: `age = 17\nif age >= 18:\n    print("You are an adult.")\nelse:\n    print("You are a minor.")`,
-        coinReward: 1
+        coinReward: 0
     },
     {
         level: 10,
@@ -171,7 +172,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The loop iterates through each number in the list. For each number, the `if` statement checks if it's greater than 50. Only `55` and `80` satisfy this condition, so only they are printed.",
         example: `scores = [88, 92, 75, 59, 95]\npassing_scores = []\nfor score in scores:\n    if score > 60:\n        passing_scores.append(score)\nprint(passing_scores) # Output: [88, 92, 75, 95]`,
-        coinReward: 5,
+        coinReward: 1,
         badge: { name: "Python Apprentice", icon: 'LevelBadge10' }
     },
     // Levels 11-20
@@ -184,7 +185,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `if` condition (`85 > 90`) is false. The program moves to the `elif` (else if) condition (`85 > 80`), which is true. The code inside this block is executed, and the rest of the chain (`else`) is skipped.",
         example: `num = 0\nif num > 0:\n    print("Positive")\nelif num < 0:\n    print("Negative")\nelse:\n    print("Zero")`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 12,
@@ -194,7 +195,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "In Python, a single equals sign (`=`) is for assignment. To check for equality, you must use the double equals sign (`==`).",
         example: `a = 5\nb = 5\nif a == b:\n    print("a is equal to b")`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 13,
@@ -209,7 +210,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The logical operator `and` requires both the condition on its left and the condition on its right to be true for the entire expression to evaluate to True.",
         example: `age = 25\nhas_license = True\nif age > 18 and has_license:\n    print("Allowed to drive")`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 14,
@@ -219,7 +220,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "Python has built-in functions like `int()`, `float()`, and `str()` to convert values between different data types.",
         example: `num_string = "123"\nnum_integer = int(num_string)\nresult = num_integer + 10\nprint(result) # Output: 133`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 15,
@@ -230,7 +231,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "Dictionaries store data in key-value pairs. You access a value by putting its corresponding key inside square brackets `[]`.",
         example: `car = {"brand": "Ford", "model": "Mustang", "year": 1964}\nprint(car["brand"]) # Output: Ford`,
-        coinReward: 2
+        coinReward: 1
     },
     {
         level: 16,
@@ -245,7 +246,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "To add or update an item in a dictionary, you use the square bracket notation with the key and assign it a new value.",
         example: `student = {"name": "Alex"}\nstudent["grade"] = "A"\nprint(student) # Output: {'name': 'Alex', 'grade': 'A'}`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 17,
@@ -256,7 +257,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `while` loop continues as long as its condition (`count < 5`) is true. The loop runs for `count` values 0, 1, 2, 3, and 4. When `count` becomes 5, the condition is false, and the loop stops. This is a total of 5 iterations.",
         example: `i = 1\nwhile i <= 3:\n    print(f"Loop iteration {i}")\n    i += 1`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 18,
@@ -266,7 +267,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "Slicing extracts a part of a sequence. The syntax is `[start:end]`. The `start` index is inclusive, and the `end` index is exclusive. So, it gets characters at index 1 ('y'), 2 ('t'), and 3 ('h').",
         example: `word = "Programming"\n# Get characters from index 3 up to (but not including) 7\nprint(word[3:7]) # Output: "gram"`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 19,
@@ -277,7 +278,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "When you omit the `end` index in a slice (`[start:]`), it goes from the `start` index all the way to the end of the list. Here, it starts at index 2 ('c') and includes everything after it.",
         example: `numbers = [0, 1, 2, 3, 4, 5, 6]\n# Get a slice from the beginning up to index 3\nprint(numbers[:4]) # Output: [0, 1, 2, 3]`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 20,
@@ -292,7 +293,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "The `.items()` method is very useful for looping because it provides both the key and the value in each iteration. For example: `for key, value in my_dict.items():`",
         example: `capitals = {"USA": "Washington D.C.", "France": "Paris"}\nfor country, capital in capitals.items():\n    print(f"The capital of {country} is {capital}.")`,
-        coinReward: 5,
+        coinReward: 0,
         badge: { name: "Data Wrangler", icon: 'LevelBadge20' }
     },
     // Levels 21-30
@@ -304,7 +305,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `def` keyword, short for 'define', is used to start a function definition in Python. It is followed by the function name and parentheses.",
         example: `def say_hello():\n    print("Hello from a function!")\n\nsay_hello() # Call the function`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 22,
@@ -314,8 +315,9 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         options: ["Hello, {name}!", "Hello, name!", "Hello, Bob!", "An error will occur"],
         correctAnswerIndex: 2,
         explanation: "When the `greet` function is called with the argument \"Bob\", the value \"Bob\" is assigned to the `name` parameter inside the function. The f-string then uses this value to construct the final output.",
-        example: `def add_numbers(a, b):\n    result = a + b\n    print(f"The sum is: {result}")\n\nadd_numbers(5, 10)`,
-        coinReward: 2
+        // FIX: Escaped template literal placeholder to prevent TS interpolation.
+        example: `def add_numbers(a, b):\n    result = a + b\n    print(f"The sum is: \${result}")\n\nadd_numbers(5, 10)`,
+        coinReward: 1
     },
     {
         level: 23,
@@ -325,7 +327,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "The `return` keyword exits a function and optionally passes a value back to the code that called it. This allows you to store the result of a function in a variable.",
         example: `def multiply(x, y):\n    return x * y\n\nproduct = multiply(4, 5)\nprint(product) # Output: 20`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 24,
@@ -335,7 +337,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `.upper()` string method returns a new string where all the characters of the original string are converted to uppercase.",
         example: `message = "this is a test"\nprint(message.upper()) # Output: THIS IS A TEST`,
-        coinReward: 2
+        coinReward: 1
     },
     {
         level: 25,
@@ -349,9 +351,9 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         ],
         correctAnswerIndex: 0,
         explanation: "f-Strings (formatted string literals) are a modern way to embed expressions inside string literals. You prefix the string with an `f` and write expressions inside curly braces `{}`.",
-        // FIX: Escaped the dollar sign to prevent TypeScript from interpreting it as a template literal variable.
-        example: `item = "book"\ncost = 15\nprint(f"The {item} costs \${cost}.")`,
-        coinReward: 2
+        // FIX: Defined missing variable `cost` and escaped template literal placeholders.
+        example: `item = "book"\ncost = 15\nprint(f"The \${item} costs \\$\${cost}.")`,
+        coinReward: 1
     },
     {
         level: 26,
@@ -361,7 +363,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The built-in `len()` function returns the number of items in an object, whether it's a list, string, tuple, or dictionary. The list `[10, 20, 30]` contains 3 items.",
         example: `my_name = "David"\nprint(len(my_name)) # Output: 5`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 27,
@@ -371,7 +373,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `in` operator checks for membership. It returns `True` if a sequence is found within another sequence, and `False` otherwise. The string 'fox' is not present in 'the big dog'.",
         example: `if "apple" in ["orange", "banana", "apple"]:\n    print("Found an apple!")`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 28,
@@ -381,7 +383,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "The `.replace()` method returns a new string where all occurrences of a specified substring are replaced with another. In this case, both 'l's are replaced with 'p's.",
         example: `sentence = "I like cats."\nnew_sentence = sentence.replace("cats", "dogs")\nprint(new_sentence) # Output: I like dogs.`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 29,
@@ -391,7 +393,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "The `.split()` method breaks a string into a list of smaller strings, using the specified delimiter as the separator. Here, it splits the string at each hyphen `-`.",
         example: `csv_data = "John,Doe,30"\nfields = csv_data.split(',')\nprint(fields) # Output: ['John', 'Doe', '30']`,
-        coinReward: 2
+        coinReward: 0
     },
     {
         level: 30,
@@ -405,8 +407,9 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         ],
         correctAnswerIndex: 2,
         explanation: "Functions help you organize code into logical blocks. This makes your code more readable, easier to debug, and allows you to call the same block of code from multiple places without repeating yourself (the DRY principle: Don't Repeat Yourself).",
-        example: `# Without a function\nprint("Welcome, Alice!")\nprint("Have a great day!")\n\nprint("Welcome, Bob!")\nprint("Have a great day!")\n\n# With a function (reusable)\ndef greet(name):\n    print(f"Welcome, {name}!")\n    print("Have a great day!")\n\ngreet("Alice")\ngreet("Bob")`,
-        coinReward: 5,
+        // FIX: Escaped template literal placeholder to prevent TS interpolation.
+        example: `# Without a function\nprint("Welcome, Alice!")\nprint("Have a great day!")\n\nprint("Welcome, Bob!")\nprint("Have a great day!")\n\n# With a function (reusable)\ndef greet(name):\n    print(f"Welcome, \${name}!")\n    print("Have a great day!")\n\ngreet("Alice")\ngreet("Bob")`,
+        coinReward: 1,
         badge: { name: "Function Virtuoso", icon: 'LevelBadge30' }
     },
     // Levels 31-40
@@ -423,7 +426,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "A key feature of tuples (defined with `()`) is that they are immutable, meaning their contents cannot be changed after creation. Lists (defined with `[]`) are mutable, so you can add, remove, or change items.",
         example: `point = (10, 20) # A tuple representing coordinates\nprint(point[0]) # Accessing elements\n# point[0] = 15 would cause an error!`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 32,
@@ -434,7 +437,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "Sets are unordered collections of unique items. When you create a set with duplicate values, the duplicates are automatically removed.",
         example: `unique_numbers = {10, 20, 30, 20, 10}\nprint(len(unique_numbers)) # Output: 3`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 33,
@@ -445,7 +448,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "The `.keys()` method returns a view object that displays a list of all the keys in the dictionary. Similarly, `.values()` returns the values, and `.items()` returns key-value pairs.",
         example: `car = {"brand": "Ford", "model": "Mustang"}\nfor key in car.keys():\n    print(key)`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 34,
@@ -456,7 +459,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "For nested lists (a list of lists), you use multiple indices. The first index selects the inner list (`matrix[2]` gets `[7, 8]`), and the second index selects the item within that inner list (`[1]` gets `8`).",
         example: `grid = [[ 'X', 'O', 'X' ], [ 'O', 'X', 'O' ]]\n# Change the center 'X' to 'O'\ngrid[1][1] = 'O'`,
-        coinReward: 3
+        coinReward: 1
     },
     {
         level: 35,
@@ -471,7 +474,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "List comprehensions provide a concise way to create lists. The syntax is `[expression for item in iterable]`. Here, `x*x` is the expression applied to each `x` in the list `[0, 1, 2]`.",
         example: `# Traditional for loop\neven_numbers = []\nfor i in range(10):\n    if i % 2 == 0:\n        even_numbers.append(i)\n\n# List comprehension (more concise)\neven_numbers_comp = [i for i in range(10) if i % 2 == 0]`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 36,
@@ -481,7 +484,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 3,
         explanation: "The `import` statement is used to bring modules or packages into the current scope, allowing you to use their functions and variables. For example, after `import math`, you can use `math.sqrt()`.",
         example: `import math\n\n# Calculate the square root of 16\nprint(math.sqrt(16)) # Output: 4.0`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 37,
@@ -490,8 +493,9 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         options: ["random.randint()", "random.choice()", "random.pick()", "random.select()"],
         correctAnswerIndex: 1,
         explanation: "`random.choice(sequence)` returns a randomly selected element from a non-empty sequence (like a list or a string). `random.randint(a, b)` is used for getting a random integer.",
-        example: `import random\n\noptions = ["rock", "paper", "scissors"]\ncomputer_choice = random.choice(options)\nprint(f"Computer chose: {computer_choice}")`,
-        coinReward: 3
+        // FIX: Escaped template literal placeholder to prevent TS interpolation.
+        example: `import random\n\noptions = ["rock", "paper", "scissors"]\ncomputer_choice = random.choice(options)\nprint(f"Computer chose: \${computer_choice}")`,
+        coinReward: 0
     },
     {
         level: 38,
@@ -506,7 +510,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `try...except` block is used for error handling. Python runs the code in the `try` block. If an error (exception) occurs, it stops and jumps to the `except` block, preventing the program from crashing.",
         example: `try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("You can't divide by zero!")`,
-        coinReward: 3
+        coinReward: 1
     },
     {
         level: 39,
@@ -516,7 +520,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "In Python, the hash symbol (`#`) is used to start a comment. The interpreter ignores everything from the `#` to the end of that line. This is useful for explaining code.",
         example: `# This is a comment to explain the next line\nuser_age = 25 # This is an inline comment`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 40,
@@ -530,8 +534,9 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         ],
         correctAnswerIndex: 1,
         explanation: "Modules are files containing Python definitions and statements. They allow you to logically organize your Python code. More importantly, you can import powerful, pre-built modules like `math`, `random`, or `datetime` to solve complex problems without reinventing the wheel.",
-        example: `import datetime\n\ncurrent_time = datetime.datetime.now()\nprint(f"The current date and time is: {current_time}")`,
-        coinReward: 5,
+        // FIX: Escaped template literal placeholder to prevent TS interpolation.
+        example: `import datetime\n\ncurrent_time = datetime.datetime.now()\nprint(f"The current date and time is: \${current_time}")`,
+        coinReward: 1,
         badge: { name: "Module Master", icon: 'LevelBadge40' }
     },
     // Levels 41-50
@@ -548,7 +553,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "A class acts as a template or blueprint. It defines the properties (attributes) and behaviors (methods) that all objects created from that class will have.",
         example: `class Dog:\n    # This class is a blueprint for dogs.\n    # We can create many individual Dog objects from it.\n    pass`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 42,
@@ -563,7 +568,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "The `__init__()` method is a constructor. It's automatically called when you create a new instance of a class, and it's where you set up the initial state (attributes) of the object.",
         example: `class Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\np1 = Person("Alice", 30)`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 43,
@@ -573,7 +578,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "To create an instance of a class, you call the class name as if it were a function. This process is called instantiation. For example, `my_car = Car()`.",
         example: `class Cat:\n    species = "Felis catus"\n\n# Create two different instances (objects) of the Cat class\ncat1 = Cat()\ncat2 = Cat()`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 44,
@@ -584,7 +589,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "You use dot notation (`.`) to access the attributes (and methods) of an object. `my_car.color` will retrieve the value of the `color` attribute.",
         example: `class Book:\n    def __init__(self):\n        self.title = "1984"\n\nmy_book = Book()\nprint(my_book.title) # Access and print the title attribute`,
-        coinReward: 3
+        coinReward: 1
     },
     {
         level: 45,
@@ -594,7 +599,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "By convention, the first parameter of any method in a class is `self`. It's a reference to the instance of the object itself, allowing you to access its attributes and other methods, like `self.color`.",
         example: `class Counter:\n    def __init__(self):\n        self.count = 0\n\n    def increment(self):\n        self.count += 1 # 'self' is used to access the object's own 'count'`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 46,
@@ -609,7 +614,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 2,
         explanation: "A lambda function is a small, anonymous function defined with the `lambda` keyword. It can take any number of arguments but can only have one expression, whose value is returned.",
         example: `# A regular function\ndef double(x):\n    return x * 2\n\n# An equivalent lambda function\ndouble_lambda = lambda x: x * 2\n\nprint(double_lambda(5)) # Output: 10`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 47,
@@ -620,7 +625,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `map()` function applies a given function to every item of an iterable (like a list) and returns a map object. Here, it applies the lambda function `x + 1` to each number in `nums`.",
         example: `numbers_str = ["1", "2", "3"]\n# Convert all strings in the list to integers\nnumbers_int = list(map(int, numbers_str))\nprint(numbers_int) # Output: [1, 2, 3]`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 48,
@@ -635,7 +640,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "The `filter()` function constructs an iterator from elements of an iterable for which a function returns `True`. It's used to selectively keep items that meet a certain condition.",
         example: `numbers = [-2, -1, 0, 1, 2]\n# Keep only the positive numbers\npositive_nums = list(filter(lambda x: x > 0, numbers))\nprint(positive_nums) # Output: [1, 2]`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 49,
@@ -650,7 +655,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 1,
         explanation: "Inheritance is a powerful feature that allows one class (the child class) to inherit the properties and methods of another class (the parent class). This promotes code reuse and logical hierarchies.",
         example: `class Animal:\n    def speak(self):\n        return "Some animal sound"\n\nclass Dog(Animal): # Dog inherits from Animal\n    pass\n\nmy_dog = Dog()\nprint(my_dog.speak()) # Can use the parent's method`,
-        coinReward: 3
+        coinReward: 0
     },
     {
         level: 50,
@@ -665,7 +670,7 @@ export const PYTHON_CHALLENGES: PythonChallenge[] = [
         correctAnswerIndex: 0,
         explanation: "This demonstrates function composition. To follow the order of operations `(5 + 3) * 2`, you must first call the `add` function with 5 and 3. The result of that function call (which is 8) is then used as the first argument to the `multiply` function.",
         example: `def square(n):\n    return n * n\n\ndef increment(n):\n    return n + 1\n\n# Calculate (3^2) + 1\nresult = increment(square(3))\nprint(result) # Output: 10`,
-        coinReward: 10,
+        coinReward: 1,
         badge: { name: "Python Calculator Pro", icon: 'GrandMasterTrophy' }
     }
 ];

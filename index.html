@@ -105,6 +105,27 @@
       .avatar-animate {
         animation: avatar-bob 3s ease-in-out infinite;
       }
+      @keyframes coin-float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(10px) translateX(-50%);
+        }
+        20% {
+          opacity: 1;
+          transform: translateY(0) translateX(-50%);
+        }
+        80% {
+          opacity: 1;
+          transform: translateY(0) translateX(-50%);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-15px) translateX(-50%);
+        }
+      }
+      .animate-coin-float {
+        animation: coin-float-up 2.5s ease-in-out forwards;
+      }
     </style>
   <script type="importmap">
 {
