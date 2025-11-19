@@ -1,26 +1,13 @@
 import React from 'react';
 import { User } from '../types';
 import Avatar from './Avatar';
+import CoinIcon from './icons/CoinIcon';
 
 interface LeaderboardPageProps {
     currentUser: User;
 }
 
 const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser }) => {
-    if (currentUser.isGuest) {
-        return (
-            <div className="w-full max-w-xl bg-[var(--color-secondary)]/50 p-8 rounded-sm border-2 border-dashed border-[var(--color-border)] flex flex-col items-center gap-6 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                <h2 className="text-3xl font-bold text-[var(--color-primary)]">Access Denied</h2>
-                <p className="text-lg text-[var(--color-text-muted)] leading-relaxed">
-                    The leaderboard is only available to registered users. Please log in or create an account to view your ranking and compete with others.
-                </p>
-            </div>
-        );
-    }
-
     const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const sortedUsers = [...allUsers]
         .filter(u => !u.isGuest)
@@ -40,14 +27,20 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser }) => {
 
                     return (
                         <div key={user.id} className={`flex items-center justify-between p-4 rounded-sm transition-colors ${isCurrentUser ? 'bg-[var(--color-primary)]/30 border-2 border-[var(--color-primary)]' : 'bg-[var(--color-bg)] border border-transparent'}`}>
-                            <div className="flex items-center gap-4">
-                                <span className={`text-2xl font-bold w-10 text-center ${rankColor}`}>{rank}</span>
-                                <Avatar avatarKey={user.profilePic} className="w-12 h-12 rounded-full" />
-                                <span className="text-lg font-semibold text-[var(--color-text)]">{user.username}</span>
+                            <div className="flex items-center gap-4 min-w-0">
+                                <span className={`text-2xl font-bold w-10 flex-shrink-0 text-center ${rankColor}`}>{rank}</span>
+                                <Avatar avatarKey={user.profilePic} className="w-12 h-12 rounded-full flex-shrink-0" />
+                                <span className="text-lg font-semibold text-[var(--color-text)] truncate">{user.username}</span>
                             </div>
-                            <div className="text-right">
-                                <p className="text-2xl font-bold text-[var(--color-text)]">{user.bestWpm || 0}</p>
-                                <p className="text-sm text-[var(--color-text-muted)]">WPM</p>
+                            <div className="flex items-center gap-6 ml-4">
+                                <div className="hidden sm:flex items-center gap-2" title="Coins">
+                                    <CoinIcon className="w-6 h-6" />
+                                    <span className="text-xl font-bold text-[var(--color-text)] w-12 text-left">{user.coins || 0}</span>
+                                </div>
+                                <div className="text-right w-20 flex-shrink-0">
+                                    <p className="text-2xl font-bold text-[var(--color-text)]">{user.bestWpm || 0}</p>
+                                    <p className="text-sm text-[var(--color-text-muted)]">WPM</p>
+                                </div>
                             </div>
                         </div>
                     );
