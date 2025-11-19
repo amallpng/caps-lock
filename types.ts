@@ -8,7 +8,7 @@ export interface User {
   email?: string;
   provider?: 'local' | 'google';
   isGuest?: boolean;
-  profilePic: string; // Key for a predefined avatar component or custom avatar
+  profilePic: string; // Key for a predefined avatar component
   completedTasks: number[]; // Array of task IDs
   bestWpm: number;
   streak: number;
@@ -75,10 +75,4 @@ export interface PrizeClaim {
   prizeName: string;
   prizeAmount: number;
   date: string;
-}
-
-export interface AvatarData {
-  id: string;
-  type: 'component' | 'base64';
-  data?: string; // Base64 string for custom avatars
 }

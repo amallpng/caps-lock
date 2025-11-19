@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// FIX: Import AvatarData from types.ts where it is defined and exported, not from avatarService.
-import { User, PrizeClaim, AvatarData } from '../types';
+import { User, PrizeClaim } from '../types';
 import { TASKS } from '../services/challengeService';
-import { getAvatars, addAvatar, deleteAvatar, fileToBase64 } from '../services/avatarService';
-import Avatar from './Avatar';
 
 interface CreatorModalProps {
     onClose: () => void;
@@ -11,7 +8,7 @@ interface CreatorModalProps {
 
 const CORRECT_PIN = '9495163518';
 
-type ActiveTab = 'registrations' | 'manageUsers' | 'prizeClaims' | 'manageAvatars';
+type ActiveTab = 'registrations' | 'manageUsers' | 'prizeClaims';
 
 const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
     const [pin, setPin] = useState('');
@@ -22,7 +19,6 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
     const [registeredUsers, setRegisteredUsers] = useState<User[]>([]);
     const [allUsers, setAllUsers] = useState<User[]>([]);
     const [prizeClaims, setPrizeClaims] = useState<PrizeClaim[]>([]);
-    const [avatars, setAvatars] = useState<AvatarData[]>([]);
     const [expandedClaimId, setExpandedClaimId] = useState<string | null>(null);
 
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
@@ -34,7 +30,6 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
         const manageableUsers = usersFromStorage.filter(user => !user.isGuest);
         setRegisteredUsers(pythonUsers);
         setAllUsers(manageableUsers);
-        setAvatars(getAvatars());
 
         const claimsFromStorage: PrizeClaim[] = JSON.parse(localStorage.getItem('prizeClaims') || '[]');
         setPrizeClaims(claimsFromStorage.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
@@ -107,32 +102,6 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
 
         setEditingUserId(null);
         setEditingUsername('');
-    };
-
-    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        if (file.size > 500 * 1024) { // 500 KB limit
-            alert('File is too large. Please upload an image under 500 KB.');
-            return;
-        }
-
-        try {
-            const base64Data = await fileToBase64(file);
-            addAvatar(base64Data);
-            fetchData(); // Refresh data
-        } catch (error) {
-            console.error("Error converting file to base64", error);
-            alert('Failed to upload avatar.');
-        }
-    };
-
-    const handleAvatarDelete = (id: string) => {
-        if (window.confirm('Are you sure you want to delete this custom avatar?')) {
-            deleteAvatar(id);
-            fetchData(); // Refresh data
-        }
     };
 
 
@@ -311,43 +280,6 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
         </div>
     );
 
-    const renderAvatarManagement = () => (
-        <div>
-            <h2 className="text-2xl font-bold text-[var(--color-primary)] mb-6">Manage Avatars ({avatars.length})</h2>
-            <div className="mb-6 p-4 border-2 border-dashed border-[var(--color-border)] rounded-sm">
-                <h3 className="text-xl font-semibold text-[var(--color-text)] mb-2">Add New Avatar</h3>
-                <p className="text-sm text-[var(--color-text-muted)] mb-3">Upload a square image (PNG, JPG, SVG). Max size: 500KB.</p>
-                <input
-                    type="file"
-                    accept="image/png, image/jpeg, image/svg+xml"
-                    onChange={handleAvatarUpload}
-                    className="w-full text-sm text-[var(--color-text-muted)] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-2 file:border-[var(--color-text)] file:font-semibold file:bg-[var(--color-primary)] file:text-[var(--color-bg)] hover:file:opacity-90 file:cursor-pointer"
-                />
-            </div>
-            <div className="max-h-80 overflow-y-auto pr-2">
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
-                    {avatars.map(avatar => (
-                        <div key={avatar.id} className="relative group flex flex-col items-center text-center">
-                            <Avatar avatarKey={avatar.id} className="w-20 h-20 rounded-full border-2 border-[var(--color-border)]" />
-                            <p className="text-xs mt-1 text-[var(--color-text-muted)] truncate w-full">
-                                {avatar.type === 'component' ? 'Default' : 'Custom'}
-                            </p>
-                            {avatar.type === 'base64' && (
-                                <button
-                                    onClick={() => handleAvatarDelete(avatar.id)}
-                                    className="absolute top-0 right-0 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
-                                    aria-label="Delete avatar"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-
 
     return (
         <div 
@@ -409,19 +341,12 @@ const CreatorModal: React.FC<CreatorModalProps> = ({ onClose }) => {
                                 >
                                     Prize Claims
                                 </button>
-                                <button
-                                    onClick={() => setActiveTab('manageAvatars')}
-                                    className={`py-2 px-4 font-bold text-lg ${activeTab === 'manageAvatars' ? 'text-[var(--color-primary)] border-b-4 border-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
-                                >
-                                    Avatars
-                                </button>
                             </nav>
                         </div>
                         
                         {activeTab === 'registrations' && renderRegistrations()}
                         {activeTab === 'manageUsers' && renderUserManagement()}
                         {activeTab === 'prizeClaims' && renderPrizeClaims()}
-                        {activeTab === 'manageAvatars' && renderAvatarManagement()}
 
                         <button onClick={onClose} className="mt-6 w-full btn-vintage font-bold py-2 px-4 rounded-sm">
                             Close
