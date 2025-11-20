@@ -4,21 +4,33 @@ import Avatar from './Avatar';
 import CoinIcon from './icons/CoinIcon';
 
 interface LeaderboardPageProps {
-    currentUser: User;
+    currentUser: User | null;
+    onBack?: () => void;
 }
 
-const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser }) => {
+const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser, onBack }) => {
     const allUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const sortedUsers = [...allUsers]
         .filter(u => !u.isGuest)
         .sort((a, b) => (b.bestWpm || 0) - (a.bestWpm || 0));
 
     return (
-        <div className="w-full max-w-4xl flex flex-col items-center gap-8">
+        <div className="w-full max-w-4xl flex flex-col items-center gap-8 relative">
+            {onBack && (
+                <button 
+                    onClick={onBack}
+                    className="self-start md:absolute md:left-0 md:top-2 text-[var(--color-primary)] hover:underline font-semibold flex items-center gap-1 mb-4 md:mb-0"
+                >
+                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                    </svg>
+                    Back to Login
+                </button>
+            )}
             <h1 className="text-4xl font-bold text-[var(--color-primary)]">Leaderboard</h1>
             <div className="w-full bg-[var(--color-secondary)]/50 p-6 rounded-sm border-2 border-[var(--color-border)] space-y-4">
                 {sortedUsers.length > 0 ? sortedUsers.map((user, index) => {
-                    const isCurrentUser = user.id === currentUser.id;
+                    const isCurrentUser = currentUser && user.id === currentUser.id;
                     const rank = index + 1;
                     let rankColor = '';
                     if (rank === 1) rankColor = 'text-yellow-500';

@@ -6,6 +6,7 @@ import { LogoIcon } from './icons/Logo';
 interface LoginPageProps {
   onLogin: (user: User) => void;
   onSwitchToRegister: () => void;
+  onShowLeaderboard: () => void;
 }
 
 const GoogleIcon = () => (
@@ -17,7 +18,7 @@ const GoogleIcon = () => (
     </svg>
 );
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister, onShowLeaderboard }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -209,6 +210,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
                 className="w-full flex items-center justify-center gap-3 bg-transparent text-[var(--color-text-muted)] font-semibold py-2 px-4 rounded-sm border-2 border-dashed border-[var(--color-border)] hover:bg-[var(--color-secondary)]/50 hover:text-[var(--color-text)] transition-colors"
             >
                 Login as Guest
+            </button>
+            <button
+                type="button"
+                onClick={onShowLeaderboard}
+                className="w-full flex items-center justify-center gap-3 bg-transparent text-[var(--color-primary)] font-semibold py-2 px-4 rounded-sm border-2 border-dashed border-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-colors"
+            >
+                View Public Leaderboard
             </button>
           </div>
 

@@ -131,11 +131,16 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     if (!currentUser) {
+      // Allow public access to leaderboard
+      if (currentPage === 'leaderboard') {
+         return <LeaderboardPage currentUser={null} onBack={() => setCurrentPage('login')} />;
+      }
+
       switch (currentPage) {
         case 'register':
           return <RegisterPage onRegisterSuccess={() => setCurrentPage('login')} onSwitchToLogin={() => setCurrentPage('login')} />;
         default:
-          return <LoginPage onLogin={handleLogin} onSwitchToRegister={() => setCurrentPage('register')} />;
+          return <LoginPage onLogin={handleLogin} onSwitchToRegister={() => setCurrentPage('register')} onShowLeaderboard={() => setCurrentPage('leaderboard')} />;
       }
     }
 
@@ -164,6 +169,11 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+      {!currentUser && currentPage === 'leaderboard' && (
+          <header className="w-full bg-[var(--color-secondary)] border-b-2 border-[var(--color-text)] shadow-md h-20 flex items-center justify-center">
+              <span style={{ fontFamily: "'Special Elite', monospace", fontSize: '150%', fontWeight: 'normal', color: 'var(--color-text)' }}>CAPS LOCK</span>
+          </header>
+      )}
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
         {isTutorialModalOpen && <TutorialModal onClose={handleTutorialFinish} />}
         {isChallengeModalOpen && currentUser && (
