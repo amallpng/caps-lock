@@ -211,13 +211,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister, onSh
             >
                 Login as Guest
             </button>
-            <button
-                type="button"
-                onClick={onShowLeaderboard}
-                className="w-full flex items-center justify-center gap-3 bg-transparent text-[var(--color-primary)] font-semibold py-2 px-4 rounded-sm border-2 border-dashed border-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-colors"
-            >
-                View Public Leaderboard
-            </button>
           </div>
 
           <p className="mt-6 text-center text-[var(--color-text-muted)]">

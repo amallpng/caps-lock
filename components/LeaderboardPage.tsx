@@ -38,20 +38,20 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ currentUser, onBack }
                     else if (rank === 3) rankColor = 'text-yellow-700';
 
                     return (
-                        <div key={user.id} className={`flex items-center justify-between p-3 sm:p-4 rounded-sm transition-colors ${isCurrentUser ? 'bg-[var(--color-primary)]/30 border-2 border-[var(--color-primary)]' : 'bg-[var(--color-bg)] border border-transparent'}`}>
-                            <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-grow">
-                                <span className={`text-xl sm:text-2xl font-bold w-8 sm:w-10 flex-shrink-0 text-center ${rankColor}`}>{rank}</span>
-                                <Avatar avatarKey={user.profilePic} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex-shrink-0" />
-                                <span className="text-base sm:text-lg font-semibold text-[var(--color-text)] truncate">{user.username}</span>
+                        <div key={user.id} className={`flex items-center justify-between p-4 rounded-sm transition-colors ${isCurrentUser ? 'bg-[var(--color-primary)]/30 border-2 border-[var(--color-primary)]' : 'bg-[var(--color-bg)] border border-transparent'}`}>
+                            <div className="flex items-center gap-4 min-w-0">
+                                <span className={`text-2xl font-bold w-10 flex-shrink-0 text-center ${rankColor}`}>{rank}</span>
+                                <Avatar avatarKey={user.profilePic} className="w-12 h-12 rounded-full flex-shrink-0" />
+                                <span className="text-lg font-semibold text-[var(--color-text)] truncate">{user.username}</span>
                             </div>
-                            <div className="flex items-center gap-3 sm:gap-6 ml-2 sm:ml-4 flex-shrink-0">
-                                <div className="flex items-center gap-1 sm:gap-2" title="Coins">
-                                    <CoinIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                                    <span className="text-lg sm:text-xl font-bold text-[var(--color-text)] w-8 sm:w-12 text-left">{user.coins || 0}</span>
+                            <div className="flex items-center gap-6 ml-4">
+                                <div className="hidden sm:flex items-center gap-2" title="Coins">
+                                    <CoinIcon className="w-6 h-6" />
+                                    <span className="text-xl font-bold text-[var(--color-text)] w-12 text-left">{user.coins || 0}</span>
                                 </div>
-                                <div className="text-right w-16 sm:w-20">
-                                    <p className="text-xl sm:text-2xl font-bold text-[var(--color-text)]">{user.bestWpm || 0}</p>
-                                    <p className="text-xs sm:text-sm text-[var(--color-text-muted)]">WPM</p>
+                                <div className="text-right w-20 flex-shrink-0">
+                                    <p className="text-2xl font-bold text-[var(--color-text)]">{user.bestWpm || 0}</p>
+                                    <p className="text-sm text-[var(--color-text-muted)]">WPM</p>
                                 </div>
                             </div>
                         </div>
