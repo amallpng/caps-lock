@@ -25,13 +25,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onOpenPrivacyModal }) => {
             <strong className="font-semibold text-[var(--color-text)]">Practice Mode:</strong> Hone your skills in a flexible environment. Choose your desired difficulty (Easy, Medium, Hard) and session duration (15s, 30s, 60s, 120s) to create the perfect practice session.
           </li>
           <li>
-            <strong className="font-semibold text-[var(--color-text)]">100 Challenge Levels:</strong> Embark on a journey from a typing novice to a titan! Progress through 100 carefully crafted levels, each with specific WPM and accuracy goals. Unlock unique, animated badges as you complete milestones.
+            <strong className="font-semibold text-[var(--color-text)]">100 Challenge Levels:</strong> Embark on a journey from a typing novice to a titan! Progress through 100 carefully crafted levels, each with unique goals. Unlock unique, animated badges as you complete milestones.
           </li>
           <li>
             <strong className="font-semibold text-[var(--color-text)]">Personalized Profile:</strong> Your profile is your typing hub. Track your best WPM, daily streak, and performance history with our analysis chart. Customize your avatar and view your collection of earned badges.
-          </li>
-          <li>
-            <strong className="font-semibold text-[var(--color-text)]">Competitive Leaderboard:</strong> See how you stack up against other typists! The leaderboard ranks all users by their best WPM, with special honors for the top three.
           </li>
         </ul>
       </div>

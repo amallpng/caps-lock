@@ -2,6 +2,19 @@ import { Theme } from '../types';
 
 export const themes: Theme[] = [
   {
+    id: 'stranger-things',
+    name: 'Stranger Things',
+    colors: {
+      bg: '#080808',
+      text: '#c9d1d9',
+      primary: '#ff0000',
+      secondary: '#111111',
+      border: '#330000',
+      error: '#8a0000',
+      'text-muted': '#5c5c5c',
+    },
+  },
+  {
     id: 'typewriter',
     name: 'Typewriter',
     colors: {

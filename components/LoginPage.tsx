@@ -6,7 +6,6 @@ import { LogoIcon } from './icons/Logo';
 interface LoginPageProps {
   onLogin: (user: User) => void;
   onSwitchToRegister: () => void;
-  onShowLeaderboard: () => void;
 }
 
 const GoogleIcon = () => (
@@ -18,7 +17,7 @@ const GoogleIcon = () => (
     </svg>
 );
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister, onShowLeaderboard }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -118,109 +117,114 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister, onSh
 
 
   return (
-    <div className="w-full max-w-md bg-[var(--color-secondary)] p-8 rounded-sm border-2 border-[var(--color-text)] shadow-lg">
-      <div className="flex flex-col items-center mb-6 text-center">
-        <LogoIcon className="h-16 w-auto" />
-        <h1 className="text-3xl font-bold text-[var(--color-text)] mt-1 tracking-wider">
-          CAPS LOCK
-        </h1>
-      </div>
-      <h2 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">Login</h2>
-      {error && <p className="bg-red-500/20 text-red-800 p-3 rounded-sm mb-4 text-center border border-red-800/50">{error}</p>}
-
-      {isGoogleLogin ? (
-        <>
-          <form onSubmit={handleGoogleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-2" htmlFor="google-email">Google Email</label>
-              <input
-                id="google-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="you@example.com"
-                className="w-full bg-[var(--color-bg)] text-[var(--color-text)] px-4 py-2 rounded-sm border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full btn-vintage font-bold py-2 px-4 rounded-sm"
-            >
-              Sign In with Email
-            </button>
-          </form>
-          <p className="mt-6 text-center text-[var(--color-text-muted)]">
-            <button onClick={() => { setIsGoogleLogin(false); setError(''); }} className="text-[var(--color-primary)] hover:underline font-semibold">
-              &larr; Back to standard login
-            </button>
-          </p>
-        </>
-      ) : (
-        <>
-          <form onSubmit={handleLocalSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-2" htmlFor="username">Username</label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="w-full bg-[var(--color-bg)] text-[var(--color-text)] px-4 py-2 rounded-sm border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-2" htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full bg-[var(--color-bg)] text-[var(--color-text)] px-4 py-2 rounded-sm border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full btn-vintage font-bold py-2 px-4 rounded-sm"
-            >
-              Login
-            </button>
-          </form>
+    <div className="w-full max-w-md bg-[var(--color-bg)] p-8 rounded-sm border-2 border-[var(--color-text)] shadow-2xl relative animate-fade-in">
           
-          <div className="my-6 flex items-center">
-            <div className="flex-grow border-t border-[var(--color-border)]"></div>
-            <span className="flex-shrink mx-4 text-[var(--color-text-muted)]">OR</span>
-            <div className="flex-grow border-t border-[var(--color-border)]"></div>
-          </div>
+        <div className="flex flex-col items-center mb-6 text-center">
+             <div className="w-24 h-24 mb-4 rounded-full bg-[var(--color-secondary)] border-2 border-[var(--color-text)] flex items-center justify-center overflow-hidden">
+                <LogoIcon className="h-16 w-auto" />
+             </div>
+             <h1 className="text-3xl font-bold text-[var(--color-text)] mt-1 tracking-wider">
+               CAPS LOCK
+             </h1>
+        </div>
           
-          <div className="space-y-3">
-            <button
-              type="button"
-              onClick={() => { setIsGoogleLogin(true); setError(''); }}
-              className="w-full flex items-center justify-center gap-3 bg-[var(--color-bg)] text-[var(--color-text)] font-semibold py-2 px-4 rounded-sm border-2 border-[var(--color-text)] hover:bg-[var(--color-secondary)] transition-colors"
-            >
-              <GoogleIcon />
-              Login with Google
-            </button>
-            <button
-                type="button"
-                onClick={handleGuestLogin}
-                className="w-full flex items-center justify-center gap-3 bg-transparent text-[var(--color-text-muted)] font-semibold py-2 px-4 rounded-sm border-2 border-dashed border-[var(--color-border)] hover:bg-[var(--color-secondary)]/50 hover:text-[var(--color-text)] transition-colors"
-            >
-                Login as Guest
-            </button>
-          </div>
+        <h2 className="text-3xl font-bold text-center text-[var(--color-text)] mb-8 mt-4 md:mt-8">Welcome Back</h2>
+          
+        {error && <p className="bg-red-500/20 text-red-800 p-3 rounded-sm mb-6 text-center border border-red-800/50 text-sm font-semibold">{error}</p>}
 
-          <p className="mt-6 text-center text-[var(--color-text-muted)]">
-            Don't have an account?{' '}
-            <button onClick={onSwitchToRegister} className="text-[var(--color-primary)] hover:underline font-semibold">
-              Register here
-            </button>
-          </p>
-        </>
-      )}
+        {isGoogleLogin ? (
+            <div className="animate-fade-in">
+              <form onSubmit={handleGoogleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-[var(--color-text-muted)] mb-2 uppercase tracking-wide" htmlFor="google-email">Google Email</label>
+                  <input
+                    id="google-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="you@example.com"
+                    className="w-full bg-[var(--color-secondary)]/30 text-[var(--color-text)] px-4 py-3 rounded-sm border-2 border-[var(--color-border)] focus:outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-bg)] transition-colors"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full btn-vintage font-bold py-3 px-4 rounded-sm text-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all"
+                >
+                  Sign In with Email
+                </button>
+              </form>
+              <div className="mt-8 text-center">
+                <button onClick={() => { setIsGoogleLogin(false); setError(''); }} className="text-[var(--color-primary)] hover:underline font-bold text-sm uppercase tracking-wide">
+                  &larr; Back to standard login
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="animate-fade-in">
+              <form onSubmit={handleLocalSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-sm font-bold text-[var(--color-text-muted)] mb-2 uppercase tracking-wide" htmlFor="username">Username</label>
+                  <input
+                    id="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    className="w-full bg-[var(--color-secondary)]/30 text-[var(--color-text)] px-4 py-3 rounded-sm border-2 border-[var(--color-border)] focus:outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-bg)] transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-[var(--color-text-muted)] mb-2 uppercase tracking-wide" htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full bg-[var(--color-secondary)]/30 text-[var(--color-text)] px-4 py-3 rounded-sm border-2 border-[var(--color-border)] focus:outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-bg)] transition-colors"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full btn-vintage font-bold py-3 px-4 rounded-sm text-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all"
+                >
+                  Login
+                </button>
+              </form>
+              
+              <div className="my-8 flex items-center">
+                <div className="flex-grow border-t-2 border-[var(--color-border)]"></div>
+                <span className="flex-shrink mx-4 text-[var(--color-text-muted)] font-bold text-sm">OR</span>
+                <div className="flex-grow border-t-2 border-[var(--color-border)]"></div>
+              </div>
+              
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => { setIsGoogleLogin(true); setError(''); }}
+                  className="w-full flex items-center justify-center gap-3 bg-[var(--color-bg)] text-[var(--color-text)] font-bold py-3 px-4 rounded-sm border-2 border-[var(--color-text)] hover:bg-[var(--color-secondary)] transition-colors"
+                >
+                  <GoogleIcon />
+                  Login with Google
+                </button>
+                <button
+                    type="button"
+                    onClick={handleGuestLogin}
+                    className="w-full flex items-center justify-center gap-3 bg-transparent text-[var(--color-text-muted)] font-bold py-3 px-4 rounded-sm border-2 border-dashed border-[var(--color-border)] hover:bg-[var(--color-secondary)]/50 hover:text-[var(--color-text)] hover:border-[var(--color-text)] transition-all"
+                >
+                    Continue as Guest
+                </button>
+              </div>
+
+              <div className="mt-8 text-center text-[var(--color-text-muted)] text-sm">
+                Don't have an account?{' '}
+                <button onClick={onSwitchToRegister} className="text-[var(--color-primary)] hover:underline font-bold uppercase tracking-wide ml-1">
+                  Register here
+                </button>
+              </div>
+            </div>
+          )}
     </div>
   );
 };

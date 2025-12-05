@@ -32,7 +32,7 @@ export interface User {
   };
 }
 
-export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'leaderboard' | 'about' | 'learnPython' | 'imageGenerator' | 'videoGenerator';
+export type Page = 'login' | 'register' | 'practice' | 'challenge' | 'profile' | 'about' | 'learnPython';
 
 export enum Difficulty {
   Easy = 'easy',
@@ -75,4 +75,8 @@ export interface PrizeClaim {
   prizeName: string;
   prizeAmount: number;
   date: string;
+}
+export interface AvatarData {
+    id: string;
+    dataUrl: string;
 }

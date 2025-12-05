@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import TypingTest from './components/TypingTest';
@@ -7,15 +7,16 @@ import ProfilePage from './components/ProfilePage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { User, Page } from './types';
-import LeaderboardPage from './components/LeaderboardPage';
 import AboutPage from './components/AboutPage';
 import ChallengeSignupModal from './components/ChallengeSignupModal';
 import LearnPythonPage from './components/LearnPythonPage';
 import PrivacyPolicyModal from './components/PrivacyPolicyModal';
 import TutorialModal from './components/TutorialModal';
 import SettingsModal from './components/SettingsModal';
-import ImageGeneratorPage from './components/ImageGeneratorPage';
-import VideoGeneratorPage from './components/VideoGeneratorPage';
+import CursorAnimation from './components/CursorAnimation';
+import { ThemeContext } from './contexts/ThemeContext';
+import StrangerThingsIntro from './components/StrangerThingsIntro';
+import StrangerThingsSideDecorations from './components/StrangerThingsSideDecorations';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -26,6 +27,19 @@ const App: React.FC = () => {
   
   const [isTutorialModalOpen, setIsTutorialModalOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Intro Animation State
+  const { theme } = useContext(ThemeContext);
+  const [showThemeIntro, setShowThemeIntro] = useState(false);
+
+  useEffect(() => {
+    if (theme.id === 'stranger-things') {
+        setShowThemeIntro(true);
+    } else {
+        setShowThemeIntro(false);
+    }
+  }, [theme.id]);
+
 
   useEffect(() => {
     const loggedInUserId = localStorage.getItem('loggedInUserId');
@@ -131,16 +145,11 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     if (!currentUser) {
-      // Allow public access to leaderboard
-      if (currentPage === 'leaderboard') {
-         return <LeaderboardPage currentUser={null} onBack={() => setCurrentPage('login')} />;
-      }
-
       switch (currentPage) {
         case 'register':
           return <RegisterPage onRegisterSuccess={() => setCurrentPage('login')} onSwitchToLogin={() => setCurrentPage('login')} />;
         default:
-          return <LoginPage onLogin={handleLogin} onSwitchToRegister={() => setCurrentPage('register')} onShowLeaderboard={() => setCurrentPage('leaderboard')} />;
+          return <LoginPage onLogin={handleLogin} onSwitchToRegister={() => setCurrentPage('register')} />;
       }
     }
 
@@ -151,30 +160,22 @@ const App: React.FC = () => {
         return <ChallengeMode user={currentUser} onUserUpdate={handleUserUpdate} />;
       case 'profile':
         return <ProfilePage user={currentUser} onUserUpdate={handleUserUpdate} />;
-      case 'leaderboard':
-        return <LeaderboardPage currentUser={currentUser} />;
       case 'about':
         return <AboutPage onOpenPrivacyModal={() => setIsPrivacyModalOpen(false)} />;
       case 'learnPython':
         return <LearnPythonPage user={currentUser} onUserUpdate={handleUserUpdate} />;
-      case 'imageGenerator':
-        return <ImageGeneratorPage />;
-      case 'videoGenerator':
-        return <VideoGeneratorPage />;
       default:
         return <TypingTest user={currentUser} onUserUpdate={handleUserUpdate} />;
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] relative overflow-x-hidden">
+      {showThemeIntro && <StrangerThingsIntro onComplete={() => setShowThemeIntro(false)} />}
+      <CursorAnimation />
+      <StrangerThingsSideDecorations />
       {currentUser && <Navbar user={currentUser} onNavigate={setCurrentPage} onLogout={handleLogout} currentPage={currentPage} onOpenSettings={() => setIsSettingsModalOpen(true)} />}
-      {!currentUser && currentPage === 'leaderboard' && (
-          <header className="w-full bg-[var(--color-secondary)] border-b-2 border-[var(--color-text)] shadow-md h-20 flex items-center justify-center">
-              <span style={{ fontFamily: "'Special Elite', monospace", fontSize: '150%', fontWeight: 'normal', color: 'var(--color-text)' }}>CAPS LOCK</span>
-          </header>
-      )}
-      <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
+      <main className="relative z-10 flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
         {isTutorialModalOpen && <TutorialModal onClose={handleTutorialFinish} />}
         {isChallengeModalOpen && currentUser && (
             <ChallengeSignupModal
@@ -187,7 +188,9 @@ const App: React.FC = () => {
         {isSettingsModalOpen && <SettingsModal onClose={() => setIsSettingsModalOpen(false)} />}
         {renderPage()}
       </main>
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </div>
   );
 };

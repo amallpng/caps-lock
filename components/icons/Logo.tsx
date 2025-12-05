@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 export const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,15 +37,34 @@ export const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 
 const Logo: React.FC<{ className?: string }> = ({ className }) => {
+  const { theme } = useContext(ThemeContext);
+  const isST = theme.id === 'stranger-things';
+
   return (
     <div className={`flex items-center gap-3 ${className}`}>
         <LogoIcon className="h-full w-auto" />
-         <span
-            style={{ fontFamily: "'Special Elite', monospace", fontSize: '150%', fontWeight: 'normal', color: 'var(--color-text)' }}
-            className="hidden sm:inline"
-        >
-            CAPS LOCK
-        </span>
+        <div className="flex flex-col">
+             {isST && (
+                <span 
+                    style={{ fontFamily: "'Special Elite', monospace", color: 'var(--color-primary)' }}
+                    className="text-xs font-bold tracking-widest leading-none stranger-things-glow"
+                >
+                    STRANGER THINGS x
+                </span>
+             )}
+             <span
+                style={{ 
+                    fontFamily: "'Special Elite', monospace", 
+                    fontSize: isST ? '120%' : '150%', 
+                    fontWeight: 'normal', 
+                    color: 'var(--color-text)',
+                    marginTop: isST ? '-2px' : '0'
+                }}
+                className={`hidden sm:inline ${isST ? 'stranger-things-glow' : ''}`}
+            >
+                CAPS LOCK
+            </span>
+        </div>
     </div>
   );
 };
